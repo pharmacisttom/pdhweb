@@ -146,53 +146,90 @@
 </div>
 
 <div class="container mb-5 pb-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold text-dark mb-0">ข่าวสารล่าสุด <span style="color: var(--primary-color);">.</span></h2>
-        <a href="<?= URLROOT ?>/news" class="btn btn-outline-primary rounded-pill px-4">ดูทั้งหมด <i class="bi bi-arrow-right ms-1"></i></a>
-    </div>
-    <div class="row g-4">
-        <?php if(!empty($latestNews)): ?>
-            <?php foreach($latestNews as $news): ?>
-            <div class="col-md-4">
-                <div class="card h-100 quick-service-card overflow-hidden">
-                    <?php if($news->cover_image): ?>
-                        <img src="<?= URLROOT ?>/assets/images/news/<?= $news->cover_image ?>" class="card-img-top" alt="<?= htmlspecialchars($news->title) ?>" style="height: 200px; object-fit: cover;">
-                    <?php else: ?>
-                        <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
-                            <i class="bi bi-image text-muted fs-1"></i>
-                        </div>
-                    <?php endif; ?>
-                    
-                    <div class="card-body p-4">
-                        <?php
-                            $cat_map = [
-                                'general' => 'ข่าวประชาสัมพันธ์ทั่วไป',
-                                'service' => 'ข่าวบริการโรงพยาบาล',
-                                'procurement' => 'ข่าวจัดซื้อจัดจ้าง'
-                            ];
-                            $cat_name = $cat_map[$news->category] ?? ucfirst($news->category);
-                        ?>
-                        <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill"><?= $cat_name ?></span>
-                        <h5 class="card-title fw-bold">
-                            <a href="<?= URLROOT ?>/news/show/<?= $news->slug ?>" class="text-dark text-decoration-none stretched-link">
-                                <?= mb_strimwidth(htmlspecialchars($news->title), 0, 60, '...') ?>
-                            </a>
-                        </h5>
-                        <p class="card-text text-muted small mt-3 mb-0">
-                            <?= mb_strimwidth(strip_tags($news->summary), 0, 100, '...') ?>
-                        </p>
-                    </div>
-                    <div class="card-footer bg-white border-0 px-4 pb-4 pt-0 text-muted small d-flex align-items-center">
-                        <i class="bi bi-calendar3 me-2"></i> <?= date('d M Y', strtotime($news->published_at)) ?>
-                    </div>
+    <?php if(!empty($newsByCategory)): ?>
+        <?php foreach($newsByCategory as $catSlug => $category): ?>
+            <?php if(!empty($category['items'])): ?>
+                <div class="d-flex justify-content-between align-items-center mb-4 mt-5">
+                    <h2 class="fw-bold text-dark mb-0"><?= htmlspecialchars($category['name']) ?> <span style="color: var(--primary-color);">.</span></h2>
+                    <a href="<?= URLROOT ?>/news?category=<?= $catSlug ?>" class="btn btn-outline-primary rounded-pill px-4">ดูทั้งหมด <i class="bi bi-arrow-right ms-1"></i></a>
                 </div>
-            </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <div class="col-12 text-center py-5">
-                <i class="bi bi-newspaper display-1 text-muted mb-3 d-block"></i>
-                <p class="text-muted">ยังไม่มีข่าวสารในขณะนี้</p>
-            </div>
-        <?php endif; ?>
-    </div>
+                
+                <div class="row g-4 mb-4">
+                    <?php foreach($category['items'] as $news): ?>
+                    <div class="col-md-4">
+                        <div class="card h-100 quick-service-card overflow-hidden">
+                            <?php if(!empty($news->pdf_file) && ($news->cover_image == 'default-news.jpg' || empty($news->cover_image))): ?>
+                                <!-- Use PDF.js to render first page as thumbnail -->
+                                <div class="pdf-thumbnail-container bg-light d-flex align-items-center justify-content-center" style="height: 200px; overflow: hidden;" data-pdf-url="<?= URLROOT ?>/assets/docs/news/<?= htmlspecialchars($news->pdf_file) ?>">
+                                    <canvas class="pdf-canvas w-100" style="object-fit: cover;"></canvas>
+                                </div>
+                            <?php else: ?>
+                                <img src="<?= URLROOT ?>/assets/images/news/<?= $news->cover_image ?: 'default-news.jpg' ?>" class="card-img-top" alt="<?= htmlspecialchars($news->title) ?>" style="height: 200px; object-fit: cover;">
+                            <?php endif; ?>
+                            
+                            <div class="card-body p-4">
+                                <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill"><?= htmlspecialchars($category['name']) ?></span>
+                                <h5 class="card-title fw-bold">
+                                    <a href="<?= URLROOT ?>/news/show/<?= $news->slug ?>" class="text-dark text-decoration-none stretched-link">
+                                        <?= mb_strimwidth(htmlspecialchars($news->title), 0, 60, '...') ?>
+                                    </a>
+                                </h5>
+                                <p class="card-text text-muted small mt-3 mb-0">
+                                    <?= mb_strimwidth(strip_tags($news->summary), 0, 100, '...') ?>
+                                </p>
+                            </div>
+                            <div class="card-footer bg-white border-0 px-4 pb-4 pt-0 text-muted small d-flex align-items-center">
+                                <i class="bi bi-calendar3 me-2"></i> <?= date('d M Y', strtotime($news->published_at)) ?>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold text-dark mb-0">ข่าวสารล่าสุด <span style="color: var(--primary-color);">.</span></h2>
+        </div>
+        <div class="col-12 text-center py-5">
+            <i class="bi bi-newspaper display-1 text-muted mb-3 d-block"></i>
+            <p class="text-muted">ยังไม่มีข่าวสารในขณะนี้</p>
+        </div>
+    <?php endif; ?>
 </div>
+
+<!-- PDF.js for rendering PDF thumbnails -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+            
+            const pdfContainers = document.querySelectorAll('.pdf-thumbnail-container');
+            
+            pdfContainers.forEach(container => {
+                const url = container.dataset.pdfUrl;
+                const canvas = container.querySelector('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                pdfjsLib.getDocument(url).promise.then(function(pdf) {
+                    return pdf.getPage(1);
+                }).then(function(page) {
+                    const viewport = page.getViewport({scale: 1.5});
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    
+                    const renderContext = {
+                        canvasContext: ctx,
+                        viewport: viewport
+                    };
+                    page.render(renderContext);
+                }).catch(function(error) {
+                    console.error('Error rendering PDF thumbnail:', error);
+                    // Fallback icon if PDF fails to render
+                    container.innerHTML = '<i class="bi bi-file-earmark-pdf text-danger" style="font-size: 5rem;"></i>';
+                });
+            });
+        }
+    });
+</script>

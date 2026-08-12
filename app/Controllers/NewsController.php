@@ -14,9 +14,15 @@ class NewsController extends Controller {
     public function index() {
         $newsList = $this->newsModel->getPublished();
         
+        $db = new \App\Core\Database();
+        $db->query("SELECT setting_value FROM settings WHERE setting_key = 'news_categories'");
+        $row = $db->single();
+        $categories = $row ? json_decode($row->setting_value, true) : [];
+        
         $data = [
             'page_title' => 'ข่าวสารและกิจกรรม',
-            'newsList' => $newsList
+            'newsList' => $newsList,
+            'categories' => $categories
         ];
         
         $this->view('news/index', $data);
@@ -33,12 +39,18 @@ class NewsController extends Controller {
             $this->redirect('news');
         }
         
+        $db = new \App\Core\Database();
+        $db->query("SELECT setting_value FROM settings WHERE setting_key = 'news_categories'");
+        $row = $db->single();
+        $categories = $row ? json_decode($row->setting_value, true) : [];
+        
         $data = [
             'page_title' => $news->title,
             'og_type' => 'article',
             'og_description' => strip_tags($news->summary),
             'og_image' => URLROOT . '/assets/images/news/' . $news->cover_image,
-            'news' => $news
+            'news' => $news,
+            'categories' => $categories
         ];
         
         $this->view('news/show', $data);

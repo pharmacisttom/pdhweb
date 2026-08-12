@@ -52,9 +52,15 @@
                 <div class="col-md-4">
                     <label for="category" class="form-label fw-bold">หมวดหมู่</label>
                     <select class="form-select" id="category" name="category">
-                        <option value="general">ข่าวประชาสัมพันธ์ทั่วไป</option>
-                        <option value="service">ข่าวประชาสัมพันธ์การบริการของโรงพยาบาล</option>
-                        <option value="procurement">ข่าวประชาสัมพันธ์สำหรับระบบงานจัดซื้อจัดจ้าง</option>
+                        <?php if(isset($categories) && !empty($categories)): ?>
+                            <?php foreach($categories as $cat): ?>
+                                <option value="<?= htmlspecialchars($cat['slug']) ?>"><?= htmlspecialchars($cat['name']) ?></option>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <option value="general">ข่าวประชาสัมพันธ์ทั่วไป</option>
+                            <option value="service">ข่าวประชาสัมพันธ์การบริการของโรงพยาบาล</option>
+                            <option value="procurement">ข่าวประชาสัมพันธ์สำหรับระบบงานจัดซื้อจัดจ้าง</option>
+                        <?php endif; ?>
                     </select>
                 </div>
                 

@@ -19,6 +19,13 @@ class News extends Model {
         return $this->db->resultSet();
     }
     
+    public function getPublishedByCategory($category, $limit = 5) {
+        $sql = 'SELECT * FROM news WHERE status = "published" AND category = :category AND deleted_at IS NULL ORDER BY published_at DESC LIMIT ' . (int)$limit;
+        $this->db->query($sql);
+        $this->db->bind(':category', $category);
+        return $this->db->resultSet();
+    }
+    
     public function getById($id) {
         $this->db->query('SELECT * FROM news WHERE id = :id AND deleted_at IS NULL');
         $this->db->bind(':id', $id);

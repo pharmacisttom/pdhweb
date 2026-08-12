@@ -24,8 +24,14 @@ class NewsController extends Controller {
     }
 
     public function create() {
+        $db = new \App\Core\Database();
+        $db->query("SELECT setting_value FROM settings WHERE setting_key = 'news_categories'");
+        $row = $db->single();
+        $categories = $row ? json_decode($row->setting_value, true) : [];
+
         $data = [
-            'page_title' => 'เพิ่มข่าวสาร'
+            'page_title' => 'เพิ่มข่าวสาร',
+            'categories' => $categories
         ];
         $this->view('admin/news/create', $data, 'admin');
     }
@@ -98,9 +104,15 @@ class NewsController extends Controller {
     public function edit($id) {
         $news = $this->newsModel->getById($id);
 
+        $db = new \App\Core\Database();
+        $db->query("SELECT setting_value FROM settings WHERE setting_key = 'news_categories'");
+        $row = $db->single();
+        $categories = $row ? json_decode($row->setting_value, true) : [];
+
         $data = [
             'page_title' => 'แก้ไขข่าวสาร',
-            'news' => $news
+            'news' => $news,
+            'categories' => $categories
         ];
         $this->view('admin/news/edit', $data, 'admin');
     }

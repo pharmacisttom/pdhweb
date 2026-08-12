@@ -65,9 +65,15 @@
                 <div class="col-md-4">
                     <label for="category" class="form-label fw-bold">หมวดหมู่</label>
                     <select class="form-select" id="category" name="category">
-                        <option value="general" <?= $news->category == 'general' ? 'selected' : '' ?>>ข่าวประชาสัมพันธ์ทั่วไป</option>
-                        <option value="service" <?= $news->category == 'service' ? 'selected' : '' ?>>ข่าวประชาสัมพันธ์การบริการของโรงพยาบาล</option>
-                        <option value="procurement" <?= $news->category == 'procurement' ? 'selected' : '' ?>>ข่าวประชาสัมพันธ์สำหรับระบบงานจัดซื้อจัดจ้าง</option>
+                        <?php if(isset($categories) && !empty($categories)): ?>
+                            <?php foreach($categories as $cat): ?>
+                                <option value="<?= htmlspecialchars($cat['slug']) ?>" <?= $news->category == $cat['slug'] ? 'selected' : '' ?>><?= htmlspecialchars($cat['name']) ?></option>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <option value="general" <?= $news->category == 'general' ? 'selected' : '' ?>>ข่าวประชาสัมพันธ์ทั่วไป</option>
+                            <option value="service" <?= $news->category == 'service' ? 'selected' : '' ?>>ข่าวประชาสัมพันธ์การบริการของโรงพยาบาล</option>
+                            <option value="procurement" <?= $news->category == 'procurement' ? 'selected' : '' ?>>ข่าวประชาสัมพันธ์สำหรับระบบงานจัดซื้อจัดจ้าง</option>
+                        <?php endif; ?>
                     </select>
                 </div>
                 

@@ -54,14 +54,17 @@
                 <div class="p-4 p-md-5">
                     <div class="mb-4">
                         <?php
-                            $cat_map = [
-                                'general' => 'ข่าวประชาสัมพันธ์ทั่วไป',
-                                'service' => 'ข่าวบริการโรงพยาบาล',
-                                'procurement' => 'ข่าวจัดซื้อจัดจ้าง'
-                            ];
-                            $cat_name = $cat_map[$news->category] ?? ucfirst($news->category);
+                            $cat_name = ucfirst($news->category);
+                            if (isset($categories) && !empty($categories)) {
+                                foreach ($categories as $cat) {
+                                    if ($cat['slug'] == $news->category) {
+                                        $cat_name = $cat['name'];
+                                        break;
+                                    }
+                                }
+                            }
                         ?>
-                        <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill fw-medium fs-6"><?= $cat_name ?></span>
+                        <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill fw-medium fs-6"><?= htmlspecialchars($cat_name) ?></span>
                         <h1 class="fw-bold mb-4 text-dark" style="line-height: 1.4; font-size: 2.25rem;"><?= htmlspecialchars($news->title) ?></h1>
                         
                         <div class="d-flex flex-wrap align-items-center text-muted border-top border-bottom py-3">
@@ -87,16 +90,21 @@
                     </div>
                     
                     <?php if(!empty($news->pdf_file)): ?>
-                        <div class="mt-5 p-4 bg-light rounded border border-2 border-primary border-opacity-25 d-flex align-items-center justify-content-between flex-wrap gap-3">
+                        <div class="mt-5 mb-4">
+                            <h4 class="fw-bold text-dark mb-3"><i class="bi bi-file-earmark-pdf text-danger me-2"></i> เอกสารแนบ (PDF)</h4>
+                            <div class="ratio ratio-4x3 border rounded shadow-sm">
+                                <iframe src="<?= URLROOT ?>/assets/docs/news/<?= htmlspecialchars($news->pdf_file) ?>" title="<?= htmlspecialchars($news->title) ?>" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-light rounded border border-2 border-primary border-opacity-25 d-flex align-items-center justify-content-between flex-wrap gap-3">
                             <div class="d-flex align-items-center">
-                                <i class="bi bi-file-earmark-pdf-fill text-danger fs-1 me-3"></i>
+                                <i class="bi bi-download text-primary fs-3 me-3"></i>
                                 <div>
-                                    <h5 class="mb-1 fw-bold text-dark">เอกสารแนบ</h5>
-                                    <p class="mb-0 text-muted small"><?= htmlspecialchars($news->pdf_file) ?></p>
+                                    <h6 class="mb-0 fw-bold text-dark"><?= htmlspecialchars($news->pdf_file) ?></h6>
                                 </div>
                             </div>
-                            <a href="<?= URLROOT ?>/assets/docs/news/<?= $news->pdf_file ?>" target="_blank" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">
-                                <i class="bi bi-download me-2"></i> ดาวน์โหลด / เปิดไฟล์ PDF
+                            <a href="<?= URLROOT ?>/assets/docs/news/<?= htmlspecialchars($news->pdf_file) ?>" target="_blank" class="btn btn-outline-primary rounded-pill px-4 fw-bold">
+                                ดาวน์โหลด
                             </a>
                         </div>
                     <?php endif; ?>
