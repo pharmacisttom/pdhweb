@@ -42,10 +42,11 @@ class DonationItemController extends Controller {
                     mkdir($uploadDir, 0777, true);
                 }
                 $fileName = time() . '_' . basename($_FILES['image']['name']);
+                $fileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION));
+                $fileName = time() . '_' . substr(md5(uniqid()), 0, 8) . '.' . $fileType;
                 $targetFilePath = $uploadDir . $fileName;
-                $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
                 
-                $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'webp');
+                $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'webp', 'jfif');
                 if (in_array(strtolower($fileType), $allowTypes)) {
                     if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFilePath)) {
                         $image = $fileName;
@@ -95,10 +96,11 @@ class DonationItemController extends Controller {
                     mkdir($uploadDir, 0777, true);
                 }
                 $fileName = time() . '_' . basename($_FILES['image']['name']);
+                $fileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION));
+                $fileName = time() . '_' . substr(md5(uniqid()), 0, 8) . '.' . $fileType;
                 $targetFilePath = $uploadDir . $fileName;
-                $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
                 
-                $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'webp');
+                $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'webp', 'jfif');
                 if (in_array(strtolower($fileType), $allowTypes)) {
                     if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFilePath)) {
                         $image = $fileName;

@@ -47,9 +47,11 @@ class NewsController extends Controller {
                 }
                 $fileName = time() . '_' . basename($_FILES['cover_image']['name']);
                 $targetFilePath = $uploadDir . $fileName;
-                $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+                $fileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION));
+                $fileName = time() . '_' . substr(md5(uniqid()), 0, 8) . '.' . $fileType;
+                $targetFilePath = $uploadDir . $fileName;
                 
-                $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'webp');
+                $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'webp', 'jfif');
                 if (in_array(strtolower($fileType), $allowTypes)) {
                     if (move_uploaded_file($_FILES['cover_image']['tmp_name'], $targetFilePath)) {
                         $cover_image = $fileName;
@@ -121,9 +123,11 @@ class NewsController extends Controller {
                 }
                 $fileName = time() . '_' . basename($_FILES['cover_image']['name']);
                 $targetFilePath = $uploadDir . $fileName;
-                $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+                $fileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION));
+                $fileName = time() . '_' . substr(md5(uniqid()), 0, 8) . '.' . $fileType;
+                $targetFilePath = $uploadDir . $fileName;
                 
-                $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'webp');
+                $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'webp', 'jfif');
                 if (in_array(strtolower($fileType), $allowTypes)) {
                     if (move_uploaded_file($_FILES['cover_image']['tmp_name'], $targetFilePath)) {
                         $cover_image = $fileName;

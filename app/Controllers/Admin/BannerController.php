@@ -43,9 +43,11 @@ class BannerController extends Controller {
                 }
                 $fileName = time() . '_' . basename($_FILES['image_file']['name']);
                 $targetFilePath = $uploadDir . $fileName;
-                $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+                $fileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION));
+                $fileName = time() . '_' . substr(md5(uniqid()), 0, 8) . '.' . $fileType;
+                $targetFilePath = $uploadDir . $fileName;
                 
-                $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'webp');
+                $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'webp', 'jfif');
                 if (in_array(strtolower($fileType), $allowTypes)) {
                     if (move_uploaded_file($_FILES['image_file']['tmp_name'], $targetFilePath)) {
                         $image_file = $fileName;
@@ -98,9 +100,11 @@ class BannerController extends Controller {
                 }
                 $fileName = time() . '_' . basename($_FILES['image_file']['name']);
                 $targetFilePath = $uploadDir . $fileName;
-                $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+                $fileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION));
+                $fileName = time() . '_' . substr(md5(uniqid()), 0, 8) . '.' . $fileType;
+                $targetFilePath = $uploadDir . $fileName;
                 
-                $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'webp');
+                $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'webp', 'jfif');
                 if (in_array(strtolower($fileType), $allowTypes)) {
                     if (move_uploaded_file($_FILES['image_file']['tmp_name'], $targetFilePath)) {
                         $image_file = $fileName;
