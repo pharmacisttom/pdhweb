@@ -158,19 +158,21 @@
                     <?php foreach($category['items'] as $news): ?>
                     <div class="col-md-4">
                         <div class="card h-100 quick-service-card overflow-hidden">
-                            <?php if(!empty($news->pdf_file) && ($news->cover_image == 'default-news.jpg' || empty($news->cover_image))): ?>
-                                <!-- Use PDF.js to render first page as thumbnail -->
-                                <div class="pdf-thumbnail-container bg-light d-flex align-items-center justify-content-center" style="height: 200px; overflow: hidden;" data-pdf-url="<?= URLROOT ?>/assets/docs/news/<?= htmlspecialchars($news->pdf_file) ?>">
-                                    <canvas class="pdf-canvas w-100" style="object-fit: cover;"></canvas>
-                                </div>
-                            <?php else: ?>
-                                <img src="<?= URLROOT ?>/assets/images/news/<?= $news->cover_image ?: 'default-news.jpg' ?>" class="card-img-top" alt="<?= htmlspecialchars($news->title) ?>" style="height: 200px; object-fit: cover;">
-                            <?php endif; ?>
+                            <a href="<?= URLROOT ?>/news/show/<?= $news->slug ?>" class="d-block text-decoration-none">
+                                <?php if(!empty($news->pdf_file) && ($news->cover_image == 'default-news.jpg' || empty($news->cover_image))): ?>
+                                    <!-- Use PDF.js to render first page as thumbnail -->
+                                    <div class="pdf-thumbnail-container bg-light d-flex align-items-center justify-content-center" style="height: 200px; overflow: hidden;" data-pdf-url="<?= URLROOT ?>/assets/docs/news/<?= htmlspecialchars($news->pdf_file) ?>">
+                                        <canvas class="pdf-canvas w-100" style="object-fit: cover;"></canvas>
+                                    </div>
+                                <?php else: ?>
+                                    <img src="<?= URLROOT ?>/assets/images/news/<?= $news->cover_image ?: 'default-news.jpg' ?>" class="card-img-top" alt="<?= htmlspecialchars($news->title) ?>" style="height: 200px; object-fit: cover;">
+                                <?php endif; ?>
+                            </a>
                             
                             <div class="card-body p-4">
                                 <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill"><?= htmlspecialchars($category['name']) ?></span>
                                 <h5 class="card-title fw-bold">
-                                    <a href="<?= URLROOT ?>/news/show/<?= $news->slug ?>" class="text-dark text-decoration-none stretched-link">
+                                    <a href="<?= URLROOT ?>/news/show/<?= $news->slug ?>" class="text-dark text-decoration-none hover-primary">
                                         <?= mb_strimwidth(htmlspecialchars($news->title), 0, 60, '...') ?>
                                     </a>
                                 </h5>
