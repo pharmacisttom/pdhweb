@@ -8,6 +8,13 @@
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="<?= URLROOT ?>/assets/images/pdh.ico">
     
+    <!-- Open Graph for Facebook/Social Media Sharing -->
+    <meta property="og:url" content="<?= (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" ?>">
+    <meta property="og:type" content="<?= isset($og_type) ? $og_type : 'website' ?>">
+    <meta property="og:title" content="<?= isset($page_title) ? $page_title . ' - ' : '' ?><?= SITENAME ?>">
+    <meta property="og:description" content="<?= isset($og_description) ? $og_description : 'โรงพยาบาลปลวกแดง - Pluak Daeng Hospital' ?>">
+    <meta property="og:image" content="<?= isset($og_image) ? $og_image : URLROOT . '/assets/images/pdh.png' ?>">
+    
     <!-- Google Fonts: Noto Sans Thai -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

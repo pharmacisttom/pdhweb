@@ -31,6 +31,9 @@ class NewsController extends Controller {
         
         $data = [
             'page_title' => $news->title,
+            'og_type' => 'article',
+            'og_description' => strip_tags($news->summary),
+            'og_image' => URLROOT . '/assets/images/news/' . $news->cover_image,
             'news' => $news
         ];
         

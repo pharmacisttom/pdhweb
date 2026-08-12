@@ -31,7 +31,10 @@ class DonationController extends Controller {
         }
 
         $data = [
-            'title' => $item->title,
+            'page_title' => $item->title,
+            'og_type' => 'website',
+            'og_description' => strip_tags($item->description),
+            'og_image' => URLROOT . '/assets/images/donations/' . $item->image,
             'item' => $item
         ];
         $this->view('donations/show', $data);
@@ -57,9 +60,11 @@ class DonationController extends Controller {
                 }
                 $fileName = time() . '_' . basename($_FILES['payment_slip']['name']);
                 $targetFilePath = $uploadDir . $fileName;
-                $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+                $fileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION));
+                $fileName = time() . '_' . substr(md5(uniqid()), 0, 8) . '.' . $fileType;
+                $targetFilePath = $uploadDir . $fileName;
                 
-                $allowTypes = array('jpg', 'png', 'jpeg', 'webp');
+                $allowTypes = array('jpg', 'png', 'jpeg', 'webp', 'jfif');
                 if (in_array(strtolower($fileType), $allowTypes)) {
                     if (move_uploaded_file($_FILES['payment_slip']['tmp_name'], $targetFilePath)) {
                         $payment_slip_image = $fileName;
