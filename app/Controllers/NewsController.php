@@ -12,7 +12,13 @@ class NewsController extends Controller {
     }
 
     public function index() {
-        $newsList = $this->newsModel->getPublished();
+        $categorySlug = isset($_GET['category']) ? $_GET['category'] : null;
+        
+        if ($categorySlug) {
+            $newsList = $this->newsModel->getPublishedByCategory($categorySlug, null);
+        } else {
+            $newsList = $this->newsModel->getPublished();
+        }
         
         $db = new \App\Core\Database();
         $db->query("SELECT setting_value FROM settings WHERE setting_key = 'news_categories'");
@@ -22,7 +28,8 @@ class NewsController extends Controller {
         $data = [
             'page_title' => 'ข่าวสารและกิจกรรม',
             'newsList' => $newsList,
-            'categories' => $categories
+            'categories' => $categories,
+            'current_category' => $categorySlug
         ];
         
         $this->view('news/index', $data);

@@ -45,6 +45,21 @@
     </div>
 </div>
 
+<div class="container mb-4">
+    <ul class="nav nav-pills justify-content-center gap-2">
+        <li class="nav-item">
+            <a class="nav-link rounded-pill px-4 <?= empty($current_category) ? 'active shadow-sm' : 'bg-light text-dark' ?>" href="<?= URLROOT ?>/news">ทั้งหมด</a>
+        </li>
+        <?php if(!empty($categories)): ?>
+            <?php foreach($categories as $cat): ?>
+                <li class="nav-item">
+                    <a class="nav-link rounded-pill px-4 <?= (isset($current_category) && $current_category == $cat['slug']) ? 'active shadow-sm' : 'bg-light text-dark' ?>" href="<?= URLROOT ?>/news?category=<?= $cat['slug'] ?>"><?= htmlspecialchars($cat['name']) ?></a>
+                </li>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </ul>
+</div>
+
 <div class="container mb-5 pb-5 mt-5">
     <div class="row g-4">
         <?php if(empty($newsList)): ?>
@@ -56,28 +71,37 @@
             <?php foreach($newsList as $news): ?>
                 <div class="col-md-6 col-lg-4">
                     <div class="card news-card h-100">
-                        <div class="position-relative news-card-img-wrapper">
-                            <?php if(!empty($news->cover_image) && $news->cover_image != 'default-news.jpg'): ?>
+                        <div class="news-card-img-wrapper bg-light">
+                            <?php if(!empty($news->pdf_file) && ($news->cover_image == 'default-news.jpg' || empty($news->cover_image))): ?>
+                                <!-- Use PDF.js to render first page as thumbnail -->
+                                <div class="pdf-thumbnail-container d-flex align-items-center justify-content-center w-100 h-100" data-pdf-url="<?= URLROOT ?>/assets/docs/news/<?= htmlspecialchars($news->pdf_file) ?>">
+                                    <canvas class="pdf-canvas w-100 h-100" style="object-fit: cover;"></canvas>
+                                </div>
+                            <?php elseif(!empty($news->cover_image) && $news->cover_image != 'default-news.jpg'): ?>
                                 <img src="<?= URLROOT ?>/assets/images/news/<?= $news->cover_image ?>" class="card-img-top w-100 h-100" alt="<?= htmlspecialchars($news->title) ?>" style="object-fit: cover;">
                             <?php else: ?>
-                                <div class="bg-light w-100 h-100 d-flex justify-content-center align-items-center">
+                                <div class="w-100 h-100 d-flex justify-content-center align-items-center">
                                     <i class="bi bi-newspaper text-secondary opacity-50" style="font-size: 5rem;"></i>
                                 </div>
                             <?php endif; ?>
-                            <?php
-                                $cat_map = [
-                                    'general' => 'ข่าวประชาสัมพันธ์ทั่วไป',
-                                    'service' => 'ข่าวบริการโรงพยาบาล',
-                                    'procurement' => 'ข่าวจัดซื้อจัดจ้าง'
-                                ];
-                                $cat_name = $cat_map[$news->category] ?? ucfirst($news->category);
-                            ?>
-                            <span class="badge bg-primary-subtle text-primary position-absolute top-0 end-0 m-3 shadow-sm px-3 py-2 rounded-pill fw-medium">
-                                <?= $cat_name ?>
-                            </span>
                         </div>
                         
                         <div class="card-body p-4">
+                            <?php
+                                $cat_name = ucfirst($news->category);
+                                if (isset($categories) && !empty($categories)) {
+                                    foreach ($categories as $cat) {
+                                        if ($cat['slug'] == $news->category) {
+                                            $cat_name = $cat['name'];
+                                            break;
+                                        }
+                                    }
+                                }
+                            ?>
+                            <span class="badge bg-primary-subtle text-primary mb-3 shadow-sm px-3 py-2 rounded-pill fw-medium">
+                                <?= htmlspecialchars($cat_name) ?>
+                            </span>
+                            
                             <div class="text-muted small mb-3 d-flex align-items-center">
                                 <i class="bi bi-calendar3 me-2 text-primary"></i> <?= date('d M Y', strtotime($news->published_at)) ?>
                             </div>
@@ -96,3 +120,38 @@
         <?php endif; ?>
     </div>
 </div>
+
+<!-- PDF.js for rendering PDF thumbnails -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+            
+            const pdfContainers = document.querySelectorAll('.pdf-thumbnail-container');
+            
+            pdfContainers.forEach(container => {
+                const url = container.dataset.pdfUrl;
+                const canvas = container.querySelector('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                pdfjsLib.getDocument(url).promise.then(function(pdf) {
+                    return pdf.getPage(1);
+                }).then(function(page) {
+                    const viewport = page.getViewport({scale: 1.5});
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    
+                    const renderContext = {
+                        canvasContext: ctx,
+                        viewport: viewport
+                    };
+                    page.render(renderContext);
+                }).catch(function(error) {
+                    console.error('Error rendering PDF thumbnail:', error);
+                    container.innerHTML = '<i class="bi bi-file-earmark-pdf text-danger" style="font-size: 5rem;"></i>';
+                });
+            });
+        }
+    });
+</script>
