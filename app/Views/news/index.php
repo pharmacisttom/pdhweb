@@ -1,0 +1,98 @@
+<style>
+/* Scoped styles for News Index */
+.hero-header {
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+    color: white;
+    padding: 80px 0;
+    text-align: center;
+    margin-top: -76px; /* Offset for navbar */
+    margin-bottom: 40px;
+}
+
+.news-card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,.05), 0 2px 4px -1px rgba(0,0,0,.03);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,.1), 0 10px 10px -5px rgba(0,0,0,.04);
+}
+
+.news-card-img-wrapper {
+    overflow: hidden;
+    height: 220px;
+}
+
+.news-card-img-wrapper img {
+    transition: transform 0.5s ease;
+}
+
+.news-card:hover .news-card-img-wrapper img {
+    transform: scale(1.05);
+}
+
+.hover-primary:hover { color: var(--primary-color) !important; }
+</style>
+
+<div class="hero-header">
+    <div class="container mt-5">
+        <h1 class="display-5 fw-bold mb-3">ข่าวสารและกิจกรรม</h1>
+        <p class="lead mb-0 text-white-50">ติดตามข่าวสาร ประชาสัมพันธ์ และกิจกรรมต่างๆ จากโรงพยาบาล</p>
+    </div>
+</div>
+
+<div class="container mb-5 pb-5 mt-5">
+    <div class="row g-4">
+        <?php if(empty($newsList)): ?>
+            <div class="col-12 text-center py-5">
+                <i class="bi bi-newspaper display-1 text-muted mb-3 d-block opacity-50"></i>
+                <p class="text-muted fs-5">ยังไม่มีข่าวสารในขณะนี้</p>
+            </div>
+        <?php else: ?>
+            <?php foreach($newsList as $news): ?>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card news-card h-100">
+                        <div class="position-relative news-card-img-wrapper">
+                            <?php if(!empty($news->cover_image) && $news->cover_image != 'default-news.jpg'): ?>
+                                <img src="<?= URLROOT ?>/assets/images/news/<?= $news->cover_image ?>" class="card-img-top w-100 h-100" alt="<?= htmlspecialchars($news->title) ?>" style="object-fit: cover;">
+                            <?php else: ?>
+                                <div class="bg-light w-100 h-100 d-flex justify-content-center align-items-center">
+                                    <i class="bi bi-newspaper text-secondary opacity-50" style="font-size: 5rem;"></i>
+                                </div>
+                            <?php endif; ?>
+                            <?php
+                                $cat_map = [
+                                    'general' => 'ข่าวประชาสัมพันธ์ทั่วไป',
+                                    'service' => 'ข่าวบริการโรงพยาบาล',
+                                    'procurement' => 'ข่าวจัดซื้อจัดจ้าง'
+                                ];
+                                $cat_name = $cat_map[$news->category] ?? ucfirst($news->category);
+                            ?>
+                            <span class="badge bg-primary-subtle text-primary position-absolute top-0 end-0 m-3 shadow-sm px-3 py-2 rounded-pill fw-medium">
+                                <?= $cat_name ?>
+                            </span>
+                        </div>
+                        
+                        <div class="card-body p-4">
+                            <div class="text-muted small mb-3 d-flex align-items-center">
+                                <i class="bi bi-calendar3 me-2 text-primary"></i> <?= date('d M Y', strtotime($news->published_at)) ?>
+                            </div>
+                            <h5 class="card-title fw-bold text-dark mb-3" style="line-height: 1.5;">
+                                <a href="<?= URLROOT ?>/news/show/<?= $news->slug ?>" class="text-decoration-none text-dark hover-primary stretched-link">
+                                    <?= mb_strimwidth(htmlspecialchars($news->title), 0, 70, '...') ?>
+                                </a>
+                            </h5>
+                            <p class="card-text text-muted mb-0" style="line-height: 1.6;">
+                                <?= mb_strimwidth(strip_tags($news->summary), 0, 110, '...') ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+</div>
