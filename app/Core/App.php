@@ -57,7 +57,12 @@ class App {
 
     public function parseUrl() {
         if (isset($_GET['url'])) {
-            return explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL));
+            // Remove trailing slash
+            $url = rtrim($_GET['url'], '/');
+            // Decode URL to allow Thai characters
+            $url = urldecode($url);
+            // Split by slash
+            return explode('/', $url);
         }
         return [];
     }
