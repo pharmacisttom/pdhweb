@@ -71,6 +71,9 @@
                         <a class="nav-link" href="<?= URLROOT ?>/news">ข่าวสาร</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="<?= URLROOT ?>/donation">ร่วมบริจาค</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="<?= URLROOT ?>/contact">ติดต่อเรา</a>
                     </li>
                     <li class="nav-item ms-lg-3 mt-2 mt-lg-0 d-flex align-items-center">
@@ -102,7 +105,8 @@
                     <h5 class="fw-bold mb-3">ลิงก์ด่วน</h5>
                     <ul class="list-unstyled text-muted">
                         <li class="mb-2"><a href="<?= URLROOT ?>" class="text-decoration-none text-muted">หน้าแรก</a></li>
-                        <li class="mb-2"><a href="<?= URLROOT ?>/services" class="text-decoration-none text-muted">บริการทางการแพทย์</a></li>
+                        <li class="mb-2"><a href="<?= URLROOT ?>/service" class="text-decoration-none text-muted">บริการทางการแพทย์</a></li>
+                        <li class="mb-2"><a href="<?= URLROOT ?>/donation" class="text-decoration-none text-muted">ร่วมบริจาค</a></li>
                         <li class="mb-2"><a href="<?= URLROOT ?>/ita" class="text-decoration-none text-muted">ITA / MOIT</a></li>
                     </ul>
                 </div>

@@ -119,7 +119,7 @@
 <div class="container mb-5" style="margin-top: -60px; position: relative; z-index: 10;">
     <div class="row g-4 justify-content-center">
         <!-- Quick Service Cards -->
-        <div class="col-6 col-md-4">
+        <div class="col-6 col-md-3">
             <a href="<?= URLROOT ?>/doctor" class="text-decoration-none">
                 <div class="card quick-service-card h-100 py-4 text-center">
                     <div class="quick-service-icon" style="background-color: #ccfbf1;">
@@ -130,7 +130,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-6 col-md-4">
+        <div class="col-6 col-md-3">
             <a href="<?= URLROOT ?>/clinic" class="text-decoration-none">
                 <div class="card quick-service-card h-100 py-4 text-center">
                     <div class="quick-service-icon" style="background-color: #e0f2fe;">
@@ -141,7 +141,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-6 col-md-4">
+        <div class="col-6 col-md-3">
             <a href="<?= URLROOT ?>/department" class="text-decoration-none">
                 <div class="card quick-service-card h-100 py-4 text-center">
                     <div class="quick-service-icon" style="background-color: #fef3c7;">
@@ -149,6 +149,17 @@
                     </div>
                     <h5 class="card-title text-dark fw-bold mb-0">กลุ่มงานและฝ่าย</h5>
                     <p class="text-muted small mt-2 mb-0">ติดต่อหน่วยงานภายใน</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-6 col-md-3">
+            <a href="<?= URLROOT ?>/donation" class="text-decoration-none">
+                <div class="card quick-service-card h-100 py-4 text-center">
+                    <div class="quick-service-icon" style="background-color: #fee2e2;">
+                        <i class="bi bi-box2-heart display-5" style="color: #ef4444;"></i>
+                    </div>
+                    <h5 class="card-title text-dark fw-bold mb-0">ร่วมบริจาค</h5>
+                    <p class="text-muted small mt-2 mb-0">บริจาคเงินและอุปกรณ์</p>
                 </div>
             </a>
         </div>
