@@ -22,7 +22,11 @@ class NewsController extends Controller {
         $this->view('news/index', $data);
     }
     
-    public function show($slug) {
+    public function show($slug = null) {
+        if (!$slug) {
+            $this->redirect('news');
+        }
+        
         $news = $this->newsModel->getBySlug($slug);
         
         if(!$news) {

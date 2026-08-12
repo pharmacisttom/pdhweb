@@ -37,7 +37,7 @@ class NewsController extends Controller {
             
             // Generate slug if empty
             $slug = !empty($_POST['slug']) ? $_POST['slug'] : strtolower(str_replace(' ', '-', trim($_POST['title'])));
-            $slug = preg_replace('/[^A-Za-z0-9\-]/', '', $slug); // basic sanitization for slug
+            $slug = preg_replace('/[^A-Za-z0-9\-\p{Thai}]/u', '', $slug); // allow Thai characters
 
             $cover_image = 'default-news.jpg';
             if (isset($_FILES['cover_image']) && $_FILES['cover_image']['error'] === UPLOAD_ERR_OK) {
@@ -111,7 +111,7 @@ class NewsController extends Controller {
             $_POST = \App\Helpers\Security::xssClean($_POST);
             
             $slug = !empty($_POST['slug']) ? $_POST['slug'] : strtolower(str_replace(' ', '-', trim($_POST['title'])));
-            $slug = preg_replace('/[^A-Za-z0-9\-]/', '', $slug);
+            $slug = preg_replace('/[^A-Za-z0-9\-\p{Thai}]/u', '', $slug);
 
             $news = $this->newsModel->getById($id);
             $cover_image = $news->cover_image;
