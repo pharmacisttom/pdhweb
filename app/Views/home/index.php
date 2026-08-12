@@ -50,37 +50,16 @@
         <div class="carousel-inner">
             <?php foreach($banners as $index => $banner): ?>
                 <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
-                    <div style="height: 600px; background: url('<?= URLROOT ?>/assets/images/banners/<?= $banner->image_file ?>') center/cover no-repeat; position: relative;">
-                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(15,23,42,0.8), rgba(30,41,59,0.7));"></div>
-                        <div class="container h-100 d-flex flex-column justify-content-center position-relative text-white" style="z-index: 10; padding-top: 80px;">
-                            <?php if($index === 0): ?>
-                                <span class="badge bg-primary px-3 py-2 rounded-pill mb-4 align-self-start" style="font-size: 1rem; background-color: var(--primary-color) !important;">
-                                    <i class="bi bi-shield-check me-1"></i> มาตรฐานการแพทย์ระดับสากล
-                                </span>
-                            <?php endif; ?>
-                            
-                            <h1 class="display-4 fw-bold mb-3"><?= htmlspecialchars($banner->title) ?></h1>
-                            
-                            <?php if($index === 0): ?>
-                                <p class="lead mb-5" style="max-width: 600px; color: #cbd5e1;">
-                                    "ดูแลด้วยมาตรฐาน ใส่ใจประชาชน" ให้บริการทางการแพทย์อย่างครบวงจร พร้อมด้วยทีมแพทย์ผู้เชี่ยวชาญและเทคโนโลยีที่ทันสมัย
-                                </p>
-                            <?php endif; ?>
-                            
-                            <div>
-                                <?php if(!empty($banner->link)): ?>
-                                    <a href="<?= htmlspecialchars($banner->link) ?>" class="btn btn-primary btn-lg px-5 py-3 me-sm-3 mb-3 mb-sm-0 fw-bold" style="border-radius: 50px;">
-                                        ดูรายละเอียด
-                                    </a>
-                                <?php endif; ?>
-                                <?php if($index === 0): ?>
-                                    <a href="<?= URLROOT ?>/service" class="btn btn-outline-light btn-lg px-5 py-3 fw-bold" style="border-radius: 50px;">
-                                        บริการทั้งหมด
-                                    </a>
-                                <?php endif; ?>
-                            </div>
-                        </div>
+                    <?php if(!empty($banner->link)): ?>
+                        <a href="<?= htmlspecialchars($banner->link) ?>" class="d-block w-100">
+                    <?php endif; ?>
+                    
+                    <div style="height: 600px; width: 100%; background: url('<?= URLROOT ?>/assets/images/banners/<?= $banner->image_file ?>') center/cover no-repeat;">
                     </div>
+                    
+                    <?php if(!empty($banner->link)): ?>
+                        </a>
+                    <?php endif; ?>
                 </div>
             <?php endforeach; ?>
         </div>
