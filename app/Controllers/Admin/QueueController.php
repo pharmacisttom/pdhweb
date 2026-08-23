@@ -27,48 +27,97 @@ class QueueController extends Controller {
         if($department_id) {
             $queues = $this->queueModel->getTodayQueues($department_id);
         }
+
+        $waitingCount = count(array_filter($queues, fn($q) => $q->status === 'waiting'));
+        $callingCount = count(array_filter($queues, fn($q) => $q->status === 'calling'));
+        $completedCount = count(array_filter($queues, fn($q) => $q->status === 'completed'));
         
         $data = [
-            'page_title' => 'จัดการคิว (รายวัน)',
+            'page_title' => 'แผงควบคุมระบบคิวอัจฉริยะ (Smart Queue Control)',
             'departments' => $departments,
             'selected_department' => $department_id,
-            'queues' => $queues
+            'queues' => $queues,
+            'waitingCount' => $waitingCount,
+            'callingCount' => $callingCount,
+            'completedCount' => $completedCount
         ];
         
         $this->view('admin/queues/index', $data, 'admin');
     }
 
-    public function store() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Call Next Queue
+    public function callNext() {
+        if ($this->isPost()) {
             \App\Helpers\Security::validateCsrf();
-            $_POST = \App\Helpers\Security::xssClean($_POST);
-            
-            $data = [
-                'department_id' => $_POST['department_id'],
-                'queue_number' => trim($_POST['queue_number']),
-                'patient_name' => trim($_POST['patient_name'])
-            ];
+            $department_id = (int)$_POST['department_id'];
+            $counter_number = $_POST['counter_number'] ?? '1';
 
-            if ($this->queueModel->create($data)) {
-                $this->redirect('admin/queues?department_id=' . $data['department_id']);
-            } else {
-                die('Something went wrong');
+            $queues = $this->queueModel->getTodayQueues($department_id);
+            $nextWaiting = null;
+            foreach ($queues as $q) {
+                if ($q->status === 'waiting') {
+                    $nextWaiting = $q;
+                    break;
+                }
             }
+
+            if ($nextWaiting) {
+                $this->queueModel->callQueue($nextWaiting->id, $counter_number);
+                $this->setFlash('queue_success', "เรียกคิว {$nextWaiting->queue_number} เข้าช่องบริการ {$counter_number} เรียบร้อยแล้ว");
+            } else {
+                $this->setFlash('queue_warning', "ไม่มีคิวรอตรวจในขณะนี้", 'warning');
+            }
+
+            $this->redirect('admin/queue?department_id=' . $department_id);
         }
     }
 
-    public function updateStatus($id) {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Action Dispatcher (Call, Recall, Complete, Skip)
+    public function action($id) {
+        if ($this->isPost()) {
+            \App\Helpers\Security::validateCsrf();
+            $act = $_POST['act'] ?? 'complete';
+            $department_id = (int)($_POST['department_id'] ?? 1);
+            $counter_number = $_POST['counter_number'] ?? '1';
+
+            if ($act === 'call') {
+                $this->queueModel->callQueue($id, $counter_number);
+                $this->setFlash('queue_success', "กำลังเรียกคิวที่ช่องบริการ {$counter_number}");
+            } elseif ($act === 'complete') {
+                $this->queueModel->completeQueue($id);
+                $this->setFlash('queue_success', "บันทึกคิวเสร็จสิ้นการบริการแล้ว");
+            } elseif ($act === 'skip') {
+                $this->queueModel->skipQueue($id);
+                $this->setFlash('queue_info', "ข้ามคิวเรียบร้อยแล้ว", 'info');
+            }
+
+            $this->redirect('admin/queue?department_id=' . $department_id);
+        }
+    }
+
+    // Fast ticket issue by nurse
+    public function fastTicket() {
+        if ($this->isPost()) {
             \App\Helpers\Security::validateCsrf();
             $_POST = \App\Helpers\Security::xssClean($_POST);
-            $status = $_POST['status'];
-            $department_id = $_POST['department_id'];
-            
-            if ($this->queueModel->updateStatus($id, $status)) {
-                $this->redirect('admin/queues?department_id=' . $department_id);
-            } else {
-                die('Something went wrong');
+
+            $department_id = (int)$_POST['department_id'];
+            $patient_name = trim($_POST['patient_name'] ?? '');
+            $service_type = $_POST['service_type'] ?? 'general';
+
+            if (empty($patient_name)) $patient_name = 'ผู้รับบริการทั่วไป';
+
+            $ticket = $this->queueModel->createSmartQueue([
+                'department_id' => $department_id,
+                'patient_name' => $patient_name,
+                'service_type' => $service_type
+            ]);
+
+            if ($ticket) {
+                $this->setFlash('queue_success', "ออกบัตรคิวหมายเลข {$ticket['queue_number']} เรียบร้อยแล้ว");
             }
+
+            $this->redirect('admin/queue?department_id=' . $department_id);
         }
     }
 }

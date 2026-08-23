@@ -57,8 +57,8 @@
             </div>
 
             <div class="mb-3">
-                <label for="content" class="form-label fw-bold">เนื้อหาข่าว <span class="text-danger">*</span></label>
-                <textarea class="form-control" id="content" name="content" rows="10" required><?= htmlspecialchars($news->content) ?></textarea>
+                <label for="content" class="form-label fw-bold">เนื้อหาข่าว & บทความ <span class="text-danger">*</span></label>
+                <textarea class="form-control tinymce-editor" id="content" name="content" rows="12"><?= htmlspecialchars($news->content) ?></textarea>
             </div>
             
             <div class="row mb-4">

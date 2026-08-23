@@ -27,12 +27,118 @@ class SettingsController extends Controller {
         }
 
         $data = [
-            'page_title' => 'ตั้งค่าระบบ',
+            'page_title' => 'ตั้งค่าระบบและการเชื่อมต่อ (Settings & API)',
             'settings' => $settings,
             'news_categories' => $newsCategories
         ];
 
         $this->view('admin/settings/index', $data, 'admin');
+    }
+
+    // Update Social & API Connections (FB, LINE OA, LINE Notify)
+    public function updateSocial() {
+        if ($this->isPost()) {
+            \App\Helpers\Security::validateCsrf();
+            $_POST = \App\Helpers\Security::xssClean($_POST);
+
+            $fields = [
+                'facebook_page_url',
+                'facebook_page_id',
+                'facebook_messenger_url',
+                'line_oa_id',
+                'line_add_friend_url',
+                'line_qr_code_url',
+                'line_channel_access_token',
+                'line_channel_secret',
+                'line_notify_token'
+            ];
+
+            foreach ($fields as $field) {
+                if (isset($_POST[$field])) {
+                    $val = trim($_POST[$field]);
+                    $this->db->query("INSERT INTO settings (setting_key, setting_value) VALUES (:k, :v) ON DUPLICATE KEY UPDATE setting_value = :v2");
+                    $this->db->bind(':k', $field);
+                    $this->db->bind(':v', $val);
+                    $this->db->bind(':v2', $val);
+                    $this->db->execute();
+                }
+            }
+
+            $this->setFlash('settings_success', 'บันทึกการตั้งค่า Facebook & LINE OA เรียบร้อยแล้ว');
+            $this->redirect('admin/settings');
+        }
+    }
+
+    // Update Hospital Info
+    public function updateHospital() {
+        if ($this->isPost()) {
+            \App\Helpers\Security::validateCsrf();
+            $_POST = \App\Helpers\Security::xssClean($_POST);
+
+            $fields = [
+                'hospital_name_th',
+                'hospital_name_en',
+                'telephone',
+                'emergency_phone',
+                'email',
+                'address',
+                'google_maps_embed'
+            ];
+
+            foreach ($fields as $field) {
+                if (isset($_POST[$field])) {
+                    $val = trim($_POST[$field]);
+                    $this->db->query("INSERT INTO settings (setting_key, setting_value) VALUES (:k, :v) ON DUPLICATE KEY UPDATE setting_value = :v2");
+                    $this->db->bind(':k', $field);
+                    $this->db->bind(':v', $val);
+                    $this->db->bind(':v2', $val);
+                    $this->db->execute();
+                }
+            }
+
+            $this->setFlash('settings_success', 'บันทึกข้อมูลโรงพยาบาลเรียบร้อยแล้ว');
+            $this->redirect('admin/settings');
+        }
+    }
+
+    // Test LINE Notify Token
+    public function testLineNotify() {
+        if ($this->isPost()) {
+            \App\Helpers\Security::validateCsrf();
+            $token = trim($_POST['token'] ?? '');
+
+            if (empty($token)) {
+                $this->setFlash('settings_warning', 'โปรดระบุ LINE Notify Token ก่อนทดสอบ', 'warning');
+                $this->redirect('admin/settings');
+                return;
+            }
+
+            $message = "\n🔔 ทดสอบการเชื่อมต่อระบบแจ้งเตือน\nโรงพยาบาลปลวกแดง\nเวลา: " . date('d/m/Y H:i:s');
+            
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'https://notify-api.line.me/api/notify');
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, 'message=' . urlencode($message));
+            $headers = [
+                'Content-type: application/x-www-form-urlencoded',
+                'Authorization: Bearer ' . $token,
+            ];
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $result = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            if ($httpCode === 200) {
+                $this->setFlash('settings_success', 'ส่งข้อความทดสอบเข้า LINE Notify สำเร็จแล้ว!');
+            } else {
+                $this->setFlash('settings_warning', 'การส่งข้อความล้มเหลว ตรวจสอบ Token ของท่าน (HTTP ' . $httpCode . ')', 'warning');
+            }
+
+            $this->redirect('admin/settings');
+        }
     }
 
     public function updateCategories() {
@@ -58,6 +164,7 @@ class SettingsController extends Controller {
             $this->db->bind(':val', $categoriesJson);
             $this->db->execute();
 
+            $this->setFlash('settings_success', 'บันทึกหมวดหมู่ข่าวสารเรียบร้อยแล้ว');
             $this->redirect('admin/settings');
         }
     }

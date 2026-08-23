@@ -43,9 +43,8 @@
             </div>
 
             <div class="mb-3">
-                <label for="content" class="form-label fw-bold">เนื้อหาข่าว <span class="text-danger">*</span></label>
-                <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
-                <div class="form-text">คุณสามารถใส่ HTML ได้ (ในอนาคตสามารถติดตั้ง CKEditor หรือ TinyMCE ได้)</div>
+                <label for="content" class="form-label fw-bold">เนื้อหาข่าว & บทความ <span class="text-danger">*</span></label>
+                <textarea class="form-control tinymce-editor" id="content" name="content" rows="12"></textarea>
             </div>
             
             <div class="row mb-4">

@@ -5,12 +5,13 @@ class Controller {
     
     // Load model
     public function model($model) {
-        // Require model file
-        require_once '../app/Models/' . $model . '.php';
-        
-        // Instantiate model
-        $modelClass = 'App\\Models\\' . $model;
-        return new $modelClass();
+        $modelPath = '../app/Models/' . $model . '.php';
+        if (file_exists($modelPath)) {
+            require_once $modelPath;
+            $modelClass = 'App\\Models\\' . $model;
+            return new $modelClass();
+        }
+        return null;
     }
 
     // Load view
@@ -29,13 +30,74 @@ class Controller {
             }
         } else {
             // View does not exist
-            die('View does not exist');
+            http_response_code(404);
+            die("View '{$view}' does not exist");
         }
+    }
+
+    // Return JSON response for REST APIs
+    public function json($data, $status = 200) {
+        http_response_code($status);
+        header('Content-Type: application/json; charset=utf-8');
+        header('Access-Control-Allow-Origin: *');
+        echo json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        exit;
+    }
+
+    // Set flash message
+    public function setFlash($name, $message, $type = 'success') {
+        if (!isset($_SESSION['flash'])) {
+            $_SESSION['flash'] = [];
+        }
+        $_SESSION['flash'][$name] = [
+            'message' => $message,
+            'type' => $type
+        ];
+    }
+
+    // Get and clear flash message
+    public function getFlash($name) {
+        if (isset($_SESSION['flash'][$name])) {
+            $flash = $_SESSION['flash'][$name];
+            unset($_SESSION['flash'][$name]);
+            return $flash;
+        }
+        return null;
+    }
+
+    // Check request method
+    public function isPost() {
+        return $_SERVER['REQUEST_METHOD'] === 'POST';
+    }
+
+    public function isGet() {
+        return $_SERVER['REQUEST_METHOD'] === 'GET';
+    }
+
+    public function isAjax() {
+        return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 
+               strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+    }
+
+    // Get POST data
+    public function getPost($key = null, $default = null) {
+        if ($key === null) {
+            return $_POST;
+        }
+        return $_POST[$key] ?? $default;
+    }
+
+    // Get GET / Query data
+    public function getQuery($key = null, $default = null) {
+        if ($key === null) {
+            return $_GET;
+        }
+        return $_GET[$key] ?? $default;
     }
 
     // Redirect
     public function redirect($url) {
-        header('Location: ' . URLROOT . '/' . $url);
+        header('Location: ' . URLROOT . '/' . ltrim($url, '/'));
         exit;
     }
 }

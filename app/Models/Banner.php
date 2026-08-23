@@ -54,6 +54,54 @@ class Banner extends Model {
         return $this->db->execute();
     }
 
+    public function toggleStatus($id) {
+        $banner = $this->getById($id);
+        if ($banner) {
+            $newStatus = ($banner->status === 'active') ? 'inactive' : 'active';
+            $this->db->query('UPDATE banners SET status = :status WHERE id = :id');
+            $this->db->bind(':status', $newStatus);
+            $this->db->bind(':id', $id);
+            return $this->db->execute();
+        }
+        return false;
+    }
+
+    public function moveOrder($id, $direction = 'up') {
+        $banner = $this->getById($id);
+        if (!$banner) return false;
+
+        $currentOrder = (int)$banner->sort_order;
+        if ($direction === 'up') {
+            $this->db->query('SELECT * FROM banners WHERE sort_order < :ord ORDER BY sort_order DESC LIMIT 1');
+            $this->db->bind(':ord', $currentOrder);
+            $swapBanner = $this->db->single();
+        } else {
+            $this->db->query('SELECT * FROM banners WHERE sort_order > :ord ORDER BY sort_order ASC LIMIT 1');
+            $this->db->bind(':ord', $currentOrder);
+            $swapBanner = $this->db->single();
+        }
+
+        if ($swapBanner) {
+            $newOrder = $swapBanner->sort_order;
+            $this->db->query('UPDATE banners SET sort_order = :ord WHERE id = :id');
+            $this->db->bind(':ord', $newOrder);
+            $this->db->bind(':id', $banner->id);
+            $this->db->execute();
+
+            $this->db->query('UPDATE banners SET sort_order = :ord WHERE id = :id');
+            $this->db->bind(':ord', $currentOrder);
+            $this->db->bind(':id', $swapBanner->id);
+            $this->db->execute();
+        } else {
+            $newOrder = ($direction === 'up') ? max(0, $currentOrder - 1) : $currentOrder + 1;
+            $this->db->query('UPDATE banners SET sort_order = :ord WHERE id = :id');
+            $this->db->bind(':ord', $newOrder);
+            $this->db->bind(':id', $banner->id);
+            $this->db->execute();
+        }
+        return true;
+    }
+
     public function delete($id) {
         $this->db->query('DELETE FROM banners WHERE id = :id');
         $this->db->bind(':id', $id);

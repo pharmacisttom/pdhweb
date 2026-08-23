@@ -1,237 +1,286 @@
-<style>
-/* Scoped styles for the home page hero */
-.hero-section {
-    background: linear-gradient(135deg, #0f172a, #1e293b), url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
-    background-size: cover;
-    background-position: center;
-    background-blend-mode: overlay;
-    color: white;
-    padding: 120px 0;
-    text-align: center;
-    margin-top: -76px; /* Offset for navbar if needed, or just leave it */
-}
-
-.hero-section h1 {
-    font-size: 3.5rem;
-    font-weight: 800;
-    letter-spacing: -1px;
-}
-
-.quick-service-card {
-    transition: all 0.3s ease;
-    border-radius: 16px;
-    border: none;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-}
-
-.quick-service-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-}
-
-.quick-service-icon {
-    width: 80px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    margin: 0 auto 20px;
-}
-</style>
-
-<?php if(isset($banners) && !empty($banners)): ?>
-    <div id="heroCarousel" class="carousel slide mb-5" style="margin-top: -76px;" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <?php foreach($banners as $index => $banner): ?>
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="<?= $index ?>" class="<?= $index === 0 ? 'active' : '' ?>" aria-current="<?= $index === 0 ? 'true' : 'false' ?>" aria-label="Slide <?= $index + 1 ?>"></button>
-            <?php endforeach; ?>
-        </div>
-        <div class="carousel-inner">
-            <?php foreach($banners as $index => $banner): ?>
-                <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
-                    <?php if(!empty($banner->link)): ?>
-                        <a href="<?= htmlspecialchars($banner->link) ?>" class="d-block w-100">
-                    <?php endif; ?>
-                    
-                    <div style="height: 600px; width: 100%; background: url('<?= URLROOT ?>/assets/images/banners/<?= $banner->image_file ?>') center/cover no-repeat;">
+<!-- Hero Banner Carousel Section -->
+<section class="hero-wrapper">
+    <div class="container">
+        <?php if(!empty($banners)): ?>
+            <div class="hero-carousel-container mb-4">
+                <div id="heroCarousel" class="carousel slide <?= ($slider_transition === 'fade') ? 'carousel-fade' : '' ?>" data-bs-ride="carousel" data-bs-interval="<?= htmlspecialchars($slider_interval ?? '5000') ?>">
+                    <!-- Indicators -->
+                    <div class="carousel-indicators mb-3">
+                        <?php foreach($banners as $index => $banner): ?>
+                            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="<?= $index ?>" class="<?= $index === 0 ? 'active' : '' ?>" aria-current="<?= $index === 0 ? 'true' : 'false' ?>" aria-label="Slide <?= $index + 1 ?>"></button>
+                        <?php endforeach; ?>
                     </div>
-                    
-                    <?php if(!empty($banner->link)): ?>
-                        </a>
-                    <?php endif; ?>
+
+                    <!-- Slides -->
+                    <div class="carousel-inner">
+                        <?php foreach($banners as $index => $banner): ?>
+                            <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
+                                <?php if(!empty($banner->link)): ?>
+                                    <a href="<?= htmlspecialchars($banner->link) ?>" class="d-block text-decoration-none">
+                                <?php endif; ?>
+                                
+                                <div class="banner-carousel-img" style="background-image: url('<?= URLROOT ?>/assets/images/banners/<?= $banner->image_file ?>');">
+                                    <div class="banner-carousel-overlay">
+                                        <div style="max-width: 700px;">
+                                            <span class="badge bg-primary px-3 py-1 rounded-pill mb-2 fw-bold"><i class="bi bi-shield-check me-1"></i> โรงพยาบาลปลวกแดง</span>
+                                            <h2 class="text-white fw-bold display-6 mb-2"><?= htmlspecialchars($banner->title) ?></h2>
+                                            <p class="text-white-50 small mb-0 d-none d-md-block">พร้อมดูแลและให้บริการทางการแพทย์ด้วยมาตรฐานและความปลอดภัยสูงสุด</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <?php if(!empty($banner->link)): ?>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <!-- Glass Arrows -->
+                    <button class="carousel-control-prev border-0 bg-transparent" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                        <div class="carousel-glass-btn">
+                            <i class="bi bi-chevron-left fs-5"></i>
+                        </div>
+                    </button>
+                    <button class="carousel-control-next border-0 bg-transparent" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                        <div class="carousel-glass-btn">
+                            <i class="bi bi-chevron-right fs-5"></i>
+                        </div>
+                    </button>
                 </div>
-            <?php endforeach; ?>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
+            </div>
+        <?php else: ?>
+            <!-- Fallback Hero Header -->
+            <div class="p-5 rounded-4 mb-4 text-white text-center" style="background: linear-gradient(135deg, #0d9488, #0f172a);">
+                <span class="section-badge mb-3 bg-white text-primary">มาตรฐานคุณภาพระดับสากล</span>
+                <h1 class="display-5 fw-bold text-white mb-3">โรงพยาบาลปลวกแดง</h1>
+                <p class="lead text-white-50 mx-auto" style="max-width: 600px;">ดูแลด้วยมาตรฐาน ใส่ใจประชาชน มุ่งมั่นพัฒนาบริการทางการแพทย์เพื่อสุขภาพที่ดีของทุกคน</p>
+            </div>
+        <?php endif; ?>
     </div>
-<?php else: ?>
-    <!-- Fallback static hero section if no banners -->
-    <div class="hero-section mb-5">
-        <div class="container mt-5">
-            <span class="badge bg-primary px-3 py-2 rounded-pill mb-4" style="font-size: 1rem; background-color: var(--primary-color) !important;">
-                <i class="bi bi-shield-check me-1"></i> มาตรฐานการแพทย์ระดับสากล
-            </span>
-            <h1 class="mb-3">โรงพยาบาลปลวกแดง</h1>
-            <p class="lead mb-5" style="max-width: 600px; margin: 0 auto; color: #cbd5e1;">
-                "ดูแลด้วยมาตรฐาน ใส่ใจประชาชน" ให้บริการทางการแพทย์อย่างครบวงจร พร้อมด้วยทีมแพทย์ผู้เชี่ยวชาญและเทคโนโลยีที่ทันสมัย
-            </p>
+</section>
+
+<!-- Fast-Track 4 Hub Cards (4 การเข้าถึงด่วน) -->
+<div class="container fast-track-wrapper">
+    <div class="row g-3 g-md-4">
+        <!-- 1. Find Doctor -->
+        <div class="col-6 col-lg-3">
+            <a href="<?= URLROOT ?>/doctors" class="fast-track-card">
+                <div class="fast-track-icon" style="background: #e0f2fe; color: #0284c7;">
+                    <i class="bi bi-person-badge"></i>
+                </div>
+                <h5 class="fast-track-title">ทำเนียบแพทย์</h5>
+                <p class="fast-track-desc">ค้นหาแพทย์ & ตารางออกตรวจ</p>
+            </a>
+        </div>
+
+        <!-- 2. Specialist Clinics -->
+        <div class="col-6 col-lg-3">
+            <a href="<?= URLROOT ?>/clinics" class="fast-track-card">
+                <div class="fast-track-icon" style="background: #f0fdfa; color: #0d9488;">
+                    <i class="bi bi-hospital"></i>
+                </div>
+                <h5 class="fast-track-title">คลินิกเฉพาะโรค</h5>
+                <p class="fast-track-desc">เบาหวาน, ความดัน, คลินิกเด็ก</p>
+            </a>
+        </div>
+
+        <!-- 3. Smart Queue -->
+        <div class="col-6 col-lg-3">
+            <a href="<?= URLROOT ?>/queue" class="fast-track-card">
+                <div class="fast-track-icon" style="background: #fef3c7; color: #d97706;">
+                    <i class="bi bi-clock-history"></i>
+                </div>
+                <h5 class="fast-track-title">ระบบคิวตรวจ</h5>
+                <p class="fast-track-desc">เช็คสถานะคิวแบบ Real-time</p>
+            </a>
+        </div>
+
+        <!-- 4. E-Donation -->
+        <div class="col-6 col-lg-3">
+            <a href="<?= URLROOT ?>/donations" class="fast-track-card">
+                <div class="fast-track-icon" style="background: #ffe4e6; color: #e11d48;">
+                    <i class="bi bi-heart-pulse"></i>
+                </div>
+                <h5 class="fast-track-title">ร่วมบริจาค</h5>
+                <p class="fast-track-desc">สมทบทุนจัดซื้อเครื่องมือแพทย์</p>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Medical Services Overview Section -->
+<section class="py-4 mb-5">
+    <div class="container">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
             <div>
-                <a href="<?= URLROOT ?>/service" class="btn btn-primary btn-lg px-5 py-3 me-sm-3 mb-3 mb-sm-0 fw-bold" style="border-radius: 50px;">
-                    ดูบริการของเรา
-                </a>
-                <a href="<?= URLROOT ?>/doctor" class="btn btn-outline-light btn-lg px-5 py-3 fw-bold" style="border-radius: 50px;">
-                    ทำเนียบแพทย์
-                </a>
+                <span class="section-badge mb-2"><i class="bi bi-heart-pulse-fill me-1"></i> บริการทางการแพทย์</span>
+                <h2 class="section-title mb-0">บริการและการรักษาพยาบาล</h2>
+            </div>
+            <a href="<?= URLROOT ?>/clinics" class="btn btn-modern-outline mt-3 mt-md-0">
+                ดูบริการทั้งหมด <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="glass-card p-4 text-center h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="p-3 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="background: #e0f2fe; color: #0284c7; width: 64px; height: 64px;">
+                            <i class="bi bi-hospital fs-2"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">แผนกผู้ป่วยนอก (OPD)</h5>
+                        <p class="text-muted small">บริการตรวจรักษาโรคทั่วไปโดยแพทย์ผู้เชี่ยวชาญ พร้อมระบบนัดหมาย</p>
+                    </div>
+                    <a href="<?= URLROOT ?>/clinics" class="text-primary text-decoration-none fw-bold small">ดูรายละเอียด &rarr;</a>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="glass-card p-4 text-center h-100 d-flex flex-column justify-content-between" style="border-color: rgba(239, 68, 68, 0.3);">
+                    <div>
+                        <div class="p-3 rounded-circle d-inline-flex align-items-center justify-content-center mb-3 bg-danger bg-opacity-10 text-danger" style="width: 64px; height: 64px;">
+                            <i class="bi bi-ambulance fs-2"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2 text-danger">อุบัติเหตุ-ฉุกเฉิน (ER)</h5>
+                        <p class="text-muted small">บริการดูแลรักษาผู้ป่วยภาวะฉุกเฉินตลอด 24 ชั่วโมง โดยทีมกู้ชีพระดับสูง</p>
+                    </div>
+                    <a href="tel:1669" class="text-danger text-decoration-none fw-bold small">โทรฉุกเฉิน 1669 &rarr;</a>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="glass-card p-4 text-center h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="p-3 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="background: #f0fdfa; color: #0d9488; width: 64px; height: 64px;">
+                            <i class="bi bi-heart-pulse fs-2"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">คลินิกทันตกรรม</h5>
+                        <p class="text-muted small">บริการดูแลสุขภาพช่องปาก อุดฟัน ถอนฟัน ขูดหินปูน และรักษารากฟัน</p>
+                    </div>
+                    <a href="<?= URLROOT ?>/clinics" class="text-primary text-decoration-none fw-bold small">ดูรายละเอียด &rarr;</a>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="glass-card p-4 text-center h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="p-3 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="background: #fef3c7; color: #d97706; width: 64px; height: 64px;">
+                            <i class="bi bi-capsule fs-2"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">เภสัชกรรม & จ่ายยา</h5>
+                        <p class="text-muted small">บริการจ่ายยา ให้คำปรึกษาการใช้ยาอย่างปลอดภัยโดยเภสัชกรวิชาชีพ</p>
+                    </div>
+                    <a href="<?= URLROOT ?>/services" class="text-primary text-decoration-none fw-bold small">ดูรายละเอียด &rarr;</a>
+                </div>
             </div>
         </div>
     </div>
-<?php endif; ?>
+</section>
 
-<div class="container mb-5" style="margin-top: -60px; position: relative; z-index: 10;">
-    <div class="row g-4 justify-content-center">
-        <!-- Quick Service Cards -->
-        <div class="col-6 col-md-3">
-            <a href="<?= URLROOT ?>/doctor" class="text-decoration-none">
-                <div class="card quick-service-card h-100 py-4 text-center">
-                    <div class="quick-service-icon" style="background-color: #ccfbf1;">
-                        <i class="bi bi-person-badge display-5" style="color: #0d9488;"></i>
+<!-- Smart Hospital Queue & Kiosk Banner -->
+<section class="py-3 mb-5">
+    <div class="container">
+        <div class="glass-card p-4 p-md-5 position-relative overflow-hidden" style="background: linear-gradient(135deg, #0f172a, #134e4a); color: #ffffff;">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-8">
+                    <span class="badge bg-warning text-dark px-3 py-1 rounded-pill fw-bold mb-3">
+                        <i class="bi bi-cpu-fill me-1"></i> AI & Smart Hospital System
+                    </span>
+                    <h2 class="fw-bold text-white mb-2">ระบบคิวอัจฉริยะ & E-Kiosk ดิจิทัล</h2>
+                    <p class="text-white-50 mb-4" style="max-width: 600px;">
+                        ท่านสามารถกดรับบัตรคิวออนไลน์ผ่านมือถือ ตรวจสอบเวลารอพบแพทย์โดยประมาณ หรือเปิดจอดิจิทัลเรียกคิวออกจอทีวีได้ทันที
+                    </p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="<?= URLROOT ?>/appointment" class="btn btn-warning py-2 px-4 rounded-pill fw-bold text-dark">
+                            <i class="bi bi-calendar-check-fill me-1"></i> จองคิวนัดหมาย (ปฏิทิน)
+                        </a>
+                        <a href="<?= URLROOT ?>/queue/kiosk" class="btn btn-outline-light py-2 px-4 rounded-pill">
+                            <i class="bi bi-ticket-perforated-fill me-1"></i> ตู้คิว Kiosk ออนไลน์
+                        </a>
+                        <a href="<?= URLROOT ?>/queue/display/1" target="_blank" class="btn btn-outline-light py-2 px-4 rounded-pill">
+                            <i class="bi bi-tv me-1"></i> จอทีวีแสดงผลคิว
+                        </a>
                     </div>
-                    <h5 class="card-title text-dark fw-bold mb-0">ค้นหาแพทย์</h5>
-                    <p class="text-muted small mt-2 mb-0">ดูตารางออกตรวจ</p>
                 </div>
-            </a>
-        </div>
-        <div class="col-6 col-md-3">
-            <a href="<?= URLROOT ?>/clinic" class="text-decoration-none">
-                <div class="card quick-service-card h-100 py-4 text-center">
-                    <div class="quick-service-icon" style="background-color: #e0f2fe;">
-                        <i class="bi bi-hospital display-5" style="color: #0369a1;"></i>
+                <div class="col-lg-4 text-center d-none d-lg-block">
+                    <div class="p-4 rounded-4 bg-white bg-opacity-10 border border-white border-opacity-20 d-inline-block shadow-lg">
+                        <i class="bi bi-broadcast display-1 text-warning"></i>
+                        <h6 class="text-white mt-2 mb-0">Live Real-time Queue</h6>
                     </div>
-                    <h5 class="card-title text-dark fw-bold mb-0">คลินิกเฉพาะโรค</h5>
-                    <p class="text-muted small mt-2 mb-0">คลินิกเบาหวาน, ความดัน, ฯลฯ</p>
                 </div>
-            </a>
-        </div>
-        <div class="col-6 col-md-3">
-            <a href="<?= URLROOT ?>/department" class="text-decoration-none">
-                <div class="card quick-service-card h-100 py-4 text-center">
-                    <div class="quick-service-icon" style="background-color: #fef3c7;">
-                        <i class="bi bi-diagram-3 display-5" style="color: #d97706;"></i>
-                    </div>
-                    <h5 class="card-title text-dark fw-bold mb-0">กลุ่มงานและฝ่าย</h5>
-                    <p class="text-muted small mt-2 mb-0">ติดต่อหน่วยงานภายใน</p>
-                </div>
-            </a>
-        </div>
-        <div class="col-6 col-md-3">
-            <a href="<?= URLROOT ?>/donation" class="text-decoration-none">
-                <div class="card quick-service-card h-100 py-4 text-center">
-                    <div class="quick-service-icon" style="background-color: #fee2e2;">
-                        <i class="bi bi-box2-heart display-5" style="color: #ef4444;"></i>
-                    </div>
-                    <h5 class="card-title text-dark fw-bold mb-0">ร่วมบริจาค</h5>
-                    <p class="text-muted small mt-2 mb-0">บริจาคเงินและอุปกรณ์</p>
-                </div>
-            </a>
+            </div>
         </div>
     </div>
-</div>
+</section>
 
-<div class="container mb-5 pb-5">
-    <?php if(!empty($newsByCategory)): ?>
-        <?php foreach($newsByCategory as $catSlug => $category): ?>
-            <?php if(!empty($category['items'])): ?>
-                <div class="d-flex justify-content-between align-items-center mb-4 mt-5">
-                    <h2 class="fw-bold text-dark mb-0"><?= htmlspecialchars($category['name']) ?> <span style="color: var(--primary-color);">.</span></h2>
-                    <a href="<?= URLROOT ?>/news?category=<?= $catSlug ?>" class="btn btn-outline-primary rounded-pill px-4">ดูทั้งหมด <i class="bi bi-arrow-right ms-1"></i></a>
-                </div>
-                
-                <div class="row g-4 mb-4">
-                    <?php foreach($category['items'] as $news): ?>
-                    <div class="col-md-4">
-                        <div class="card h-100 quick-service-card overflow-hidden">
-                            <a href="<?= URLROOT ?>/news/show/<?= $news->slug ?>" class="d-block text-decoration-none">
-                                <?php if(!empty($news->pdf_file) && ($news->cover_image == 'default-news.jpg' || empty($news->cover_image))): ?>
-                                    <!-- Use PDF.js to render first page as thumbnail -->
-                                    <div class="pdf-thumbnail-container bg-light d-flex align-items-center justify-content-center" style="height: 200px; overflow: hidden;" data-pdf-url="<?= URLROOT ?>/assets/docs/news/<?= htmlspecialchars($news->pdf_file) ?>">
-                                        <canvas class="pdf-canvas w-100" style="object-fit: cover;"></canvas>
+<!-- Latest News Section with Dynamic Tabs -->
+<section class="py-4 mb-5">
+    <div class="container">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
+            <div>
+                <span class="section-badge mb-2"><i class="bi bi-newspaper me-1"></i> ข่าวสาร & ประชาสัมพันธ์</span>
+                <h2 class="section-title mb-0">ข่าวสารและกิจกรรมล่าสุด</h2>
+            </div>
+            <a href="<?= URLROOT ?>/news" class="btn btn-modern-outline mt-3 mt-md-0">
+                ดูข่าวทั้งหมด <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+        <?php if(!empty($newsByCategory)): ?>
+            <ul class="nav nav-pills modern-pills mb-4" id="newsTab" role="tablist">
+                <?php $i = 0; foreach($newsByCategory as $slug => $cat): ?>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link <?= $i === 0 ? 'active' : '' ?> rounded-pill px-4 py-2" id="<?= $slug ?>-tab" data-bs-toggle="pill" data-bs-target="#tab-<?= $slug ?>" type="button" role="tab">
+                            <?= htmlspecialchars($cat['name']) ?>
+                        </button>
+                    </li>
+                <?php $i++; endforeach; ?>
+            </ul>
+
+            <div class="tab-content" id="newsTabContent">
+                <?php $i = 0; foreach($newsByCategory as $slug => $cat): ?>
+                    <div class="tab-pane fade <?= $i === 0 ? 'show active' : '' ?>" id="tab-<?= $slug ?>" role="tabpanel">
+                        <div class="row g-4">
+                            <?php if(empty($cat['items'])): ?>
+                                <div class="col-12 text-center py-5 text-muted">
+                                    <i class="bi bi-inbox fs-1 d-block mb-2 text-muted"></i>
+                                    ยังไม่มีข่าวสารในหมวดหมู่นี้
+                                </div>
+                            <?php else: ?>
+                                <?php foreach($cat['items'] as $newsItem): ?>
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="glass-card h-100 overflow-hidden d-flex flex-column justify-content-between">
+                                            <div>
+                                                <div style="height: 190px; background: #0f172a; overflow: hidden;">
+                                                    <img src="<?= URLROOT ?>/assets/images/news/<?= !empty($newsItem->cover_image) ? $newsItem->cover_image : 'default-news.jpg' ?>" alt="<?= htmlspecialchars($newsItem->title) ?>" class="w-100 h-100" style="object-fit: cover; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onerror="this.src='https://placehold.co/400x200?text=PDH+News'">
+                                                </div>
+                                                <div class="p-4">
+                                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                                        <span class="badge bg-primary-light text-primary small px-2 py-1"><?= htmlspecialchars($cat['name']) ?></span>
+                                                        <small class="text-muted"><i class="bi bi-calendar3 me-1"></i><?= date('d/m/Y', strtotime($newsItem->published_at ?? $newsItem->created_at)) ?></small>
+                                                    </div>
+                                                    <h5 class="fw-bold mb-2 text-dark" style="line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                                        <?= htmlspecialchars($newsItem->title) ?>
+                                                    </h5>
+                                                    <p class="text-muted small mb-0" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                                        <?= strip_tags($newsItem->summary ?: $newsItem->content) ?>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="p-4 pt-0">
+                                                <a href="<?= URLROOT ?>/news/show/<?= $newsItem->slug ?: $newsItem->id ?>" class="btn btn-sm btn-outline-primary rounded-pill w-100">
+                                                    อ่านรายละเอียด <i class="bi bi-arrow-right ms-1"></i>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                <?php else: ?>
-                                    <img src="<?= URLROOT ?>/assets/images/news/<?= $news->cover_image ?: 'default-news.jpg' ?>" class="card-img-top" alt="<?= htmlspecialchars($news->title) ?>" style="height: 200px; object-fit: cover;">
-                                <?php endif; ?>
-                            </a>
-                            
-                            <div class="card-body p-4">
-                                <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill"><?= htmlspecialchars($category['name']) ?></span>
-                                <h5 class="card-title fw-bold">
-                                    <a href="<?= URLROOT ?>/news/show/<?= $news->slug ?>" class="text-dark text-decoration-none hover-primary">
-                                        <?= mb_strimwidth(htmlspecialchars($news->title), 0, 60, '...') ?>
-                                    </a>
-                                </h5>
-                                <p class="card-text text-muted small mt-3 mb-0">
-                                    <?= mb_strimwidth(strip_tags($news->summary), 0, 100, '...') ?>
-                                </p>
-                            </div>
-                            <div class="card-footer bg-white border-0 px-4 pb-4 pt-0 text-muted small d-flex align-items-center">
-                                <i class="bi bi-calendar3 me-2"></i> <?= date('d M Y', strtotime($news->published_at)) ?>
-                            </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold text-dark mb-0">ข่าวสารล่าสุด <span style="color: var(--primary-color);">.</span></h2>
-        </div>
-        <div class="col-12 text-center py-5">
-            <i class="bi bi-newspaper display-1 text-muted mb-3 d-block"></i>
-            <p class="text-muted">ยังไม่มีข่าวสารในขณะนี้</p>
-        </div>
-    <?php endif; ?>
-</div>
-
-<!-- PDF.js for rendering PDF thumbnails -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        if (typeof pdfjsLib !== 'undefined') {
-            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
-            
-            const pdfContainers = document.querySelectorAll('.pdf-thumbnail-container');
-            
-            pdfContainers.forEach(container => {
-                const url = container.dataset.pdfUrl;
-                const canvas = container.querySelector('canvas');
-                const ctx = canvas.getContext('2d');
-                
-                pdfjsLib.getDocument(url).promise.then(function(pdf) {
-                    return pdf.getPage(1);
-                }).then(function(page) {
-                    const viewport = page.getViewport({scale: 1.5});
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
-                    
-                    const renderContext = {
-                        canvasContext: ctx,
-                        viewport: viewport
-                    };
-                    page.render(renderContext);
-                }).catch(function(error) {
-                    console.error('Error rendering PDF thumbnail:', error);
-                    // Fallback icon if PDF fails to render
-                    container.innerHTML = '<i class="bi bi-file-earmark-pdf text-danger" style="font-size: 5rem;"></i>';
-                });
-            });
-        }
-    });
-</script>
+                <?php $i++; endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
+</section>

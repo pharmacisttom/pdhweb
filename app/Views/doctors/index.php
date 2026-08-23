@@ -1,98 +1,96 @@
-<style>
-/* Scoped styles for Doctors Directory */
-.hero-header {
-    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
-    color: white;
-    padding: 80px 0;
-    text-align: center;
-    margin-top: -76px; /* Offset for navbar */
-    margin-bottom: 40px;
-}
-
-.doctor-card {
-    border: none;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,.05), 0 2px 4px -1px rgba(0,0,0,.03);
-    transition: all 0.3s ease;
-}
-
-.doctor-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 25px -5px rgba(0,0,0,.1), 0 10px 10px -5px rgba(0,0,0,.04);
-}
-
-.doctor-avatar-wrapper {
-    width: 140px;
-    height: 140px;
-    margin: -70px auto 20px;
-    border-radius: 50%;
-    background: white;
-    padding: 6px;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,.1);
-}
-
-.doctor-avatar {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-    background-color: var(--bg-color);
-}
-</style>
-
-<div class="hero-header">
-    <div class="container mt-5">
-        <h1 class="display-5 fw-bold mb-3">ทำเนียบแพทย์</h1>
-        <p class="lead mb-0 text-white-50">ทีมแพทย์ผู้เชี่ยวชาญของโรงพยาบาลปลวกแดง พร้อมให้การดูแลท่าน</p>
+<!-- Doctor Directory Header -->
+<div class="hero-wrapper py-5 mb-4 text-center">
+    <div class="container">
+        <div class="section-badge mb-3"><i class="bi bi-people-fill text-primary"></i> Medical Specialists</div>
+        <h1 class="hero-title mb-2">ทำเนียบแพทย์ & ผู้เชี่ยวชาญ</h1>
+        <p class="hero-subtitle mx-auto" style="max-width: 600px;">
+            ทีมแพทย์ผู้เชี่ยวชาญหลากหลายสาขาของโรงพยาบาลปลวกแดง พร้อมให้คำปรึกษาและรักษาด้วยมาตรฐานระดับสูง
+        </p>
     </div>
 </div>
 
 <div class="container mb-5 pb-5">
-    <!-- Filter (Optional, can be added later) -->
-    <div class="row mb-5 justify-content-center mt-4">
-        <div class="col-md-8 col-lg-6 text-center">
-            <div class="input-group input-group-lg shadow-sm" style="border-radius: 50px; overflow: hidden;">
-                <input type="text" class="form-control border-0 px-4" placeholder="ค้นหาชื่อแพทย์ หรือ ความเชี่ยวชาญ...">
-                <button class="btn btn-primary px-4" type="button"><i class="bi bi-search"></i> ค้นหา</button>
+    <!-- Live Search & Filter Bar -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-8">
+            <div class="glass-card p-3 shadow-md">
+                <div class="row g-2">
+                    <div class="col-md-7">
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent border-0 text-muted ps-3">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input type="text" id="doctorSearchInput" class="form-control border-0 shadow-none ps-2" placeholder="ค้นหาด้วยชื่อแพทย์ หรือสาขาความเชี่ยวชาญ...">
+                        </div>
+                    </div>
+                    <div class="col-md-5 d-flex gap-2">
+                        <select id="specialtyFilter" class="form-select border-0 bg-light rounded-pill shadow-none">
+                            <option value="">ทุกสาขาความเชี่ยวชาญ</option>
+                            <option value="อายุรกรรม">อายุรกรรม</option>
+                            <option value="ศัลยกรรม">ศัลยกรรม</option>
+                            <option value="กุมารเวชกรรม">กุมารเวชกรรม (เด็ก)</option>
+                            <option value="สูตินรีเวชกรรม">สูตินรีเวชกรรม</option>
+                            <option value="ออร์โธปิดิกส์">กระดูกและข้อ (ออร์โธปิดิกส์)</option>
+                            <option value="ทันตกรรม">ทันตกรรม</option>
+                            <option value="เวชศาสตร์ครอบครัว">เวชศาสตร์ครอบครัว</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="row g-4 mt-5">
+    <!-- Doctor Cards Grid -->
+    <div class="row g-4" id="doctorCardsContainer">
         <?php if(empty($doctors)): ?>
             <div class="col-12 text-center py-5">
-                <i class="bi bi-person-x display-1 text-muted mb-3 d-block"></i>
-                <p class="text-muted fs-5">ยังไม่มีข้อมูลแพทย์ในระบบ</p>
+                <div class="p-4 bg-white rounded-4 shadow-sm d-inline-block">
+                    <i class="bi bi-person-x display-4 text-muted mb-3 d-block"></i>
+                    <h5 class="text-muted mb-0">ยังไม่มีข้อมูลแพทย์ในระบบ</h5>
+                </div>
             </div>
         <?php else: ?>
             <?php foreach($doctors as $doctor): ?>
-                <div class="col-md-6 col-lg-3 mt-5 pt-3">
-                    <div class="card doctor-card h-100 text-center">
-                        <div class="doctor-avatar-wrapper">
+                <div class="col-md-6 col-lg-3 doctor-item" data-name="<?= htmlspecialchars($doctor->firstname . ' ' . $doctor->lastname) ?>" data-specialty="<?= htmlspecialchars($doctor->specialty ?? '') ?>">
+                    <div class="doctor-card">
+                        <div class="doctor-img-wrap">
                             <?php if(!empty($doctor->profile_image) && $doctor->profile_image != 'default-doctor.jpg'): ?>
-                                <img src="<?= URLROOT ?>/assets/images/doctors/<?= $doctor->profile_image ?>" alt="Doctor" class="doctor-avatar">
+                                <img src="<?= URLROOT ?>/assets/images/doctors/<?= $doctor->profile_image ?>" alt="<?= htmlspecialchars($doctor->firstname) ?>" onerror="this.src='https://placehold.co/400x500?text=Doctor'">
                             <?php else: ?>
-                                <div class="doctor-avatar d-flex justify-content-center align-items-center">
-                                    <i class="bi bi-person-fill text-secondary" style="font-size: 4rem;"></i>
+                                <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-light text-secondary">
+                                    <i class="bi bi-person-circle display-1 opacity-25"></i>
                                 </div>
                             <?php endif; ?>
+                            
+                            <div class="doctor-status-badge">
+                                <span class="pulse-dot"></span> พร้อมให้บริการ
+                            </div>
                         </div>
-                        
-                        <div class="card-body px-4 pb-4 pt-0">
-                            <h5 class="card-title fw-bold text-dark mb-1"><?= $doctor->prefix ?><?= $doctor->firstname ?> <?= $doctor->lastname ?></h5>
-                            <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 my-2 fs-6 fw-medium">
-                                <?= $doctor->specialty ?>
+
+                        <div class="p-4 d-flex flex-column flex-grow-1">
+                            <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-1 fw-semibold small align-self-start mb-2">
+                                <?= htmlspecialchars($doctor->specialty ?: 'แพทย์ทั่วไป') ?>
                             </span>
+
+                            <h5 class="fw-bold text-dark mb-1">
+                                <?= htmlspecialchars($doctor->prefix) ?><?= htmlspecialchars($doctor->firstname) ?> <?= htmlspecialchars($doctor->lastname) ?>
+                            </h5>
                             
-                            <p class="card-text text-muted small mt-2 mb-0"><?= $doctor->position ?></p>
-                            
+                            <p class="text-muted small mb-3">
+                                <?= htmlspecialchars($doctor->position ?: 'แพทย์ประจำโรงพยาบาล') ?>
+                            </p>
+
                             <?php if(!empty($doctor->biography)): ?>
-                                <hr class="my-3 mx-4 opacity-25">
-                                <p class="card-text text-muted small text-start px-2 mb-0" style="line-height: 1.6;">
-                                    <i class="bi bi-quote fs-5 text-secondary opacity-50"></i>
-                                    <?= mb_strimwidth($doctor->biography, 0, 100, '...') ?>
+                                <p class="text-muted small mb-3 flex-grow-1" style="font-size: 0.82rem; line-height: 1.5;">
+                                    <?= mb_strimwidth(htmlspecialchars($doctor->biography), 0, 80, '...') ?>
                                 </p>
                             <?php endif; ?>
+
+                            <div class="pt-3 border-top mt-auto">
+                                <a href="<?= URLROOT ?>/clinic" class="btn btn-sm btn-modern-outline w-100 justify-content-center">
+                                    <i class="bi bi-calendar-event"></i> ดูตารางออกตรวจ
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -100,3 +98,34 @@
         <?php endif; ?>
     </div>
 </div>
+
+<!-- Client-side Fast Live Search Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('doctorSearchInput');
+    const specialtyFilter = document.getElementById('specialtyFilter');
+    const items = document.querySelectorAll('.doctor-item');
+
+    function filterDoctors() {
+        const query = searchInput.value.toLowerCase().trim();
+        const spec = specialtyFilter.value.toLowerCase().trim();
+
+        items.forEach(item => {
+            const name = (item.dataset.name || '').toLowerCase();
+            const specialty = (item.dataset.specialty || '').toLowerCase();
+
+            const matchesQuery = !query || name.includes(query) || specialty.includes(query);
+            const matchesSpec = !spec || specialty.includes(spec);
+
+            if (matchesQuery && matchesSpec) {
+                item.style.display = '';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    if (searchInput) searchInput.addEventListener('input', filterDoctors);
+    if (specialtyFilter) specialtyFilter.addEventListener('change', filterDoctors);
+});
+</script>

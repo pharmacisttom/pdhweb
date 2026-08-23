@@ -28,13 +28,23 @@ class HomeController extends Controller {
             ];
         }
         
+        // Fetch slider settings
+        $db->query("SELECT setting_key, setting_value FROM settings WHERE setting_key IN ('banner_slider_interval', 'banner_transition_effect')");
+        $sliderRows = $db->resultSet();
+        $sliderSettings = [];
+        foreach ($sliderRows as $sr) {
+            $sliderSettings[$sr->setting_key] = $sr->setting_value;
+        }
+
         // Fetch active banners
         $banners = $this->bannerModel->getActive();
 
         $data = [
             'page_title' => 'หน้าแรก',
             'newsByCategory' => $newsByCategory,
-            'banners' => $banners
+            'banners' => $banners,
+            'slider_interval' => $sliderSettings['banner_slider_interval'] ?? '5000',
+            'slider_transition' => $sliderSettings['banner_transition_effect'] ?? 'fade'
         ];
         
         $this->view('home/index', $data);
