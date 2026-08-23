@@ -27,6 +27,7 @@ if (file_exists($envFilePath)) {
 // Define some constants for easy access
 define('APP_URL', $_ENV['APP_URL'] ?? 'http://localhost/pdhweb');
 define('APP_NAME', $_ENV['APP_NAME'] ?? 'PDH Web');
+define('APP_ENV', $_ENV['APP_ENV'] ?? 'development');
 
 // Database configuration
 define('DB_HOST', $_ENV['DB_HOST'] ?? 'localhost');
