@@ -145,8 +145,11 @@ $router->post('/admin/donationitem/delete/{id}', 'Admin\DonationItemController@d
 $router->get('/admin/donation', 'Admin\DonationController@index');
 $router->get('/admin/donations', 'Admin\DonationController@index');
 $router->get('/admin/donation/show/{id}', 'Admin\DonationController@show');
+$router->get('/admin/donation/edit/{id}', 'Admin\DonationController@edit');
+$router->post('/admin/donation/update/{id}', 'Admin\DonationController@update');
 $router->post('/admin/donation/updateStatus/{id}', 'Admin\DonationController@updateStatus');
 $router->post('/admin/donation/delete/{id}', 'Admin\DonationController@delete');
+
 
 // 8. Procurements (จัดซื้อจัดจ้าง)
 $router->get('/admin/procurement', 'Admin\ProcurementController@index');

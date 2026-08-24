@@ -61,6 +61,41 @@ class Donation extends Model {
         return $this->db->execute();
     }
 
+    public function update($data) {
+        $sql = 'UPDATE donations SET 
+            donation_item_id = :donation_item_id,
+            donor_name = :donor_name,
+            donor_email = :donor_email,
+            donor_phone = :donor_phone,
+            amount = :amount,
+            quantity = :quantity,
+            status = :status,
+            admin_note = :admin_note';
+        
+        if (!empty($data['payment_slip_image'])) {
+            $sql .= ', payment_slip_image = :payment_slip_image';
+        }
+        
+        $sql .= ' WHERE id = :id';
+        
+        $this->db->query($sql);
+        $this->db->bind(':id', $data['id']);
+        $this->db->bind(':donation_item_id', $data['donation_item_id']);
+        $this->db->bind(':donor_name', $data['donor_name']);
+        $this->db->bind(':donor_email', $data['donor_email'] ?? null);
+        $this->db->bind(':donor_phone', $data['donor_phone'] ?? null);
+        $this->db->bind(':amount', empty($data['amount']) ? null : $data['amount']);
+        $this->db->bind(':quantity', empty($data['quantity']) ? null : $data['quantity']);
+        $this->db->bind(':status', $data['status']);
+        $this->db->bind(':admin_note', $data['admin_note'] ?? null);
+        
+        if (!empty($data['payment_slip_image'])) {
+            $this->db->bind(':payment_slip_image', $data['payment_slip_image']);
+        }
+        
+        return $this->db->execute();
+    }
+
     public function updateStatus($id, $status, $adminNote = null) {
         $this->db->query('UPDATE donations SET status = :status, admin_note = :admin_note, approved_by = :approved_by WHERE id = :id');
         $this->db->bind(':id', $id);

@@ -1,11 +1,13 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h3 class="fw-bold text-dark mb-1"><?= $page_title ?></h3>
-        <p class="text-muted small mb-0">ตรวจสอบสลิปหลักฐานการโอนเงินและอนุมัติรายนามผู้บริจาค แคมเปญการให้ไม่มีสิ้นสุด</p>
+        <p class="text-muted small mb-0">ตรวจสอบสลิปหลักฐานการโอนเงิน อนุมัติ แก้ไข และจัดการข้อมูลผู้ร่วมบริจาค</p>
     </div>
-    <a href="<?= URLROOT ?>/admin/donationitem" class="btn btn-outline-primary rounded-3">
-        <i class="bi bi-box2-heart me-1"></i> จัดการโครงการรับบริจาค
-    </a>
+    <div class="d-flex gap-2">
+        <a href="<?= URLROOT ?>/admin/donationitem" class="btn btn-outline-primary rounded-3">
+            <i class="bi bi-box2-heart me-1"></i> จัดการโครงการรับบริจาค
+        </a>
+    </div>
 </div>
 
 <div class="card shadow-sm border-0 rounded-4 overflow-hidden bg-white">
@@ -15,12 +17,12 @@
                 <thead class="table-light">
                     <tr>
                         <th width="5%" class="ps-4">ID</th>
-                        <th width="25%">ชื่อผู้บริจาค</th>
-                        <th width="25%">โครงการที่บริจาค</th>
-                        <th width="15%">ยอดเงินบริจาค</th>
-                        <th width="12%">วันที่บริจาค</th>
+                        <th width="24%">ชื่อผู้บริจาค</th>
+                        <th width="24%">โครงการที่บริจาค</th>
+                        <th width="14%">ยอดเงินบริจาค</th>
+                        <th width="13%">วันที่บริจาค</th>
                         <th width="10%">สถานะ</th>
-                        <th width="8%" class="text-center pe-4">ตรวจสอบ</th>
+                        <th width="10%" class="text-center pe-4">จัดการ</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,7 +45,7 @@
                                 <div class="fw-medium text-dark small"><?= htmlspecialchars($donation->item_title) ?></div>
                             </td>
                             <td>
-                                <div class="fw-bold text-success font-monospace" style="font-size: 1rem;">
+                                <div class="fw-bold text-success font-monospace" style="font-size: 0.95rem;">
                                     <?php if (!empty($donation->amount)): ?>
                                         ฿<?= number_format($donation->amount, 2) ?>
                                     <?php elseif (!empty($donation->quantity)): ?>
@@ -59,23 +61,34 @@
                             </td>
                             <td>
                                 <?php if ($donation->status == 'pending'): ?>
-                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning border-opacity-50 rounded-pill px-3 py-2 fw-semibold">
-                                        <i class="bi bi-hourglass-split me-1"></i> รอตรวจสอบ
+                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning border-opacity-50 rounded-pill px-3 py-1 fw-semibold">
+                                        <i class="bi bi-hourglass-split me-1"></i> รอตรวจ
                                     </span>
                                 <?php elseif ($donation->status == 'approved'): ?>
-                                    <span class="badge bg-success-subtle text-success border border-success border-opacity-50 rounded-pill px-3 py-2 fw-semibold">
-                                        <i class="bi bi-check-circle-fill me-1"></i> อนุมัติแล้ว
+                                    <span class="badge bg-success-subtle text-success border border-success border-opacity-50 rounded-pill px-3 py-1 fw-semibold">
+                                        <i class="bi bi-check-circle-fill me-1"></i> อนุมัติ
                                     </span>
                                 <?php else: ?>
-                                    <span class="badge bg-danger-subtle text-danger border border-danger border-opacity-50 rounded-pill px-3 py-2 fw-semibold">
-                                        <i class="bi bi-x-circle-fill me-1"></i> ไม่อนุมัติ
+                                    <span class="badge bg-danger-subtle text-danger border border-danger border-opacity-50 rounded-pill px-3 py-1 fw-semibold">
+                                        <i class="bi bi-x-circle-fill me-1"></i> ปฏิเสธ
                                     </span>
                                 <?php endif; ?>
                             </td>
                             <td class="text-center pe-4">
-                                <a href="<?= URLROOT ?>/admin/donation/show/<?= $donation->id ?>" class="btn btn-sm btn-outline-primary rounded-3 px-3 shadow-sm" title="เปิดดูสลิปและรายละเอียด">
-                                    <i class="bi bi-search me-1"></i> ตรวจสอบ
-                                </a>
+                                <div class="d-flex justify-content-center gap-1">
+                                    <a href="<?= URLROOT ?>/admin/donation/show/<?= $donation->id ?>" class="btn btn-sm btn-outline-info rounded-3" title="ตรวจสอบสลิป">
+                                        <i class="bi bi-search"></i>
+                                    </a>
+                                    <a href="<?= URLROOT ?>/admin/donation/edit/<?= $donation->id ?>" class="btn btn-sm btn-outline-primary rounded-3" title="แก้ไขข้อมูล">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <form action="<?= URLROOT ?>/admin/donation/delete/<?= $donation->id ?>" method="POST" class="d-inline" onsubmit="return confirm('คุณต้องการลบข้อมูลการบริจาคนี้ใช่หรือไม่? (หากลบ ข้อมูลจะหายไปถาวร)');">
+                                        <?= \App\Helpers\Security::csrfField() ?>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-3" title="ลบรายการ">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         <?php endforeach; ?>

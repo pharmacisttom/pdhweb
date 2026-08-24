@@ -1,11 +1,22 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h3 class="fw-bold text-dark mb-1"><?= $page_title ?></h3>
-        <p class="text-muted small mb-0">รหัสรายการบริจาค: <strong>#<?= $donation->id ?></strong></p>
+        <p class="text-muted small mb-0">รหัสรายการบริจาค: <strong>#<?= $donation->id ?></strong> (<?= htmlspecialchars($donation->donor_name) ?>)</p>
     </div>
-    <a href="<?= URLROOT ?>/admin/donation" class="btn btn-outline-secondary rounded-3">
-        <i class="bi bi-arrow-left me-1"></i> กลับ
-    </a>
+    <div class="d-flex gap-2">
+        <a href="<?= URLROOT ?>/admin/donation/edit/<?= $donation->id ?>" class="btn btn-outline-primary rounded-3">
+            <i class="bi bi-pencil me-1"></i> แก้ไขข้อมูล
+        </a>
+        <form action="<?= URLROOT ?>/admin/donation/delete/<?= $donation->id ?>" method="POST" class="d-inline" onsubmit="return confirm('คุณต้องการลบข้อมูลการบริจาคนี้ใช่หรือไม่?');">
+            <?= \App\Helpers\Security::csrfField() ?>
+            <button type="submit" class="btn btn-outline-danger rounded-3">
+                <i class="bi bi-trash me-1"></i> ลบรายการ
+            </button>
+        </form>
+        <a href="<?= URLROOT ?>/admin/donation" class="btn btn-outline-secondary rounded-3">
+            <i class="bi bi-arrow-left me-1"></i> กลับ
+        </a>
+    </div>
 </div>
 
 <div class="row g-4">
