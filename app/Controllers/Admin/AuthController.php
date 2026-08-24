@@ -3,79 +3,85 @@
 namespace App\Controllers\Admin;
 
 use App\Core\Controller;
-use App\Core\Database;
-use PDO;
 
 class AuthController extends Controller
 {
-    public function loginForm()
-    {
-        if (isset($_SESSION['user'])) {
-            $this->redirect('/admin');
-        }
-        
-        $data = [
-            'title' => 'Admin Login | PDH Web Portal',
-        ];
-        $this->view('admin.auth.login', $data);
+    private $userModel;
+
+    public function __construct() {
+        $this->userModel = $this->model('User');
     }
 
-    public function login()
-    {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $this->redirect('/admin/login');
+    public function index() {
+        $this->login();
+    }
+
+    public function loginForm() {
+        $this->login();
+    }
+
+    public function login() {
+        if (isset($_SESSION['user_id'])) {
+            $this->redirect('admin/dashboard');
+            return;
         }
 
-        verify_csrf($_POST['csrf_token'] ?? '');
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            \App\Helpers\Security::validateCsrf();
+            $_POST = \App\Helpers\Security::xssClean($_POST);
 
-        $username = trim($_POST['username'] ?? '');
-        $password = $_POST['password'] ?? '';
-
-        if (empty($username) || empty($password)) {
-            $_SESSION['error'] = 'Username and password are required.';
-            $this->redirect('/admin/login');
-        }
-
-        $db = Database::getInstance();
-        $stmt = $db->prepare("SELECT * FROM users WHERE username = :username AND status = 'active' LIMIT 1");
-        $stmt->execute(['username' => $username]);
-        $user = $stmt->fetch();
-
-        if ($user && password_verify($password, $user['password'])) {
-            // Success
-            $_SESSION['user'] = [
-                'id' => $user['id'],
-                'username' => $user['username'],
-                'role_id' => $user['role_id'],
-                'name' => $user['first_name'] . ' ' . $user['last_name']
+            $data = [
+                'username' => trim($_POST['username'] ?? ''),
+                'password' => trim($_POST['password'] ?? ''),
+                'username_err' => '',
+                'password_err' => ''
             ];
 
-            // Log success
-            $stmtLog = $db->prepare("INSERT INTO login_logs (user_id, ip_address, browser, status) VALUES (?, ?, ?, 'success')");
-            $stmtLog->execute([$user['id'], $_SERVER['REMOTE_ADDR'] ?? '', $_SERVER['HTTP_USER_AGENT'] ?? '']);
-
-            // Update last login
-            $stmtUpd = $db->prepare("UPDATE users SET last_login = NOW() WHERE id = ?");
-            $stmtUpd->execute([$user['id']]);
-
-            $this->redirect('/admin');
-        } else {
-            // Failed
-            $_SESSION['error'] = 'Invalid username or password.';
-            
-            if ($user) {
-                $stmtLog = $db->prepare("INSERT INTO login_logs (user_id, ip_address, browser, status) VALUES (?, ?, ?, 'failed')");
-                $stmtLog->execute([$user['id'], $_SERVER['REMOTE_ADDR'] ?? '', $_SERVER['HTTP_USER_AGENT'] ?? '']);
+            if (empty($data['username'])) {
+                $data['username_err'] = 'โปรดระบุชื่อผู้ใช้งาน';
             }
-            
-            $this->redirect('/admin/login');
+            if (empty($data['password'])) {
+                $data['password_err'] = 'โปรดระบุรหัสผ่าน';
+            }
+
+            if (empty($data['username_err']) && empty($data['password_err'])) {
+                $loggedInUser = $this->userModel->login($data['username'], $data['password']);
+
+                if ($loggedInUser) {
+                    $_SESSION['user_id'] = $loggedInUser->id;
+                    $_SESSION['user_username'] = $loggedInUser->username;
+                    $_SESSION['user_firstname'] = $loggedInUser->firstname;
+                    $_SESSION['user_lastname'] = $loggedInUser->lastname;
+                    $_SESSION['user_role'] = $loggedInUser->role_id;
+                    $this->redirect('admin/dashboard');
+                    return;
+                } else {
+                    $data['password_err'] = 'รหัสผ่านไม่ถูกต้อง หรือ ไม่พบชื่อผู้ใช้งาน';
+                    $this->view('auth/login', $data, null);
+                    return;
+                }
+            } else {
+                $this->view('auth/login', $data, null);
+                return;
+            }
+        } else {
+            $data = [
+                'username' => '',
+                'password' => '',
+                'username_err' => '',
+                'password_err' => ''
+            ];
+            $this->view('auth/login', $data, null);
         }
     }
 
-    public function logout()
-    {
-        unset($_SESSION['user']);
+    public function logout() {
+        unset($_SESSION['user_id']);
+        unset($_SESSION['user_username']);
+        unset($_SESSION['user_firstname']);
+        unset($_SESSION['user_lastname']);
+        unset($_SESSION['user_role']);
         session_destroy();
-        $this->redirect('/admin/login');
+        $this->redirect('auth/login');
     }
 }

@@ -52,7 +52,13 @@ $router->get('/appointments', 'AppointmentController@index');
 $router->post('/appointment/store', 'AppointmentController@store');
 $router->get('/queue', 'QueueController@index');
 $router->get('/queue/kiosk', 'QueueController@kiosk');
-$router->get('/queue/display/{id}', 'QueueController@display');
+// Public Static Pages & Organization
+$router->get('/page/about', 'PageController@about');
+$router->get('/page/executives', 'PageController@executives');
+$router->get('/page/vision', 'PageController@vision');
+$router->get('/page/rights', 'PageController@rights');
+$router->get('/page/{slug}', 'PageController@show');
+
 
 
 // ============================================================================

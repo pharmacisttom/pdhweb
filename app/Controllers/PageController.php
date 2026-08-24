@@ -14,13 +14,18 @@ class PageController extends Controller {
     public function show($slug = '') {
         if(empty($slug)) {
             $this->redirect('');
+            return;
         }
         
         $page = $this->pageModel->getBySlug($slug);
         
         if(!$page) {
-            // Return 404 conceptually
-            die('Page not found');
+            $data = [
+                'page_title' => 'ไม่พบหน้าที่ต้องการ',
+                'slug' => $slug
+            ];
+            $this->view('pages/404', $data);
+            return;
         }
         
         $data = [
@@ -29,5 +34,21 @@ class PageController extends Controller {
         ];
         
         $this->view('pages/show', $data);
+    }
+
+    public function about() {
+        $this->show('about');
+    }
+
+    public function executives() {
+        $this->show('executives');
+    }
+
+    public function vision() {
+        $this->show('vision');
+    }
+
+    public function rights() {
+        $this->show('patient-rights');
     }
 }

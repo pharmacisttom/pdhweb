@@ -14,6 +14,13 @@ class Security {
     }
 
     /**
+     * Return hidden input HTML tag with CSRF token
+     */
+    public static function csrfField() {
+        return '<input type="hidden" name="csrf_token" value="' . self::csrfToken() . '">';
+    }
+
+    /**
      * Validate CSRF token from POST request
      */
     public static function validateCsrf() {
