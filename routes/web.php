@@ -162,6 +162,8 @@ $router->get('/admin/complaint', 'Admin\ComplaintController@index');
 $router->get('/admin/complaints', 'Admin\ComplaintController@index');
 $router->get('/admin/complaint/show/{id}', 'Admin\ComplaintController@show');
 $router->post('/admin/complaint/updateStatus/{id}', 'Admin\ComplaintController@updateStatus');
+$router->post('/admin/complaint/delete/{id}', 'Admin\ComplaintController@delete');
+
 
 // 10. Appointments & Quotas (คิวนัดหมาย)
 $router->get('/admin/appointment', 'Admin\AppointmentController@index');

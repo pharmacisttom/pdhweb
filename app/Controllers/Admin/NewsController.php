@@ -51,14 +51,13 @@ class NewsController extends Controller {
                 if (!is_dir($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
                 }
-                $fileName = time() . '_' . basename($_FILES['cover_image']['name']);
-                $targetFilePath = $uploadDir . $fileName;
-                $fileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION));
+                $origName = basename($_FILES['cover_image']['name']);
+                $fileType = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
                 $fileName = time() . '_' . substr(md5(uniqid()), 0, 8) . '.' . $fileType;
                 $targetFilePath = $uploadDir . $fileName;
                 
                 $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'webp', 'jfif');
-                if (in_array(strtolower($fileType), $allowTypes)) {
+                if (in_array($fileType, $allowTypes)) {
                     if (move_uploaded_file($_FILES['cover_image']['tmp_name'], $targetFilePath)) {
                         $cover_image = $fileName;
                     }
@@ -71,11 +70,12 @@ class NewsController extends Controller {
                 if (!is_dir($uploadPdfDir)) {
                     mkdir($uploadPdfDir, 0777, true);
                 }
-                $pdfFileName = time() . '_' . basename($_FILES['pdf_file']['name']);
+                $origPdfName = basename($_FILES['pdf_file']['name']);
+                $pdfFileType = strtolower(pathinfo($origPdfName, PATHINFO_EXTENSION));
+                $pdfFileName = time() . '_' . substr(md5(uniqid()), 0, 8) . '.' . $pdfFileType;
                 $targetPdfPath = $uploadPdfDir . $pdfFileName;
-                $pdfFileType = pathinfo($targetPdfPath, PATHINFO_EXTENSION);
                 
-                if (strtolower($pdfFileType) == 'pdf') {
+                if ($pdfFileType == 'pdf') {
                     if (move_uploaded_file($_FILES['pdf_file']['tmp_name'], $targetPdfPath)) {
                         $pdf_file = $pdfFileName;
                     }
@@ -86,7 +86,7 @@ class NewsController extends Controller {
                 'title' => trim($_POST['title']),
                 'slug' => $slug,
                 'summary' => trim($_POST['summary']),
-                'content' => $_POST['content'], // usually requires richer sanitization like HTMLPurifier
+                'content' => $_POST['content'],
                 'cover_image' => $cover_image,
                 'pdf_file' => $pdf_file,
                 'category' => trim($_POST['category']),
@@ -133,19 +133,18 @@ class NewsController extends Controller {
                 if (!is_dir($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
                 }
-                $fileName = time() . '_' . basename($_FILES['cover_image']['name']);
-                $targetFilePath = $uploadDir . $fileName;
-                $fileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION));
+                $origName = basename($_FILES['cover_image']['name']);
+                $fileType = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
                 $fileName = time() . '_' . substr(md5(uniqid()), 0, 8) . '.' . $fileType;
                 $targetFilePath = $uploadDir . $fileName;
                 
                 $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'webp', 'jfif');
-                if (in_array(strtolower($fileType), $allowTypes)) {
+                if (in_array($fileType, $allowTypes)) {
                     if (move_uploaded_file($_FILES['cover_image']['tmp_name'], $targetFilePath)) {
                         $cover_image = $fileName;
                         
                         if ($news->cover_image != 'default-news.jpg' && file_exists($uploadDir . $news->cover_image)) {
-                            unlink($uploadDir . $news->cover_image);
+                            @unlink($uploadDir . $news->cover_image);
                         }
                     }
                 }
@@ -157,16 +156,17 @@ class NewsController extends Controller {
                 if (!is_dir($uploadPdfDir)) {
                     mkdir($uploadPdfDir, 0777, true);
                 }
-                $pdfFileName = time() . '_' . basename($_FILES['pdf_file']['name']);
+                $origPdfName = basename($_FILES['pdf_file']['name']);
+                $pdfFileType = strtolower(pathinfo($origPdfName, PATHINFO_EXTENSION));
+                $pdfFileName = time() . '_' . substr(md5(uniqid()), 0, 8) . '.' . $pdfFileType;
                 $targetPdfPath = $uploadPdfDir . $pdfFileName;
-                $pdfFileType = pathinfo($targetPdfPath, PATHINFO_EXTENSION);
                 
-                if (strtolower($pdfFileType) == 'pdf') {
+                if ($pdfFileType == 'pdf') {
                     if (move_uploaded_file($_FILES['pdf_file']['tmp_name'], $targetPdfPath)) {
                         $pdf_file = $pdfFileName;
                         
                         if (!empty($news->pdf_file) && file_exists($uploadPdfDir . $news->pdf_file)) {
-                            unlink($uploadPdfDir . $news->pdf_file);
+                            @unlink($uploadPdfDir . $news->pdf_file);
                         }
                     }
                 }

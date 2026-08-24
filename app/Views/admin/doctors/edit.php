@@ -1,89 +1,81 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="h3 mb-0 text-gray-800"><?= $page_title ?></h2>
-    <a href="<?= URLROOT ?>/admin/doctors" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i> กลับ</a>
-</div>
-
-<div class="card shadow-sm border-0">
-    <div class="card-body p-4">
-        <form action="<?= URLROOT ?>/admin/doctors/update/<?= $doctor->id ?>" method="POST" enctype="multipart/form-data">
-            <?php $csrf_token = \App\Helpers\Security::csrfToken(); ?>
-            <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
-            
-            <h5 class="mb-3 text-primary border-bottom pb-2">ข้อมูลส่วนตัว</h5>
-            <div class="row mb-3">
-                <div class="col-md-12 mb-3 text-center">
-                    <?php 
-                    $profile_image = !empty($doctor->profile_image) ? $doctor->profile_image : 'default-doctor.jpg';
-                    ?>
-                    <img id="image-preview" src="<?= URLROOT ?>/assets/images/doctors/<?= $profile_image ?>" alt="Preview" class="img-thumbnail rounded-circle mb-2" style="width: 150px; height: 150px; object-fit: cover;">
-                    <div>
-                        <label for="profile_image" class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-camera"></i> เปลี่ยนรูปโปรไฟล์
-                        </label>
-                        <input type="file" id="profile_image" name="profile_image" class="d-none" accept="image/*" onchange="previewImage(this);">
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row mb-3">
-                <div class="col-md-2">
-                    <label for="prefix" class="form-label fw-bold">คำนำหน้า <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="prefix" name="prefix" value="<?= $doctor->prefix ?>" required>
-                </div>
-                <div class="col-md-5">
-                    <label for="firstname" class="form-label fw-bold">ชื่อ <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="firstname" name="firstname" value="<?= $doctor->firstname ?>" required>
-                </div>
-                <div class="col-md-5">
-                    <label for="lastname" class="form-label fw-bold">นามสกุล <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="lastname" name="lastname" value="<?= $doctor->lastname ?>" required>
-                </div>
-            </div>
-            
-            <h5 class="mb-3 mt-4 text-primary border-bottom pb-2">ข้อมูลทางวิชาชีพ</h5>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label for="specialty" class="form-label fw-bold">ความเชี่ยวชาญ (Specialty) <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="specialty" name="specialty" value="<?= $doctor->specialty ?>" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="position" class="form-label fw-bold">ตำแหน่ง</label>
-                    <input type="text" class="form-control" id="position" name="position" value="<?= $doctor->position ?>">
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label for="biography" class="form-label fw-bold">ประวัติย่อ / การศึกษา</label>
-                <textarea class="form-control" id="biography" name="biography" rows="4"><?= $doctor->biography ?></textarea>
-            </div>
-
-            <div class="row mb-4">
-                <div class="col-md-4">
-                    <label for="status" class="form-label fw-bold">สถานะการทำงาน</label>
-                    <select class="form-select" id="status" name="status">
-                        <option value="active" <?= $doctor->status == 'active' ? 'selected' : '' ?>>ปฏิบัติงาน</option>
-                        <option value="inactive" <?= $doctor->status == 'inactive' ? 'selected' : '' ?>>พักงาน / ลาออก</option>
-                    </select>
-                </div>
-            </div>
-            
-            <hr>
-            <div class="text-end mt-3">
-                <a href="<?= URLROOT ?>/admin/doctors" class="btn btn-light me-2">ยกเลิก</a>
-                <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i> บันทึกข้อมูล</button>
-            </div>
-        </form>
+    <div>
+        <h3 class="fw-bold text-dark mb-1"><?= $page_title ?></h3>
+        <p class="text-muted small mb-0">แก้ไขข้อมูลแพทย์: <strong><?= htmlspecialchars($doctor->prefix) ?><?= htmlspecialchars($doctor->firstname) ?> <?= htmlspecialchars($doctor->lastname) ?></strong></p>
     </div>
+    <a href="<?= URLROOT ?>/admin/doctor" class="btn btn-outline-secondary rounded-3">
+        <i class="bi bi-arrow-left me-1"></i> กลับ
+    </a>
 </div>
 
-<script>
-function previewImage(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('image-preview').src = e.target.result;
-        }
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-</script>
+<div class="card shadow-sm border-0 rounded-4 p-4 p-md-5 bg-white">
+    <form action="<?= URLROOT ?>/admin/doctor/edit/<?= $doctor->id ?>" method="POST" enctype="multipart/form-data">
+        <?= \App\Helpers\Security::csrfField() ?>
+
+        <div class="row g-4">
+            
+            <div class="col-md-3">
+                <label class="form-label fw-bold small text-dark">คำนำหน้าชื่อ <span class="text-danger">*</span></label>
+                <select class="form-select rounded-3 py-2" name="prefix" required>
+                    <?php
+                    $prefixes = ['นพ.', 'พญ.', 'ทพ.', 'ทพญ.', 'ภก.', 'ภญ.', 'ดร.', 'นาย', 'นาง', 'นางสาว'];
+                    foreach($prefixes as $pfx):
+                    ?>
+                        <option value="<?= $pfx ?>" <?= ($doctor->prefix == $pfx) ? 'selected' : '' ?>><?= $pfx ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label fw-bold small text-dark">ชื่อจริง <span class="text-danger">*</span></label>
+                <input type="text" class="form-control rounded-3 py-2" name="firstname" value="<?= htmlspecialchars($doctor->firstname) ?>" required>
+            </div>
+
+            <div class="col-md-5">
+                <label class="form-label fw-bold small text-dark">นามสกุล <span class="text-danger">*</span></label>
+                <input type="text" class="form-control rounded-3 py-2" name="lastname" value="<?= htmlspecialchars($doctor->lastname) ?>" required>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold small text-dark">สาขาความเชี่ยวชาญ (Specialty)</label>
+                <input type="text" class="form-control rounded-3 py-2" name="specialty" value="<?= htmlspecialchars($doctor->specialty ?? '') ?>" placeholder="เช่น อายุรศาสตร์, กุมารเวชศาสตร์">
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold small text-dark">ตำแหน่งทางวิชาการ / ตำแหน่งบริหาร</label>
+                <input type="text" class="form-control rounded-3 py-2" name="position" value="<?= htmlspecialchars($doctor->position ?? '') ?>" placeholder="เช่น นายแพทย์ชำนาญการพิเศษ">
+            </div>
+
+            <div class="col-12">
+                <label class="form-label fw-bold small text-dark">ประวัติการศึกษาและการฝึกอบรม (Biography / Education)</label>
+                <textarea class="form-control rounded-3" name="biography" rows="4"><?= htmlspecialchars($doctor->biography ?? '') ?></textarea>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold small text-dark">รูปถ่ายโปรไฟล์แพทย์</label>
+                <input type="file" class="form-control rounded-3 py-2" name="profile_image" accept="image/*">
+                <?php if(!empty($doctor->profile_image) && $doctor->profile_image != 'default-doctor.jpg'): ?>
+                    <div class="mt-2 small text-muted">
+                        รูปภาพปัจจุบัน: <code><?= htmlspecialchars($doctor->profile_image) ?></code>
+                    </div>
+                <?php endif; ?>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold small text-dark">สถานะ</label>
+                <select class="form-select rounded-3 py-2" name="status">
+                    <option value="active" <?= ($doctor->status == 'active') ? 'selected' : '' ?>>ปฏิบัติงานปกติ (Active)</option>
+                    <option value="inactive" <?= ($doctor->status == 'inactive') ? 'selected' : '' ?>>พักงาน / ลาศึกษาต่อ / ลาออก (Inactive)</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-5 pt-3 border-top">
+            <a href="<?= URLROOT ?>/admin/doctor" class="btn btn-light rounded-pill px-4">ยกเลิก</a>
+            <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow-sm">
+                <i class="bi bi-check-circle-fill me-1"></i> บันทึกการแก้ไข
+            </button>
+        </div>
+    </form>
+</div>

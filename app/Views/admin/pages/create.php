@@ -1,46 +1,50 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="h3 mb-0 text-gray-800"><?= $page_title ?></h2>
-    <a href="<?= URLROOT ?>/admin/pages" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i> กลับ</a>
+    <div>
+        <h3 class="fw-bold text-dark mb-1"><?= $page_title ?></h3>
+        <p class="text-muted small mb-0">สร้างหน้าเพจข้อมูลองค์กรหรือประกาศข้อกำหนดใหม่</p>
+    </div>
+    <a href="<?= URLROOT ?>/admin/page" class="btn btn-outline-secondary rounded-3">
+        <i class="bi bi-arrow-left me-1"></i> กลับ
+    </a>
 </div>
 
-<div class="card shadow-sm border-0">
-    <div class="card-body p-4">
-        <form action="<?= URLROOT ?>/admin/pages/store" method="POST">
-            <?php $csrf_token = \App\Helpers\Security::csrfToken(); ?>
-            <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+<div class="card shadow-sm border-0 rounded-4 p-4 p-md-5 bg-white">
+    <form action="<?= URLROOT ?>/admin/page/create" method="POST">
+        <?= \App\Helpers\Security::csrfField() ?>
 
-            <div class="mb-3">
-                <label for="title" class="form-label fw-bold">หัวข้อหน้าเพจ <span class="text-danger">*</span></label>
-                <input type="text" class="form-control form-control-lg" id="title" name="title" required>
+        <div class="row g-4">
+            
+            <div class="col-12">
+                <label class="form-label fw-bold small text-dark">หัวข้อหน้าเพจ <span class="text-danger">*</span></label>
+                <input type="text" class="form-control rounded-3 py-2" name="title" placeholder="เช่น นโยบายความเป็นส่วนตัว หรือ ประวัติโรงพยาบาล" required>
             </div>
             
-            <div class="mb-3">
-                <label for="slug" class="form-label fw-bold">URL Slug</label>
-                <input type="text" class="form-control" id="slug" name="slug" placeholder="ตัวอย่าง: about-us หรือ history">
-                <div class="form-text">เว้นว่างไว้เพื่อสร้างอัตโนมัติจากหัวข้อ ภาษาอังกฤษตัวเล็กหรือตัวเลขเชื่อมด้วยขีดกลาง</div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold small text-dark">URL Slug (ภาษาอังกฤษ)</label>
+                <input type="text" class="form-control rounded-3 py-2 font-monospace" name="slug" placeholder="ตัวอย่าง: privacy-policy หรือ about">
+                <div class="form-text small text-muted">เว้นว่างไว้เพื่อสร้างอัตโนมัติจากหัวข้อ</div>
             </div>
 
-            <div class="mb-3">
-                <label for="content" class="form-label fw-bold">เนื้อหา <span class="text-danger">*</span></label>
-                <textarea class="form-control" id="content" name="content" rows="15" required></textarea>
-                <div class="form-text">คุณสามารถเขียนด้วย HTML ได้เต็มรูปแบบ</div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold small text-dark">สถานะ</label>
+                <select class="form-select rounded-3 py-2" name="status">
+                    <option value="published" selected>เผยแพร่ทันที (Published)</option>
+                    <option value="draft">ฉบับร่าง (Draft)</option>
+                </select>
             </div>
-            
-            <div class="row mb-4">
-                <div class="col-md-4">
-                    <label for="status" class="form-label fw-bold">สถานะ</label>
-                    <select class="form-select" id="status" name="status">
-                        <option value="draft">ฉบับร่าง (Draft)</option>
-                        <option value="published">เผยแพร่ทันที (Published)</option>
-                    </select>
-                </div>
+
+            <div class="col-12">
+                <label class="form-label fw-bold small text-dark">เนื้อหาหน้าเพจ (รองรับ HTML และข้อความตกแต่ง) <span class="text-danger">*</span></label>
+                <textarea class="form-control rounded-3 font-monospace" name="content" rows="16" placeholder="กรอกเนื้อหา ข้อความ หรือโค้ด HTML..." required></textarea>
             </div>
-            
-            <hr>
-            <div class="text-end mt-3">
-                <a href="<?= URLROOT ?>/admin/pages" class="btn btn-light me-2">ยกเลิก</a>
-                <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i> บันทึกข้อมูล</button>
-            </div>
-        </form>
-    </div>
+
+        </div>
+        
+        <div class="d-flex justify-content-end gap-2 mt-5 pt-3 border-top">
+            <a href="<?= URLROOT ?>/admin/page" class="btn btn-light rounded-pill px-4">ยกเลิก</a>
+            <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow-sm">
+                <i class="bi bi-check-circle-fill me-1"></i> บันทึกหน้าเพจ
+            </button>
+        </div>
+    </form>
 </div>

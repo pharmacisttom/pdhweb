@@ -48,6 +48,10 @@ class Complaint extends Model {
             $this->db->bind(':admin_response', $admin_response);
         }
         
+    public function delete($id) {
+        $this->db->query('DELETE FROM complaints WHERE id = :id');
+        $this->db->bind(':id', $id);
         return $this->db->execute();
     }
 }
+

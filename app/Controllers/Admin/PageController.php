@@ -3,6 +3,7 @@ namespace App\Controllers\Admin;
 
 use App\Core\Controller;
 use App\Middleware\AuthMiddleware;
+use App\Helpers\Security;
 
 class PageController extends Controller {
     
@@ -16,7 +17,7 @@ class PageController extends Controller {
     public function index() {
         $pages = $this->pageModel->getAll();
         $data = [
-            'page_title' => 'จัดการหน้าเพจ',
+            'page_title' => 'จัดการหน้าเพจองค์กร',
             'pages' => $pages
         ];
         
@@ -32,21 +33,21 @@ class PageController extends Controller {
 
     public function store() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            \App\Helpers\Security::validateCsrf();
-            $_POST = \App\Helpers\Security::xssClean($_POST);
+            Security::validateCsrf();
             
-            $slug = !empty($_POST['slug']) ? $_POST['slug'] : strtolower(str_replace(' ', '-', trim($_POST['title'])));
-            $slug = preg_replace('/[^A-Za-z0-9\-]/', '', $slug);
+            $title = trim($_POST['title'] ?? '');
+            $rawSlug = !empty($_POST['slug']) ? $_POST['slug'] : strtolower(str_replace(' ', '-', $title));
+            $slug = preg_replace('/[^A-Za-z0-9\-]/', '', $rawSlug);
 
             $data = [
-                'title' => trim($_POST['title']),
+                'title' => $title,
                 'slug' => $slug,
-                'content' => $_POST['content'],
-                'status' => trim($_POST['status'])
+                'content' => $_POST['content'] ?? '',
+                'status' => trim($_POST['status'] ?? 'draft')
             ];
 
             if ($this->pageModel->create($data)) {
-                $this->redirect('admin/pages');
+                $this->redirect('admin/page');
             } else {
                 die('Something went wrong');
             }
@@ -56,8 +57,13 @@ class PageController extends Controller {
     public function edit($id) {
         $page = $this->pageModel->getById($id);
 
+        if (!$page) {
+            $this->redirect('admin/page');
+            return;
+        }
+
         $data = [
-            'page_title' => 'แก้ไขหน้าเพจ',
+            'page_title' => 'แก้ไขหน้าเพจองค์กร',
             'page' => $page
         ];
         $this->view('admin/pages/edit', $data, 'admin');
@@ -65,22 +71,22 @@ class PageController extends Controller {
 
     public function update($id) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            \App\Helpers\Security::validateCsrf();
-            $_POST = \App\Helpers\Security::xssClean($_POST);
+            Security::validateCsrf();
             
-            $slug = !empty($_POST['slug']) ? $_POST['slug'] : strtolower(str_replace(' ', '-', trim($_POST['title'])));
-            $slug = preg_replace('/[^A-Za-z0-9\-]/', '', $slug);
+            $title = trim($_POST['title'] ?? '');
+            $rawSlug = !empty($_POST['slug']) ? $_POST['slug'] : strtolower(str_replace(' ', '-', $title));
+            $slug = preg_replace('/[^A-Za-z0-9\-]/', '', $rawSlug);
 
             $data = [
                 'id' => $id,
-                'title' => trim($_POST['title']),
+                'title' => $title,
                 'slug' => $slug,
-                'content' => $_POST['content'],
-                'status' => trim($_POST['status'])
+                'content' => $_POST['content'] ?? '',
+                'status' => trim($_POST['status'] ?? 'draft')
             ];
 
             if ($this->pageModel->update($data)) {
-                $this->redirect('admin/pages');
+                $this->redirect('admin/page');
             } else {
                 die('Something went wrong');
             }
@@ -89,8 +95,9 @@ class PageController extends Controller {
 
     public function delete($id) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            Security::validateCsrf();
             if ($this->pageModel->delete($id)) {
-                $this->redirect('admin/pages');
+                $this->redirect('admin/page');
             } else {
                 die('Something went wrong');
             }

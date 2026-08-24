@@ -44,10 +44,22 @@ class ComplaintController extends Controller {
             $admin_response = !empty($_POST['admin_response']) ? trim($_POST['admin_response']) : null;
             
             if ($this->complaintModel->updateStatus($id, $status, $admin_response)) {
-                $this->redirect('admin/complaints/show/' . $id);
+                $this->redirect('admin/complaint/show/' . $id);
+            } else {
+                die('Something went wrong');
+            }
+        }
+    }
+
+    public function delete($id) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            \App\Helpers\Security::validateCsrf();
+            if ($this->complaintModel->delete($id)) {
+                $this->redirect('admin/complaint');
             } else {
                 die('Something went wrong');
             }
         }
     }
 }
+
