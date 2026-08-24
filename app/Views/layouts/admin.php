@@ -99,6 +99,12 @@
                     <a href="<?= URLROOT ?>/admin/procurement"><i class="bi bi-file-earmark-text"></i> <span>จัดซื้อจัดจ้าง</span></a>
                 </li>
                 <li>
+                    <a href="<?= URLROOT ?>/admin/page"><i class="bi bi-file-earmark-richtext"></i> <span>หน้าเพจองค์กร</span></a>
+                </li>
+                <li>
+                    <a href="https://pdh.thai-nrls.org/" target="_blank" class="text-warning"><i class="bi bi-shield-exclamation text-warning"></i> <span>ระบบความเสี่ยง (HRMS)</span></a>
+                </li>
+                <li>
                     <a href="<?= URLROOT ?>/admin/settings"><i class="bi bi-gear"></i> <span>ตั้งค่าระบบ</span></a>
                 </li>
                 <li class="mt-4 pt-3 border-top border-secondary border-opacity-25">

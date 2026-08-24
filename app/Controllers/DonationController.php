@@ -15,9 +15,23 @@ class DonationController extends Controller {
 
     public function index() {
         $items = $this->itemModel->getActive();
+        $recentDonors = $this->donationModel->getRecentApproved(8);
+
+        $totalRaised = 0;
+        $totalTarget = 0;
+        foreach ($items as $it) {
+            $totalRaised += floatval($it->current_amount ?? 0);
+            $totalTarget += floatval($it->target_amount ?? 0);
+        }
+
         $data = [
-            'title' => 'ร่วมบริจาค',
-            'items' => $items
+            'title' => 'การให้ไม่มีสิ้นสุด (The Endless Giving) | ร่วมบริจาคโรงพยาบาลปลวกแดง',
+            'page_title' => 'แคมเปญการให้ไม่มีสิ้นสุด (The Endless Giving) - โรงพยาบาลปลวกแดง',
+            'og_description' => 'ร่วมบริจาคสมทบทุนจัดซื้อเครื่องมือแพทย์และช่วยเหลือผู้ป่วยยากไร้ โรงพยาบาลปลวกแดง ผ่านแคมเปญการให้ไม่มีสิ้นสุด ลดหย่อนภาษีได้ 2 เท่าผ่านระบบ e-Donation',
+            'items' => $items,
+            'recentDonors' => $recentDonors,
+            'totalRaised' => $totalRaised,
+            'totalTarget' => $totalTarget
         ];
         
         $this->view('donations/index', $data);

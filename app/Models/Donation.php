@@ -33,6 +33,19 @@ class Donation extends Model {
         return $this->db->resultSet();
     }
 
+    public function getRecentApproved($limit = 8) {
+        $this->db->query('
+            SELECT d.donor_name, d.amount, d.quantity, d.created_at, di.title as item_title, di.type as item_type
+            FROM donations d
+            JOIN donation_items di ON d.donation_item_id = di.id
+            WHERE d.status = "approved"
+            ORDER BY d.created_at DESC
+            LIMIT :limit
+        ');
+        $this->db->bind(':limit', $limit, \PDO::PARAM_INT);
+        return $this->db->resultSet();
+    }
+
     public function create($data) {
         $this->db->query('INSERT INTO donations (donation_item_id, donor_name, donor_email, donor_phone, amount, quantity, payment_slip_image, status) VALUES (:donation_item_id, :donor_name, :donor_email, :donor_phone, :amount, :quantity, :payment_slip_image, :status)');
         

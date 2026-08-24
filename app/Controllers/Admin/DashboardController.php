@@ -26,6 +26,14 @@ class DashboardController extends Controller {
         $db->query('SELECT COUNT(*) as total FROM complaints WHERE status = "pending"');
         $pendingComplaintCount = $db->single()->total ?? 0;
 
+        // Count pending donations & total raised
+        $db->query('SELECT COUNT(*) as pending_slips, COALESCE(SUM(amount), 0) as total_raised FROM donations WHERE status = "approved"');
+        $donStats = $db->single();
+        $totalDonationAmount = $donStats->total_raised ?? 0;
+
+        $db->query('SELECT COUNT(*) as pending_slips FROM donations WHERE status = "pending"');
+        $pendingDonationCount = $db->single()->pending_slips ?? 0;
+
         // Get latest news
         $db->query('SELECT * FROM news WHERE deleted_at IS NULL ORDER BY created_at DESC LIMIT 5');
         $latestNews = $db->resultSet() ?: [];
@@ -38,6 +46,8 @@ class DashboardController extends Controller {
             'newsCount' => $newsCount,
             'doctorCount' => $doctorCount,
             'pendingComplaintCount' => $pendingComplaintCount,
+            'pendingDonationCount' => $pendingDonationCount,
+            'totalDonationAmount' => $totalDonationAmount,
             'latestNews' => $latestNews,
             'visitStats' => $visitStats
         ];

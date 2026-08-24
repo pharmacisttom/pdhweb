@@ -284,3 +284,40 @@
         <?php endif; ?>
     </div>
 </section>
+
+<!-- GPS Navigation & Location Banner -->
+<section class="py-3 mb-5">
+    <div class="container">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden" style="background: linear-gradient(135deg, #093f35 0%, #0d9488 60%, #0284c7 100%);">
+            <div class="card-body p-4 p-md-5 text-white">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-8">
+                        <span class="badge bg-warning text-dark px-3 py-1 rounded-pill fw-bold mb-3">
+                            <i class="bi bi-geo-alt-fill me-1"></i> แผนที่ & นำทาง GPS
+                        </span>
+                        <h2 class="fw-bold text-white mb-2">เดินทางมาโรงพยาบาลปลวกแดง</h2>
+                        <p class="text-white-50 mb-4" style="max-width: 650px;">
+                            ตั้งอยู่เลขที่ 272 หมู่ 1 ถนนเทศบาล 8 ต.ปลวกแดง อ.ปลวกแดง จ.ระยอง (พิกัด GPS: <strong>12.969940, 101.218922</strong>) พร้อมระบบนำทางผ่าน Google Maps
+                        </p>
+                        <div class="d-flex flex-wrap gap-3">
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=12.969940,101.218922&travelmode=driving" target="_blank" rel="noopener noreferrer" class="btn btn-warning py-2 px-4 rounded-pill fw-bold text-dark shadow">
+                                <i class="bi bi-cursor-fill me-1"></i> เปิด Google Maps นำทางทันที
+                            </a>
+                            <a href="<?= URLROOT ?>/contact#smartNavigation" class="btn btn-outline-light py-2 px-4 rounded-pill">
+                                <i class="bi bi-compass me-1"></i> ระบบนำทางอัจฉริยะ & เบอร์ภายใน
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 text-center d-none d-lg-block">
+                        <div class="p-3 rounded-4 bg-white bg-opacity-10 border border-white border-opacity-20 d-inline-block shadow-lg">
+                            <i class="bi bi-map-fill display-3 text-warning mb-2 d-block"></i>
+                            <div class="small fw-bold text-white font-monospace">12.969940, 101.218922</div>
+                            <small class="text-white-50">ระยอง 21140</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

@@ -3,12 +3,15 @@
         <h3 class="fw-bold text-dark mb-1">ภาพรวมระบบ (Enterprise Dashboard)</h3>
         <p class="text-muted small mb-0"><i class="bi bi-calendar-event me-1"></i> ข้อมูลและสถิติการใช้งานประจำวันที่ <?= date('d/m/Y') ?></p>
     </div>
-    <div class="d-flex gap-2">
+    <div class="d-flex flex-wrap gap-2">
+        <a href="<?= URLROOT ?>/admin/donationitem/create" class="btn btn-sm btn-outline-danger rounded-3">
+            <i class="bi bi-heart-fill me-1"></i> เพิ่มโครงการบริจาค
+        </a>
+        <a href="<?= URLROOT ?>/admin/donation" class="btn btn-sm <?= ($pendingDonationCount > 0) ? 'btn-warning' : 'btn-outline-secondary' ?> rounded-3">
+            <i class="bi bi-receipt me-1"></i> ตรวจสอบสลิป <?= ($pendingDonationCount > 0) ? "($pendingDonationCount)" : '' ?>
+        </a>
         <a href="<?= URLROOT ?>/admin/news/create" class="btn btn-sm btn-admin-primary">
             <i class="bi bi-plus-circle me-1"></i> เพิ่มข่าวสาร
-        </a>
-        <a href="<?= URLROOT ?>/admin/doctor/create" class="btn btn-sm btn-outline-primary rounded-3">
-            <i class="bi bi-person-plus me-1"></i> เพิ่มแพทย์
         </a>
     </div>
 </div>

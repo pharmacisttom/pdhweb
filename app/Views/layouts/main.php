@@ -128,13 +128,23 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link <?= (isset($_GET['url']) && str_starts_with($_GET['url'], 'donations')) ? 'active' : '' ?>" href="<?= URLROOT ?>/donations">
-                                ร่วมบริจาค
+                            <a class="nav-link <?= (isset($_GET['url']) && str_starts_with($_GET['url'], 'donation')) ? 'active' : '' ?>" href="<?= URLROOT ?>/donations">
+                                <i class="bi bi-heart-fill text-danger me-1"></i> ร่วมบริจาค
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <?= (isset($_GET['url']) && str_starts_with($_GET['url'], 'ita')) ? 'active' : '' ?>" href="<?= URLROOT ?>/ita">
+                                <i class="bi bi-shield-check me-1"></i> ITA / MOIT
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link <?= (isset($_GET['url']) && str_starts_with($_GET['url'], 'complaint')) ? 'active' : '' ?>" href="<?= URLROOT ?>/complaint">
                                 ร้องเรียน/ข้อเสนอแนะ
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <?= (isset($_GET['url']) && str_starts_with($_GET['url'], 'contact')) ? 'active' : '' ?>" href="<?= URLROOT ?>/contact">
+                                ติดต่อเรา
                             </a>
                         </li>
                     </ul>
@@ -219,6 +229,8 @@
                         <li><a href="<?= URLROOT ?>/department" class="footer-link">โครงสร้างกลุ่มงาน</a></li>
                         <li><a href="<?= URLROOT ?>/procurement" class="footer-link">จัดซื้อจัดจ้าง</a></li>
                         <li><a href="<?= URLROOT ?>/ita" class="footer-link">การประเมิน ITA/MOIT</a></li>
+                        <li><a href="<?= URLROOT ?>/risk" class="footer-link"><i class="bi bi-shield-exclamation text-warning me-1"></i> ระบบความเสี่ยง (HRMS)</a></li>
+                        <li><a href="<?= URLROOT ?>/contact" class="footer-link">ติดต่อเรา & เบอร์ภายใน</a></li>
                     </ul>
                 </div>
 
