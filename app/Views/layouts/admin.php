@@ -36,6 +36,11 @@
             --primary-color: <?= $themeColors['primary'] ?>;
             --secondary-color: <?= $themeColors['secondary'] ?>;
         }
+        .bg-success-pastel { background-color: #d1fae5 !important; color: #065f46 !important; border: 1px solid #a7f3d0 !important; font-weight: 600; }
+        .bg-warning-pastel { background-color: #fef3c7 !important; color: #92400e !important; border: 1px solid #fde68a !important; font-weight: 600; }
+        .bg-danger-pastel  { background-color: #fee2e2 !important; color: #991b1b !important; border: 1px solid #fecaca !important; font-weight: 600; }
+        .bg-info-pastel    { background-color: #e0f2fe !important; color: #075985 !important; border: 1px solid #bae6fd !important; font-weight: 600; }
+        .bg-primary-pastel { background-color: #ccfbf1 !important; color: #0f766e !important; border: 1px solid #99f6e4 !important; font-weight: 600; }
     </style>
 </head>
 <body>

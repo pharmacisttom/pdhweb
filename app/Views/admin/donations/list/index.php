@@ -1,57 +1,81 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="h3 mb-0 text-gray-800"><?= $page_title ?></h2>
+    <div>
+        <h3 class="fw-bold text-dark mb-1"><?= $page_title ?></h3>
+        <p class="text-muted small mb-0">ตรวจสอบสลิปหลักฐานการโอนเงินและอนุมัติรายนามผู้บริจาค แคมเปญการให้ไม่มีสิ้นสุด</p>
+    </div>
+    <a href="<?= URLROOT ?>/admin/donationitem" class="btn btn-outline-primary rounded-3">
+        <i class="bi bi-box2-heart me-1"></i> จัดการโครงการรับบริจาค
+    </a>
 </div>
 
-<div class="card shadow-sm border-0">
+<div class="card shadow-sm border-0 rounded-4 overflow-hidden bg-white">
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th width="5%">ID</th>
-                        <th width="20%">ชื่อผู้บริจาค</th>
-                        <th width="30%">รายการที่บริจาค</th>
-                        <th width="15%">ยอด/จำนวน</th>
-                        <th width="15%">วันที่บริจาค</th>
+                        <th width="5%" class="ps-4">ID</th>
+                        <th width="25%">ชื่อผู้บริจาค</th>
+                        <th width="25%">โครงการที่บริจาค</th>
+                        <th width="15%">ยอดเงินบริจาค</th>
+                        <th width="12%">วันที่บริจาค</th>
                         <th width="10%">สถานะ</th>
-                        <th width="5%" class="text-center">ตรวจสอบ</th>
+                        <th width="8%" class="text-center pe-4">ตรวจสอบ</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($donations)): ?>
                     <tr>
-                        <td colspan="7" class="text-center py-4 text-muted">ไม่มีข้อมูลการบริจาค</td>
+                        <td colspan="7" class="text-center py-5 text-muted">
+                            <i class="bi bi-inbox fs-2 d-block mb-2 text-muted"></i>
+                            ยังไม่มีข้อมูลการบริจาค
+                        </td>
                     </tr>
                     <?php else: ?>
                         <?php foreach ($donations as $donation): ?>
                         <tr>
-                            <td><?= $donation->id ?></td>
-                            <td class="fw-medium">
-                                <?= $donation->donor_name ?><br>
-                                <small class="text-muted"><i class="bi bi-telephone"></i> <?= $donation->donor_phone ?: '-' ?></small>
-                            </td>
-                            <td><?= $donation->item_title ?></td>
+                            <td class="ps-4 fw-bold font-monospace text-muted"><?= $donation->id ?></td>
                             <td>
-                                <?php if (!empty($donation->amount)): ?>
-                                    <?= number_format($donation->amount, 2) ?> บาท
-                                <?php elseif (!empty($donation->quantity)): ?>
-                                    <?= number_format($donation->quantity) ?> ชิ้น
-                                <?php else: ?>
-                                    ทั่วไป
-                                <?php endif; ?>
+                                <div class="fw-bold text-dark mb-1"><?= htmlspecialchars($donation->donor_name) ?></div>
+                                <small class="text-muted"><i class="bi bi-telephone me-1"></i><?= htmlspecialchars($donation->donor_phone ?: '-') ?></small>
                             </td>
-                            <td><?= date('d/m/Y H:i', strtotime($donation->created_at)) ?></td>
+                            <td>
+                                <div class="fw-medium text-dark small"><?= htmlspecialchars($donation->item_title) ?></div>
+                            </td>
+                            <td>
+                                <div class="fw-bold text-success font-monospace" style="font-size: 1rem;">
+                                    <?php if (!empty($donation->amount)): ?>
+                                        ฿<?= number_format($donation->amount, 2) ?>
+                                    <?php elseif (!empty($donation->quantity)): ?>
+                                        <?= number_format($donation->quantity) ?> ชิ้น
+                                    <?php else: ?>
+                                        ทั่วไป
+                                    <?php endif; ?>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="small text-dark fw-semibold font-monospace"><?= date('d/m/Y', strtotime($donation->created_at)) ?></div>
+                                <small class="text-muted"><?= date('H:i น.', strtotime($donation->created_at)) ?></small>
+                            </td>
                             <td>
                                 <?php if ($donation->status == 'pending'): ?>
-                                    <span class="badge bg-warning-pastel text-dark">รอตรวจสอบ</span>
+                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning border-opacity-50 rounded-pill px-3 py-2 fw-semibold">
+                                        <i class="bi bi-hourglass-split me-1"></i> รอตรวจสอบ
+                                    </span>
                                 <?php elseif ($donation->status == 'approved'): ?>
-                                    <span class="badge bg-success-pastel">อนุมัติแล้ว</span>
+                                    <span class="badge bg-success-subtle text-success border border-success border-opacity-50 rounded-pill px-3 py-2 fw-semibold">
+                                        <i class="bi bi-check-circle-fill me-1"></i> อนุมัติแล้ว
+                                    </span>
                                 <?php else: ?>
-                                    <span class="badge bg-danger-pastel">ไม่อนุมัติ</span>
+                                    <span class="badge bg-danger-subtle text-danger border border-danger border-opacity-50 rounded-pill px-3 py-2 fw-semibold">
+                                        <i class="bi bi-x-circle-fill me-1"></i> ไม่อนุมัติ
+                                    </span>
                                 <?php endif; ?>
                             </td>
-                            <td class="text-center">
-                                <a href="<?= URLROOT ?>/admin/donation/show/<?= $donation->id ?>" class="btn btn-sm btn-outline-info"><i class="bi bi-search"></i></a>
+                            <td class="text-center pe-4">
+                                <a href="<?= URLROOT ?>/admin/donation/show/<?= $donation->id ?>" class="btn btn-sm btn-outline-primary rounded-3 px-3 shadow-sm" title="เปิดดูสลิปและรายละเอียด">
+                                    <i class="bi bi-search me-1"></i> ตรวจสอบ
+                                </a>
                             </td>
                         </tr>
                         <?php endforeach; ?>
