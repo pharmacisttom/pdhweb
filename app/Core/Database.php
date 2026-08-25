@@ -10,43 +10,51 @@ class Database {
     private $pass = DB_PASS;
     private $dbname = DB_NAME;
 
-    private $dbh;
-    private $stmt;
-    private $error;
+    private $dbh = null;
+    private $stmt = null;
+    private $error = null;
 
     public function __construct() {
-        // Set DSN
         $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname . ';charset=utf8mb4';
         
         $options = array(
-            PDO::ATTR_PERSISTENT => true,
+            PDO::ATTR_PERSISTENT => false,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4'
         );
 
-        // Create PDO instance
         try {
             $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
         } catch(PDOException $e) {
             $this->error = $e->getMessage();
-            // Do not output full error to user in production
-            error_log($this->error);
-            if (APP_ENV === 'development') {
-                echo $this->error;
-            } else {
-                echo "Database connection failed.";
-            }
+            error_log('Database Connection Error: ' . $this->error);
+            $this->dbh = null;
         }
     }
 
-    // Prepare statement with query
-    public function query($sql) {
-        $this->stmt = $this->dbh->prepare($sql);
+    public function isConnected() {
+        return $this->dbh !== null;
     }
 
-    // Bind values
+    public function query($sql) {
+        if (!$this->dbh) {
+            $this->stmt = null;
+            return false;
+        }
+        try {
+            $this->stmt = $this->dbh->prepare($sql);
+            return true;
+        } catch (PDOException $e) {
+            error_log('Query Prepare Error: ' . $e->getMessage() . ' in SQL: ' . $sql);
+            $this->stmt = null;
+            return false;
+        }
+    }
+
     public function bind($param, $value, $type = null) {
+        if (!$this->stmt) return;
+        
         if (is_null($type)) {
             switch(true) {
                 case is_int($value):
@@ -65,30 +73,45 @@ class Database {
         $this->stmt->bindValue($param, $value, $type);
     }
 
-    // Execute the prepared statement
     public function execute() {
-        return $this->stmt->execute();
+        if (!$this->stmt) return false;
+        try {
+            return $this->stmt->execute();
+        } catch (PDOException $e) {
+            error_log('Query Execute Error: ' . $e->getMessage());
+            return false;
+        }
     }
 
-    // Get result set as array of objects
     public function resultSet() {
-        $this->execute();
-        return $this->stmt->fetchAll();
+        if (!$this->stmt) return [];
+        try {
+            $this->execute();
+            $res = $this->stmt->fetchAll();
+            return is_array($res) ? $res : [];
+        } catch (PDOException $e) {
+            error_log('Query Fetch Error: ' . $e->getMessage());
+            return [];
+        }
     }
 
-    // Get single record as object
     public function single() {
-        $this->execute();
-        return $this->stmt->fetch();
+        if (!$this->stmt) return null;
+        try {
+            $this->execute();
+            $res = $this->stmt->fetch();
+            return $res ?: null;
+        } catch (PDOException $e) {
+            error_log('Query Fetch Single Error: ' . $e->getMessage());
+            return null;
+        }
     }
 
-    // Get row count
     public function rowCount() {
-        return $this->stmt->rowCount();
+        return $this->stmt ? $this->stmt->rowCount() : 0;
     }
     
-    // Get last insert ID
     public function lastInsertId() {
-        return $this->dbh->lastInsertId();
+        return $this->dbh ? $this->dbh->lastInsertId() : 0;
     }
 }
