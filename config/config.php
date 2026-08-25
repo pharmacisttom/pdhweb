@@ -26,12 +26,19 @@ if (file_exists($envFilePath)) {
     }
 }
 
+// Host Validation to prevent Host Header Injection
+$rawHost = $_SERVER['HTTP_HOST'] ?? 'localhost';
+if (preg_match('/^[a-zA-Z0-9\.\-\:]+$/', $rawHost)) {
+    $autoHost = $rawHost;
+} else {
+    $autoHost = 'localhost';
+}
+
 // Dynamic Base URL Auto-Detection for localhost and VPS / Custom Domains
 $autoScheme = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] == 1)) 
     || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') 
     ? 'https' : 'http';
 
-$autoHost = $_SERVER['HTTP_HOST'] ?? 'localhost';
 $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? ''));
 $basePath = preg_replace('#/public$#i', '', $scriptDir);
 $basePath = ($basePath === '/' || $basePath === '\\' || $basePath === '.') ? '' : $basePath;
@@ -60,7 +67,36 @@ define('APPROOT', dirname(dirname(__FILE__)));
 define('URLROOT', APP_URL);
 define('SITENAME', APP_NAME);
 
-// Start Session
-if (session_status() == PHP_SESSION_NONE) {
+// Start Session securely
+if (session_status() === PHP_SESSION_NONE) {
+    $isHttps = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] == 1)) 
+        || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
+    
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path' => '/',
+        'domain' => '',
+        'secure' => $isHttps,
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
     session_start();
+}
+
+// Global Class Autoloader
+spl_autoload_register(function($className) {
+    if (strpos($className, 'App\\') === 0) {
+        $relativeClass = substr($className, 4); // Remove App\
+        $file = APPROOT . '/app/' . str_replace('\\', '/', $relativeClass) . '.php';
+        if (file_exists($file)) {
+            require_once $file;
+            return true;
+        }
+    }
+    return false;
+});
+
+// Load Global Functions & Helpers
+if (file_exists(APPROOT . '/app/Helpers/functions.php')) {
+    require_once APPROOT . '/app/Helpers/functions.php';
 }

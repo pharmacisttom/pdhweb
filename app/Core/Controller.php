@@ -5,10 +5,13 @@ class Controller {
     
     // Load model
     public function model($model) {
+        $modelClass = 'App\\Models\\' . $model;
+        if (class_exists($modelClass)) {
+            return new $modelClass();
+        }
         $modelPath = APPROOT . '/app/Models/' . $model . '.php';
         if (file_exists($modelPath)) {
             require_once $modelPath;
-            $modelClass = 'App\\Models\\' . $model;
             return new $modelClass();
         }
         return null;
@@ -25,10 +28,10 @@ class Controller {
             
             // Require the layout which will include the view
             if ($layout && file_exists(APPROOT . '/app/Views/layouts/' . $layout . '.php')) {
-                require_once APPROOT . '/app/Views/layouts/' . $layout . '.php';
+                require APPROOT . '/app/Views/layouts/' . $layout . '.php';
             } else {
                 // If no layout, just require the view
-                require_once $viewPath;
+                require $viewPath;
             }
         } else {
             // View does not exist
@@ -99,7 +102,10 @@ class Controller {
 
     // Redirect
     public function redirect($url) {
-        header('Location: ' . URLROOT . '/' . ltrim($url, '/'));
+        $target = (strpos($url, 'http://') === 0 || strpos($url, 'https://') === 0) 
+            ? $url 
+            : URLROOT . '/' . ltrim($url, '/');
+        header('Location: ' . $target);
         exit;
     }
 }

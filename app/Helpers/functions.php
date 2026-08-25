@@ -7,32 +7,24 @@
 if (!function_exists('env')) {
     function env($key, $default = null)
     {
-        static $env = null;
-        if ($env === null) {
-            $env = [];
-            $envPath = BASE_PATH . '/.env';
-            if (file_exists($envPath)) {
-                $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-                foreach ($lines as $line) {
-                    if (strpos(trim($line), '#') === 0) continue;
-                    list($name, $value) = explode('=', $line, 2);
-                    $name = trim($name);
-                    $value = trim($value);
-                    if (preg_match('/^"(.*)"$/', $value, $matches) || preg_match("/^'(.*)'$/", $value, $matches)) {
-                        $value = $matches[1];
-                    }
-                    $env[$name] = $value;
-                }
-            }
+        if (isset($_ENV[$key])) {
+            return $_ENV[$key];
         }
-        return $env[$key] ?? $default;
+        $val = getenv($key);
+        if ($val !== false) {
+            return $val;
+        }
+        return $default;
     }
 }
 
 if (!function_exists('url')) {
     function url($path = '')
     {
-        $baseUrl = env('APP_URL', 'http://localhost/pdhweb/public');
+        $baseUrl = defined('URLROOT') ? URLROOT : (defined('APP_URL') ? APP_URL : '');
+        if (empty($baseUrl)) {
+            $baseUrl = env('APP_URL', '');
+        }
         return rtrim($baseUrl, '/') . '/' . ltrim($path, '/');
     }
 }
@@ -47,7 +39,15 @@ if (!function_exists('asset')) {
 if (!function_exists('redirect')) {
     function redirect($path)
     {
-        header('Location: ' . url($path));
+        // Prevent Open Redirect: Only allow relative paths or paths starting with URLROOT
+        if (preg_match('#^(https?:)?//#i', $path)) {
+            if (defined('URLROOT') && strpos($path, URLROOT) !== 0) {
+                $path = url('/');
+            }
+        } else {
+            $path = url($path);
+        }
+        header('Location: ' . $path);
         exit;
     }
 }
@@ -56,7 +56,8 @@ if (!function_exists('view')) {
     function view($viewPath, $data = [])
     {
         extract($data);
-        $file = APP_PATH . '/Views/' . str_replace('.', '/', $viewPath) . '.php';
+        $base = defined('APPROOT') ? APPROOT . '/app' : (defined('APP_PATH') ? APP_PATH : dirname(__DIR__));
+        $file = $base . '/Views/' . str_replace('.', '/', $viewPath) . '.php';
         if (file_exists($file)) {
             require $file;
         } else {
@@ -68,27 +69,21 @@ if (!function_exists('view')) {
 if (!function_exists('csrf_token')) {
     function csrf_token()
     {
-        if (empty($_SESSION['csrf_token'])) {
-            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-        }
-        return $_SESSION['csrf_token'];
+        return \App\Helpers\Security::csrfToken();
     }
 }
 
 if (!function_exists('csrf_field')) {
     function csrf_field()
     {
-        return '<input type="hidden" name="csrf_token" value="' . csrf_token() . '">';
+        return \App\Helpers\Security::csrfField();
     }
 }
 
 if (!function_exists('verify_csrf')) {
-    function verify_csrf($token)
+    function verify_csrf($token = null)
     {
-        if (empty($_SESSION['csrf_token']) || $token !== $_SESSION['csrf_token']) {
-            die("CSRF Token Verification Failed.");
-        }
-        return true;
+        return \App\Helpers\Security::validateCsrf();
     }
 }
 
@@ -101,6 +96,6 @@ if (!function_exists('escape')) {
 
 if (!function_exists('is_admin')) {
     function is_admin() {
-        return isset($_SESSION['user']) && in_array($_SESSION['user']['role_id'], [1, 2]); // Super Admin, Website Admin
+        return isset($_SESSION['user_id']) || (isset($_SESSION['user']) && in_array($_SESSION['user']['role_id'], [1, 2]));
     }
 }

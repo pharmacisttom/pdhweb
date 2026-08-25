@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Services\AuditLogService;
+use App\Helpers\Security;
 
 class AuthController extends Controller {
     
@@ -18,59 +19,59 @@ class AuthController extends Controller {
         $this->login();
     }
 
+    public function loginForm() {
+        $this->login();
+    }
+
     public function login() {
-        // If already logged in, redirect to admin
-        if(isset($_SESSION['user_id'])){
+        if (isset($_SESSION['user_id'])) {
             $this->redirect('admin/dashboard');
+            return;
         }
 
-        // Check for POST
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
-            // Process form
-            \App\Helpers\Security::validateCsrf();
-            $_POST = \App\Helpers\Security::xssClean($_POST);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            Security::validateCsrf();
+            $_POST = Security::xssClean($_POST);
             
             $data = [
-                'username' => trim($_POST['username']),
-                'password' => trim($_POST['password']),
+                'username' => trim($_POST['username'] ?? ''),
+                'password' => trim($_POST['password'] ?? ''),
                 'username_err' => '',
                 'password_err' => ''
             ];
 
-            // Validate Username
-            if(empty($data['username'])){
+            if (empty($data['username'])) {
                 $data['username_err'] = 'โปรดระบุชื่อผู้ใช้งาน';
             }
 
-            // Validate Password
-            if(empty($data['password'])){
+            if (empty($data['password'])) {
                 $data['password_err'] = 'โปรดระบุรหัสผ่าน';
             }
 
-            // Check if errors are empty
-            if(empty($data['username_err']) && empty($data['password_err'])){
-                // Validated
-                // Check and set logged in user
+            if (empty($data['username_err']) && empty($data['password_err'])) {
                 $loggedInUser = $this->userModel->login($data['username'], $data['password']);
 
-                if($loggedInUser){
-                    // Log success
-                    $this->auditLog->logLogin($loggedInUser->id, $data['username'], 'success');
-                    $this->auditLog->logAudit($loggedInUser->id, 'LOGIN', 'auth');
-                    // Create Session
+                if ($loggedInUser) {
+                    session_regenerate_id(true);
+                    if ($this->auditLog) {
+                        $this->auditLog->logLogin($loggedInUser->id, $data['username'], 'success');
+                        $this->auditLog->logAudit($loggedInUser->id, 'LOGIN', 'auth');
+                    }
                     $this->createUserSession($loggedInUser);
+                    return;
                 } else {
-                    // Log failed
-                    $this->auditLog->logLogin(null, $data['username'], 'failed');
+                    if ($this->auditLog) {
+                        $this->auditLog->logLogin(null, $data['username'], 'failed');
+                    }
                     $data['password_err'] = 'รหัสผ่านไม่ถูกต้อง หรือ ไม่พบชื่อผู้ใช้งาน';
-                    $this->view('auth/login', $data, null); // Render login page without layout for now or auth layout
+                    $this->view('auth/login', $data, null);
+                    return;
                 }
             } else {
-                // Load view with errors
                 $this->view('auth/login', $data, null);
+                return;
             }
         } else {
-            // Init data
             $data = [
                 'username' => '',
                 'password' => '',
@@ -78,7 +79,6 @@ class AuthController extends Controller {
                 'password_err' => ''
             ];
 
-            // Load view
             $this->view('auth/login', $data, null);
         }
     }
@@ -93,15 +93,20 @@ class AuthController extends Controller {
     }
 
     public function logout(){
-        if(isset($_SESSION['user_id'])){
+        if (isset($_SESSION['user_id']) && $this->auditLog) {
             $this->auditLog->logAudit($_SESSION['user_id'], 'LOGOUT', 'auth');
         }
-        unset($_SESSION['user_id']);
-        unset($_SESSION['user_username']);
-        unset($_SESSION['user_firstname']);
-        unset($_SESSION['user_lastname']);
-        unset($_SESSION['user_role']);
-        session_destroy();
-        $this->redirect('auth/login');
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            $_SESSION = [];
+            if (ini_get("session.use_cookies")) {
+                $params = session_get_cookie_params();
+                setcookie(session_name(), '', time() - 42000,
+                    $params["path"], $params["domain"],
+                    $params["secure"], $params["httponly"]
+                );
+            }
+            session_destroy();
+        }
+        $this->redirect('admin/login');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Core\Controller;
+use App\Helpers\Security;
 
 class AuthController extends Controller
 {
@@ -27,8 +28,8 @@ class AuthController extends Controller
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            \App\Helpers\Security::validateCsrf();
-            $_POST = \App\Helpers\Security::xssClean($_POST);
+            Security::validateCsrf();
+            $_POST = Security::xssClean($_POST);
 
             $data = [
                 'username' => trim($_POST['username'] ?? ''),
@@ -48,11 +49,13 @@ class AuthController extends Controller
                 $loggedInUser = $this->userModel->login($data['username'], $data['password']);
 
                 if ($loggedInUser) {
+                    session_regenerate_id(true);
                     $_SESSION['user_id'] = $loggedInUser->id;
                     $_SESSION['user_username'] = $loggedInUser->username;
                     $_SESSION['user_firstname'] = $loggedInUser->firstname;
                     $_SESSION['user_lastname'] = $loggedInUser->lastname;
                     $_SESSION['user_role'] = $loggedInUser->role_id;
+                    
                     $this->redirect('admin/dashboard');
                     return;
                 } else {
@@ -76,12 +79,17 @@ class AuthController extends Controller
     }
 
     public function logout() {
-        unset($_SESSION['user_id']);
-        unset($_SESSION['user_username']);
-        unset($_SESSION['user_firstname']);
-        unset($_SESSION['user_lastname']);
-        unset($_SESSION['user_role']);
-        session_destroy();
-        $this->redirect('auth/login');
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            $_SESSION = [];
+            if (ini_get("session.use_cookies")) {
+                $params = session_get_cookie_params();
+                setcookie(session_name(), '', time() - 42000,
+                    $params["path"], $params["domain"],
+                    $params["secure"], $params["httponly"]
+                );
+            }
+            session_destroy();
+        }
+        $this->redirect('admin/login');
     }
 }

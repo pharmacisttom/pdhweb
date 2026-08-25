@@ -4,6 +4,8 @@ namespace App\Controllers\Admin;
 
 use App\Core\Controller;
 use App\Models\AuditLog;
+use App\Middleware\AuthMiddleware;
+use App\Helpers\Security;
 
 class AuditLogController extends Controller
 {
@@ -11,14 +13,13 @@ class AuditLogController extends Controller
 
     public function __construct()
     {
-        if (!isset($_SESSION['user'])) {
-            $this->redirect('/admin/login');
-        }
+        AuthMiddleware::check();
         
-        // Only Super Admin or Website Admin should access logs
-        if ($_SESSION['user']['role_id'] > 2) {
+        // Only Super Admin (1) or Website Admin (2)
+        if (isset($_SESSION['user_role']) && $_SESSION['user_role'] > 2) {
             $_SESSION['error'] = 'คุณไม่มีสิทธิ์เข้าถึงหน้านี้';
-            $this->redirect('/admin');
+            $this->redirect('admin/dashboard');
+            return;
         }
         
         $this->auditModel = new AuditLog();
@@ -28,33 +29,37 @@ class AuditLogController extends Controller
     {
         $logs = $this->auditModel->getLogsWithUsers(200); // Fetch last 200 logs
         
-        $this->view('admin.audit_logs.index', [
-            'title' => 'ประวัติการทำงาน (Audit Logs)',
+        $this->view('admin/audit_logs/index', [
+            'page_title' => 'ประวัติการทำงาน (Audit Logs)',
             'logs' => $logs
-        ]);
+        ], 'admin');
     }
 
     public function clear()
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') return $this->redirect('/admin/logs');
-        verify_csrf($_POST['csrf_token'] ?? '');
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->redirect('admin/logs');
+            return;
+        }
         
-        // Define how many days of logs to keep. Default to 90 days.
+        Security::validateCsrf();
+        
         $daysToKeep = 90;
-        
         $this->auditModel->clearOldLogs($daysToKeep);
         
-        // Log the clearing action itself
-        $this->auditModel->log(
-            $_SESSION['user']['id'],
-            'CLEAR_LOGS',
-            'AuditLog',
-            null,
-            null,
-            ['kept_days' => $daysToKeep]
-        );
+        $userId = $_SESSION['user_id'] ?? null;
+        if ($userId) {
+            $this->auditModel->log(
+                $userId,
+                'CLEAR_LOGS',
+                'AuditLog',
+                null,
+                null,
+                ['kept_days' => $daysToKeep]
+            );
+        }
         
-        $_SESSION['success'] = "ล้างข้อมูล Log ที่เก่ากว่า {$daysToKeep} วัน เรียบร้อยแล้ว เพื่อให้ระบบทำงานไวขึ้น";
-        $this->redirect('/admin/logs');
+        $_SESSION['success'] = "ล้างข้อมูล Log ที่เก่ากว่า {$daysToKeep} วัน เรียบร้อยแล้ว";
+        $this->redirect('admin/logs');
     }
 }

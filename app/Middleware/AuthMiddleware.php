@@ -5,7 +5,7 @@ use App\Core\Database;
 class AuthMiddleware {
     public static function check() {
         if (!isset($_SESSION['user_id'])) {
-            header('Location: ' . URLROOT . '/auth/login');
+            header('Location: ' . URLROOT . '/admin/login');
             exit;
         }
     }
@@ -30,8 +30,8 @@ class AuthMiddleware {
         
         if (!$row) {
             // User does not have permission
-            header('HTTP/1.0 403 Forbidden');
-            echo "403 Forbidden - You don't have permission to access this resource.";
+            http_response_code(403);
+            echo "<h1>403 Forbidden</h1><p>You do not have permission to access this resource.</p>";
             exit();
         }
     }
@@ -41,8 +41,8 @@ class AuthMiddleware {
         self::check();
         
         if ($_SESSION['user_role'] != $roleId && $_SESSION['user_role'] != 1) { // 1 = Super Admin
-            header('HTTP/1.0 403 Forbidden');
-            echo "403 Forbidden - Access denied.";
+            http_response_code(403);
+            echo "<h1>403 Forbidden</h1><p>Access denied.</p>";
             exit();
         }
     }
