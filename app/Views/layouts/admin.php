@@ -153,9 +153,10 @@
                 </div>
             </nav>
 
-            <main class="p-4">
-                <?php require_once '../app/Views/' . $view . '.php'; ?>
-            </main>
+            <!-- Page View Content -->
+            <div class="content-body">
+                <?php require_once APPROOT . '/app/Views/' . $view . '.php'; ?>
+            </div>
         </div>
     </div>
 

@@ -14,6 +14,10 @@ class AuthController extends Controller {
         $this->auditLog = new AuditLogService();
     }
 
+    public function index() {
+        $this->login();
+    }
+
     public function login() {
         // If already logged in, redirect to admin
         if(isset($_SESSION['user_id'])){

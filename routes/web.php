@@ -52,23 +52,31 @@ $router->get('/appointments', 'AppointmentController@index');
 $router->post('/appointment/store', 'AppointmentController@store');
 $router->get('/queue', 'QueueController@index');
 $router->get('/queue/kiosk', 'QueueController@kiosk');
-// Public Static Pages & Organization
+// Public Static Organization Pages
 $router->get('/page/about', 'PageController@about');
 $router->get('/page/executives', 'PageController@executives');
 $router->get('/page/vision', 'PageController@vision');
-$router->get('/page/rights', 'PageController@rights');
+$router->get('/page/patient-rights', 'PageController@rights');
 $router->get('/page/{slug}', 'PageController@show');
 
-
-
 // ============================================================================
-// ADMIN AUTHENTICATION & DASHBOARD
+// AUTHENTICATION & LOGIN ROUTES
 // ============================================================================
-$router->get('/admin/login', 'Admin\AuthController@loginForm');
+$router->get('/login', 'AuthController@login');
+$router->post('/login', 'AuthController@login');
+$router->get('/auth', 'AuthController@login');
+$router->get('/auth/login', 'AuthController@login');
+$router->post('/auth/login', 'AuthController@login');
+$router->get('/auth/logout', 'AuthController@logout');
+$router->get('/logout', 'AuthController@logout');
+
+$router->get('/admin/login', 'Admin\AuthController@login');
 $router->post('/admin/login', 'Admin\AuthController@login');
 $router->get('/admin/logout', 'Admin\AuthController@logout');
-$router->get('/auth/logout', 'Admin\AuthController@logout');
 
+// ============================================================================
+// ADMIN BACKEND ROUTES (CRUD)
+// ============================================================================
 $router->get('/admin', 'Admin\DashboardController@index');
 $router->get('/admin/dashboard', 'Admin\DashboardController@index');
 

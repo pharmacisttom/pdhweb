@@ -7,26 +7,46 @@ if (file_exists($envFilePath)) {
     foreach ($lines as $line) {
         if (strpos(trim($line), '#') === 0) continue;
         
-        list($name, $value) = explode('=', $line, 2);
-        $name = trim($name);
-        $value = trim($value);
-        
-        // Remove quotes if present
-        if (strpos($value, '"') === 0 && strrpos($value, '"') === strlen($value) - 1) {
-            $value = substr($value, 1, -1);
-        }
-        
-        if (!array_key_exists($name, $_SERVER) && !array_key_exists($name, $_ENV)) {
-            putenv(sprintf('%s=%s', $name, $value));
-            $_ENV[$name] = $value;
-            $_SERVER[$name] = $value;
+        $parts = explode('=', $line, 2);
+        if (count($parts) === 2) {
+            $name = trim($parts[0]);
+            $value = trim($parts[1]);
+            
+            // Remove quotes if present
+            if (strpos($value, '"') === 0 && strrpos($value, '"') === strlen($value) - 1) {
+                $value = substr($value, 1, -1);
+            }
+            
+            if (!array_key_exists($name, $_SERVER) && !array_key_exists($name, $_ENV)) {
+                putenv(sprintf('%s=%s', $name, $value));
+                $_ENV[$name] = $value;
+                $_SERVER[$name] = $value;
+            }
         }
     }
 }
 
-// Define some constants for easy access
-define('APP_URL', $_ENV['APP_URL'] ?? 'http://localhost/pdhweb');
-define('APP_NAME', $_ENV['APP_NAME'] ?? 'PDH Web');
+// Dynamic Base URL Auto-Detection for localhost and VPS / Custom Domains
+$autoScheme = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] == 1)) 
+    || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') 
+    ? 'https' : 'http';
+
+$autoHost = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? ''));
+$basePath = preg_replace('#/public$#i', '', $scriptDir);
+$basePath = ($basePath === '/' || $basePath === '\\' || $basePath === '.') ? '' : $basePath;
+$detectedUrl = $autoScheme . '://' . $autoHost . $basePath;
+
+$configuredUrl = $_ENV['APP_URL'] ?? '';
+
+// If configured URL is empty, or is localhost while accessed via a real domain/IP
+if (empty($configuredUrl) || (strpos($configuredUrl, 'localhost') !== false && !in_array($autoHost, ['localhost', '127.0.0.1']))) {
+    define('APP_URL', rtrim($detectedUrl, '/'));
+} else {
+    define('APP_URL', rtrim($configuredUrl, '/'));
+}
+
+define('APP_NAME', $_ENV['APP_NAME'] ?? 'โรงพยาบาลปลวกแดง');
 define('APP_ENV', $_ENV['APP_ENV'] ?? 'development');
 
 // Database configuration

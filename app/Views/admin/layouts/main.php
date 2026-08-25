@@ -77,7 +77,7 @@
             
             <!-- Content -->
             <div class="main-content">
-                <?php require_once '../app/Views/' . $view . '.php'; ?>
+                <?php require_once APPROOT . '/app/Views/' . $view . '.php'; ?>
             </div>
         </div>
     </div>

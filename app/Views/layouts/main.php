@@ -162,7 +162,7 @@
 
     <!-- Main Content Body -->
     <main class="main-content-wrapper">
-        <?php require_once '../app/Views/' . $view . '.php'; ?>
+        <?php require_once APPROOT . '/app/Views/' . $view . '.php'; ?>
     </main>
 
     <!-- Floating Social Contacts (FB Messenger & LINE OA) -->

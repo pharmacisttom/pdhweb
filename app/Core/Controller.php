@@ -5,7 +5,7 @@ class Controller {
     
     // Load model
     public function model($model) {
-        $modelPath = '../app/Models/' . $model . '.php';
+        $modelPath = APPROOT . '/app/Models/' . $model . '.php';
         if (file_exists($modelPath)) {
             require_once $modelPath;
             $modelClass = 'App\\Models\\' . $model;
@@ -16,17 +16,19 @@ class Controller {
 
     // Load view
     public function view($view, $data = [], $layout = 'main') {
+        $viewPath = APPROOT . '/app/Views/' . $view . '.php';
+        
         // Check for view file
-        if (file_exists('../app/Views/' . $view . '.php')) {
+        if (file_exists($viewPath)) {
             // Extract data to variables
             extract($data);
             
             // Require the layout which will include the view
-            if ($layout && file_exists('../app/Views/layouts/' . $layout . '.php')) {
-                require_once '../app/Views/layouts/' . $layout . '.php';
+            if ($layout && file_exists(APPROOT . '/app/Views/layouts/' . $layout . '.php')) {
+                require_once APPROOT . '/app/Views/layouts/' . $layout . '.php';
             } else {
                 // If no layout, just require the view
-                require_once '../app/Views/' . $view . '.php';
+                require_once $viewPath;
             }
         } else {
             // View does not exist
@@ -67,11 +69,11 @@ class Controller {
 
     // Check request method
     public function isPost() {
-        return $_SERVER['REQUEST_METHOD'] === 'POST';
+        return ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST';
     }
 
     public function isGet() {
-        return $_SERVER['REQUEST_METHOD'] === 'GET';
+        return ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'GET';
     }
 
     public function isAjax() {
