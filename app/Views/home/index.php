@@ -273,7 +273,7 @@
                                                 </div>
                                             </div>
                                             <div class="p-4 pt-0">
-                                                <a href="<?= URLROOT ?>/news/show/<?= $newsItem->slug ?: $newsItem->id ?>" class="btn btn-sm btn-outline-primary rounded-pill w-100">
+                                                <a href="<?= URLROOT ?>/news/<?= $newsItem->slug ?: $newsItem->id ?>" class="btn btn-sm btn-outline-primary rounded-pill w-100">
                                                     อ่านรายละเอียด <i class="bi bi-arrow-right ms-1"></i>
                                                 </a>
                                             </div>

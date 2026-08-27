@@ -41,9 +41,14 @@ class NewsController extends Controller {
         }
         
         $news = $this->newsModel->getBySlug($slug);
+        if (!$news && ctype_digit((string)$slug)) {
+            $news = $this->newsModel->getPublishedById((int)$slug);
+        }
         
         if(!$news) {
-            $this->redirect('news');
+            http_response_code(404);
+            $this->view('pages/404', ['page_title' => 'ไม่พบข่าวที่ต้องการ']);
+            return;
         }
         
         $db = new \App\Core\Database();

@@ -10,6 +10,7 @@ $router->get('/', 'HomeController@index');
 // Public News
 $router->get('/news', 'NewsController@index');
 $router->get('/news/{slug}', 'NewsController@show');
+$router->get('/news/show/{slug}', 'NewsController@show');
 
 // Public ITA / MOIT
 $router->get('/ita', 'ItaController@index');
@@ -35,6 +36,7 @@ $router->get('/doctors', 'DoctorController@index');
 $router->get('/doctor', 'DoctorController@index');
 $router->get('/clinics', 'ClinicController@index');
 $router->get('/clinic', 'ClinicController@index');
+$router->get('/clinic/show/{id}', 'ClinicController@show');
 $router->get('/services', 'ServiceController@index');
 $router->get('/service', 'ServiceController@index');
 $router->get('/department', 'DepartmentController@index');

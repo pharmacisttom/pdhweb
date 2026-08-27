@@ -71,7 +71,7 @@
             <?php foreach($newsList as $news): ?>
                 <div class="col-md-6 col-lg-4">
                     <div class="card news-card h-100">
-                        <a href="<?= URLROOT ?>/news/show/<?= $news->slug ?>" class="d-block news-card-img-wrapper bg-light text-decoration-none">
+                        <a href="<?= URLROOT ?>/news/<?= $news->slug ?: $news->id ?>" class="d-block news-card-img-wrapper bg-light text-decoration-none">
                             <?php if(!empty($news->pdf_file) && ($news->cover_image == 'default-news.jpg' || empty($news->cover_image))): ?>
                                 <!-- Use PDF.js to render first page as thumbnail -->
                                 <div class="pdf-thumbnail-container d-flex align-items-center justify-content-center w-100 h-100" data-pdf-url="<?= URLROOT ?>/assets/docs/news/<?= htmlspecialchars($news->pdf_file) ?>">
@@ -106,7 +106,7 @@
                                 <i class="bi bi-calendar3 me-2 text-primary"></i> <?= date('d M Y', strtotime($news->published_at)) ?>
                             </div>
                             <h5 class="card-title fw-bold text-dark mb-3" style="line-height: 1.5;">
-                                <a href="<?= URLROOT ?>/news/show/<?= $news->slug ?>" class="text-decoration-none text-dark hover-primary">
+                                <a href="<?= URLROOT ?>/news/<?= $news->slug ?: $news->id ?>" class="text-decoration-none text-dark hover-primary">
                                     <?= mb_strimwidth(htmlspecialchars($news->title), 0, 70, '...') ?>
                                 </a>
                             </h5>

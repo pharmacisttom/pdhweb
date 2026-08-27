@@ -41,6 +41,12 @@ class News extends Model {
         return $this->db->single();
     }
 
+    public function getPublishedById($id) {
+        $this->db->query('SELECT n.*, u.firstname, u.lastname FROM news n LEFT JOIN users u ON n.created_by = u.id WHERE n.id = :id AND n.status = "published" AND n.deleted_at IS NULL');
+        $this->db->bind(':id', (int)$id);
+        return $this->db->single();
+    }
+
     public function create($data) {
         $this->db->query('INSERT INTO news (title, slug, summary, content, cover_image, pdf_file, category, status, published_at, created_by) VALUES (:title, :slug, :summary, :content, :cover_image, :pdf_file, :category, :status, :published_at, :created_by)');
         $this->db->bind(':title', $data['title']);

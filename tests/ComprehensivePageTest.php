@@ -14,6 +14,7 @@ $routesToTest = [
     '/csr' => 'CSR Partnerships',
     '/doctors' => 'Doctors Index',
     '/clinics' => 'Clinics Index',
+    '/clinic/show/1' => 'Clinic Detail',
     '/services' => 'Services Index',
     '/department' => 'Departments Index',
     '/departments' => 'Departments Index 2',
