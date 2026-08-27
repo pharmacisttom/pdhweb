@@ -29,6 +29,9 @@ $expected = [
     'GET /admin/users',
     'POST /admin/users/create',
     'POST /admin/settings/updateFeatures',
+    'GET /csr',
+    'GET /admin/csr',
+    'POST /admin/csr/create',
 ];
 
 $failed = 0;

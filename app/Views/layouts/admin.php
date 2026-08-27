@@ -106,6 +106,9 @@
                     </ul>
                 </li>
                 <li>
+                    <a href="<?= URLROOT ?>/admin/csr"><i class="bi bi-people-fill"></i> <span>โครงการ CSR</span></a>
+                </li>
+                <li>
                     <a href="<?= URLROOT ?>/admin/complaint"><i class="bi bi-chat-square-dots"></i> <span>เรื่องร้องเรียน</span></a>
                 </li>
                 <li>

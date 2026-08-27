@@ -27,6 +27,9 @@ $router->get('/donations', 'DonationController@index');
 $router->get('/donation/show/{id}', 'DonationController@show');
 $router->post('/donation/store', 'DonationController@store');
 
+// Public corporate social responsibility partnerships
+$router->get('/csr', 'CsrController@index');
+
 // Public Medical Services & Doctors
 $router->get('/doctors', 'DoctorController@index');
 $router->get('/doctor', 'DoctorController@index');
@@ -178,6 +181,14 @@ $router->get('/admin/donation/edit/{id}', 'Admin\DonationController@edit');
 $router->post('/admin/donation/update/{id}', 'Admin\DonationController@update');
 $router->post('/admin/donation/updateStatus/{id}', 'Admin\DonationController@updateStatus');
 $router->post('/admin/donation/delete/{id}', 'Admin\DonationController@delete');
+
+// 7.1 CSR partnerships
+$router->get('/admin/csr', 'Admin\CsrController@index');
+$router->get('/admin/csr/create', 'Admin\CsrController@create');
+$router->post('/admin/csr/create', 'Admin\CsrController@store');
+$router->get('/admin/csr/edit/{id}', 'Admin\CsrController@edit');
+$router->post('/admin/csr/update/{id}', 'Admin\CsrController@update');
+$router->post('/admin/csr/delete/{id}', 'Admin\CsrController@delete');
 
 
 // 8. Procurements (จัดซื้อจัดจ้าง)

@@ -136,6 +136,11 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link <?= (isset($_GET['url']) && str_starts_with($_GET['url'], 'csr')) ? 'active' : '' ?>" href="<?= URLROOT ?>/csr">
+                                <i class="bi bi-people-fill me-1"></i> CSR ร่วมพัฒนา
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link <?= (isset($_GET['url']) && str_starts_with($_GET['url'], 'ita')) ? 'active' : '' ?>" href="<?= URLROOT ?>/ita">
                                 <i class="bi bi-shield-check me-1"></i> ITA / MOIT
                             </a>

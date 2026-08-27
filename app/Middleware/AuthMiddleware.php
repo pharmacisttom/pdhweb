@@ -69,6 +69,7 @@ class AuthMiddleware {
             'DoctorController' => 'doctors',
             'DonationController' => 'donations',
             'DonationItemController' => 'donations',
+            'CsrController' => 'pages',
             'ProcurementController' => 'procurements',
             'ComplaintController' => 'complaints',
             'AppointmentController' => 'appointments',

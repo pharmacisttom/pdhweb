@@ -659,6 +659,49 @@ body { background: #f6f9fb; color: #183047; letter-spacing: 0.005em; }
 .btn-modern-outline { border-color: #81bddb; color: #0b5e96 !important; }
 .footer-section { background: #09304e; }
 
+/* Corporate social responsibility partnership page. */
+.csr-page { background: #f6f9fb; }
+.csr-hero { overflow: hidden; padding: 82px 0 74px; color: #ffffff; background: radial-gradient(circle at 82% 20%, rgba(102, 206, 183, 0.38), transparent 28%), linear-gradient(120deg, #063c61 0%, #0b5e96 55%, #167a91 100%); }
+.csr-hero h1 { max-width: 720px; margin: 16px 0 20px; font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 700; line-height: 1.12; letter-spacing: -0.04em; }
+.csr-hero h1 span { color: #bdeedb; }
+.csr-hero > .container { z-index: 1; }
+.csr-hero p { max-width: 670px; color: rgba(255,255,255,0.8); font-size: 1.08rem; line-height: 1.8; }
+.csr-eyebrow, .csr-section-kicker { display: inline-flex; align-items: center; gap: 8px; color: #65d1b5; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.12em; }
+.csr-btn-light { color: #07527c; background: #ffffff; font-weight: 700; }
+.csr-btn-light:hover { color: #ffffff; background: #0a4d77; }
+.csr-btn-outline { color: #ffffff; border: 1px solid rgba(255,255,255,0.65); font-weight: 600; }
+.csr-btn-outline:hover { color: #063c61; background: #ffffff; }
+.csr-hero-card { position: relative; padding: 32px; overflow: hidden; color: #123a59; background: #ffffff; border-radius: 26px; box-shadow: 0 24px 50px rgba(2, 34, 54, 0.24); }
+.csr-hero-card__icon { display: grid; width: 54px; height: 54px; margin-bottom: 35px; place-items: center; color: #ffffff; background: #0a7390; border-radius: 18px; font-size: 1.45rem; }
+.csr-hero-card h2 { font-size: clamp(1.6rem, 3vw, 2.25rem); font-weight: 700; line-height: 1.22; }
+.csr-hero-card p { color: #607080; font-size: 0.92rem; line-height: 1.7; }
+.csr-hero-card__line { width: 64px; height: 4px; margin: 20px 0; background: #55c4a8; border-radius: 999px; }
+.csr-intro { background: #ffffff; }
+.csr-section-title { margin-top: 10px; color: #173a56; font-size: clamp(1.85rem, 3vw, 2.65rem); font-weight: 700; line-height: 1.22; letter-spacing: -0.025em; }
+.csr-value { height: 100%; padding: 28px; border: 1px solid #dceaf0; border-radius: 18px; background: #ffffff; }
+.csr-value i { display: grid; width: 42px; height: 42px; margin-bottom: 18px; place-items: center; color: #0b5e96; background: #e7f5fa; border-radius: 13px; font-size: 1.15rem; }
+.csr-value h3 { color: #173a56; font-size: 1.1rem; font-weight: 700; }
+.csr-value p { margin: 0; color: #607080; font-size: 0.92rem; line-height: 1.7; }
+.csr-projects { background: #eff7f8; }
+.csr-text-link { color: #08718a; font-weight: 700; text-decoration: none; }
+.csr-text-link:hover { color: #074976; }
+.csr-project-card { overflow: hidden; background: #ffffff; border: 1px solid #dbe9ee; border-radius: 18px; box-shadow: 0 9px 22px rgba(31,76,105,0.06); }
+.csr-project-card__image { width: 100%; height: 205px; object-fit: cover; }
+.csr-project-card__placeholder { display: grid; place-items: center; color: #16829b; background: linear-gradient(135deg, #d9f2f0, #e5f2fb); font-size: 3rem; }
+.csr-project-card__body { padding: 23px; }
+.csr-project-card__company { margin-bottom: 8px; color: #078195; font-size: 0.77rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+.csr-project-card h3 { color: #173a56; font-size: 1.2rem; font-weight: 700; }
+.csr-project-card__body > p:not(.csr-project-card__company) { color: #607080; font-size: 0.9rem; line-height: 1.65; }
+.csr-project-card__impact { display: flex; gap: 8px; align-items: flex-start; padding: 11px 12px; color: #16725f; background: #edf9f5; border-radius: 10px; font-size: 0.82rem; font-weight: 600; }
+.csr-project-card__impact i { color: #d75955; }
+.csr-empty-state { padding: 62px 20px; text-align: center; color: #607080; background: #ffffff; border: 1px dashed #b9d7df; border-radius: 20px; }
+.csr-empty-state > i { display: block; margin-bottom: 13px; color: #28a98f; font-size: 2.4rem; }
+.csr-empty-state h3 { color: #173a56; font-size: 1.25rem; font-weight: 700; }
+.csr-cta { background: #f6f9fb; }
+.csr-cta__panel { display: flex; align-items: center; justify-content: space-between; gap: 34px; padding: 46px; color: #ffffff; background: linear-gradient(110deg, #0b5e96, #087d8a); border-radius: 24px; }
+.csr-cta__panel h2 { margin: 10px 0; font-size: clamp(1.7rem, 3vw, 2.5rem); font-weight: 700; line-height: 1.2; }
+.csr-cta__panel p { max-width: 660px; margin: 0; color: rgba(255,255,255,0.78); }
+
 /* Cookie notice is intentionally session-based so it is shown when a visitor starts a new session. */
 .cookie-consent {
     position: fixed;
@@ -720,4 +763,8 @@ body { background: #f6f9fb; color: #183047; letter-spacing: 0.005em; }
     .floating-social-widget { bottom: 18px; right: 18px; }
     .cookie-consent { right: 12px; bottom: 12px; left: 12px; grid-template-columns: auto minmax(0, 1fr); gap: 12px; padding: 16px; }
     .cookie-consent__actions { grid-column: 1 / -1; justify-content: space-between; }
+    .csr-hero { padding: 56px 0; }
+    .csr-hero-card { padding: 26px; }
+    .csr-cta__panel { display: block; padding: 30px; }
+    .csr-cta__panel .btn { margin-top: 24px; }
 }

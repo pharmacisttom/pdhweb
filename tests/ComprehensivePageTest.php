@@ -11,6 +11,7 @@ $routesToTest = [
     '/hrms' => 'HRMS Index',
     '/donation' => 'Donation Index',
     '/donations' => 'Donations Index',
+    '/csr' => 'CSR Partnerships',
     '/doctors' => 'Doctors Index',
     '/clinics' => 'Clinics Index',
     '/services' => 'Services Index',
