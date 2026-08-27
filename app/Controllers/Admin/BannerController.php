@@ -91,9 +91,16 @@ class BannerController extends Controller {
             
             $image_file = '';
             if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] === UPLOAD_ERR_OK) {
-                $uploadDir = '../public/assets/images/banners/';
-                if (!is_dir($uploadDir)) {
-                    mkdir($uploadDir, 0777, true);
+                $uploadDir = APPROOT . '/public/assets/images/banners/';
+                if (!is_dir($uploadDir) && !mkdir($uploadDir, 0775, true)) {
+                    $this->setFlash('banner_error', 'ไม่สามารถสร้างโฟลเดอร์อัปโหลดแบนเนอร์ได้', 'danger');
+                    $this->redirect('admin/banner/create');
+                    return;
+                }
+                if (!is_writable($uploadDir)) {
+                    $this->setFlash('banner_error', 'โฟลเดอร์แบนเนอร์ไม่มีสิทธิ์เขียนไฟล์ กรุณาตรวจสอบสิทธิ์บนเซิร์ฟเวอร์', 'danger');
+                    $this->redirect('admin/banner/create');
+                    return;
                 }
                 $fileType = strtolower(pathinfo($_FILES['image_file']['name'], PATHINFO_EXTENSION));
                 $fileName = time() . '_' . substr(md5(uniqid()), 0, 8) . '.' . $fileType;
@@ -154,9 +161,16 @@ class BannerController extends Controller {
             $image_file = $banner->image_file;
             
             if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] === UPLOAD_ERR_OK) {
-                $uploadDir = '../public/assets/images/banners/';
-                if (!is_dir($uploadDir)) {
-                    mkdir($uploadDir, 0777, true);
+                $uploadDir = APPROOT . '/public/assets/images/banners/';
+                if (!is_dir($uploadDir) && !mkdir($uploadDir, 0775, true)) {
+                    $this->setFlash('banner_error', 'ไม่สามารถสร้างโฟลเดอร์อัปโหลดแบนเนอร์ได้', 'danger');
+                    $this->redirect('admin/banner/edit/' . $id);
+                    return;
+                }
+                if (!is_writable($uploadDir)) {
+                    $this->setFlash('banner_error', 'โฟลเดอร์แบนเนอร์ไม่มีสิทธิ์เขียนไฟล์ กรุณาตรวจสอบสิทธิ์บนเซิร์ฟเวอร์', 'danger');
+                    $this->redirect('admin/banner/edit/' . $id);
+                    return;
                 }
                 $fileType = strtolower(pathinfo($_FILES['image_file']['name'], PATHINFO_EXTENSION));
                 $fileName = time() . '_' . substr(md5(uniqid()), 0, 8) . '.' . $fileType;
@@ -197,7 +211,7 @@ class BannerController extends Controller {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             \App\Helpers\Security::validateCsrf();
             $banner = $this->bannerModel->getById($id);
-            $uploadDir = '../public/assets/images/banners/';
+            $uploadDir = APPROOT . '/public/assets/images/banners/';
             
             if ($this->bannerModel->delete($id)) {
                 if (!empty($banner->image_file) && file_exists($uploadDir . $banner->image_file)) {

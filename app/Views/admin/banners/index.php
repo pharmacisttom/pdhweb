@@ -84,6 +84,7 @@
                         </tr>
                     <?php else: ?>
                         <?php foreach($banners as $index => $banner): ?>
+                            <?php $creatorName = is_string($banner->firstname ?? null) ? $banner->firstname : 'Admin'; ?>
                             <tr>
                                 <!-- Reorder Buttons (Up & Down) -->
                                 <td class="text-center">
@@ -141,7 +142,7 @@
 
                                 <!-- Created By -->
                                 <td class="text-muted small">
-                                    <?= htmlspecialchars($banner->firstname ?? 'Admin') ?>
+                                    <?= htmlspecialchars($creatorName) ?>
                                 </td>
 
                                 <!-- Actions -->
