@@ -23,7 +23,7 @@ class AppointmentController extends Controller {
         $department_id = !empty($_GET['department_id']) ? (int)$_GET['department_id'] : null;
 
         $departments = $this->departmentModel->getAll();
-        $clinics = $this->clinicModel->getAll();
+        $clinics = $this->clinicModel->getAppointmentEnabled();
         $doctors = $this->doctorModel->getAll();
 
         // Get monthly capacity and booked slots
@@ -48,16 +48,18 @@ class AppointmentController extends Controller {
     // AJAX Endpoint to get specific date slots
     public function getSlots() {
         $date = $_GET['date'] ?? date('Y-m-d');
-        $dept_id = !empty($_GET['dept_id']) ? (int)$_GET['dept_id'] : null;
+        $clinicId = !empty($_GET['clinic_id']) ? (int)$_GET['clinic_id'] : null;
+        $clinic = $clinicId ? $this->clinicModel->getAppointmentEnabledById($clinicId) : null;
+        if ($clinicId && !$clinic) return $this->json(['error' => 'Clinic is not available for appointments'], 404);
 
         $db = new \App\Core\Database();
         $sql = 'SELECT time_slot, COUNT(*) as booked FROM appointments WHERE appointment_date = :d AND status != "cancelled" AND deleted_at IS NULL';
-        if ($dept_id) $sql .= ' AND department_id = :dept';
+        if ($clinic) $sql .= ' AND clinic_id = :clinic_id';
         $sql .= ' GROUP BY time_slot';
 
         $db->query($sql);
         $db->bind(':d', $date);
-        if ($dept_id) $db->bind(':dept', $dept_id);
+        if ($clinic) $db->bind(':clinic_id', $clinicId);
         $rows = $db->resultSet() ?: [];
 
         $morningBooked = 0;
@@ -67,7 +69,7 @@ class AppointmentController extends Controller {
             if ($r->time_slot === 'afternoon') $afternoonBooked = (int)$r->booked;
         }
 
-        $slotMax = 25;
+        $slotMax = $clinic ? (int)$clinic->appointment_slot_quota : 25;
         return $this->json([
             'date' => $date,
             'morning' => [
@@ -90,13 +92,14 @@ class AppointmentController extends Controller {
     public function store() {
         if ($this->isPost()) {
             \App\Helpers\Security::validateCsrf();
-            $_POST = \App\Helpers\Security::xssClean($_POST);
-
             $appointmentDate = trim($_POST['appointment_date'] ?? '');
             $phone = trim($_POST['phone'] ?? '');
+            $clinic = $this->clinicModel->getAppointmentEnabledById((int)($_POST['clinic_id'] ?? 0));
             if (!\App\Helpers\Security::isValidDate($appointmentDate)
                 || $appointmentDate < date('Y-m-d')
                 || !\App\Helpers\Security::isValidThaiPhone($phone)
+                || !$clinic
+                || empty($clinic->department_id)
                 || !in_array($_POST['time_slot'] ?? '', ['morning', 'afternoon'], true)) {
                 $this->setFlash('app_error', 'กรุณาตรวจสอบวันที่นัด ช่วงเวลา และหมายเลขโทรศัพท์ให้ถูกต้อง', 'warning');
                 $this->redirect('appointment');
@@ -108,8 +111,9 @@ class AppointmentController extends Controller {
                 'hn_number' => trim($_POST['hn_number'] ?? ''),
                 'patient_name' => trim($_POST['patient_name'] ?? ''),
                 'phone' => $phone,
-                'department_id' => (int)$_POST['department_id'],
-                'clinic_id' => !empty($_POST['clinic_id']) ? (int)$_POST['clinic_id'] : null,
+                'department_id' => (int)$clinic->department_id,
+                'clinic_id' => (int)$clinic->id,
+                'slot_quota' => (int)$clinic->appointment_slot_quota,
                 'doctor_id' => !empty($_POST['doctor_id']) ? (int)$_POST['doctor_id'] : null,
                 'appointment_date' => $appointmentDate,
                 'time_slot' => $_POST['time_slot'] ?? 'morning',

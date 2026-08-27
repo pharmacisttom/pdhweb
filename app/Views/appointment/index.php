@@ -225,7 +225,7 @@
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-muted">2. แผนกที่ต้องการตรวจ <span class="text-danger">*</span></label>
-                            <select name="department_id" class="form-select form-control-modern" required>
+                            <select name="department_id" id="appointmentDepartment" class="form-select form-control-modern" required>
                                 <?php foreach($departments as $dept): ?>
                                     <option value="<?= $dept->id ?>"><?= htmlspecialchars($dept->name) ?></option>
                                 <?php endforeach; ?>
@@ -233,10 +233,10 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-muted">คลินิกเฉพาะโรค (ทางเลือก)</label>
-                            <select name="clinic_id" class="form-select form-control-modern">
-                                <option value="">-- ไม่ระบุ / ตรวจทั่วไป --</option>
+                            <select name="clinic_id" id="appointmentClinic" class="form-select form-control-modern" required>
+                                <option value="">-- เลือกคลินิกที่เปิดรับนัด --</option>
                                 <?php foreach($clinics as $c): ?>
-                                    <option value="<?= $c->id ?>"><?= htmlspecialchars($c->name) ?></option>
+                                    <option value="<?= $c->id ?>" data-department-id="<?= (int)$c->department_id ?>" data-slot-quota="<?= (int)$c->appointment_slot_quota ?>"><?= htmlspecialchars($c->name) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -311,7 +311,8 @@ function selectBookingDate(dateStr, availableCount) {
     document.getElementById('modalSelectedDateText').innerHTML = 'วันที่เลือก: <strong>' + thaiDateText + '</strong> (ว่าง ' + availableCount + ' คิว)';
     
     // Fetch live slot counts
-    fetch('<?= URLROOT ?>/appointment/getSlots?date=' + dateStr)
+    const selectedClinicId = document.getElementById('appointmentClinic').value;
+    fetch('<?= URLROOT ?>/appointment/getSlots?date=' + dateStr + '&clinic_id=' + encodeURIComponent(selectedClinicId))
         .then(res => res.json())
         .then(data => {
             if (data.morning) {
@@ -346,4 +347,17 @@ function selectBookingDate(dateStr, availableCount) {
     const modal = new bootstrap.Modal(document.getElementById('bookingModal'));
     modal.show();
 }
+
+document.getElementById('appointmentClinic').addEventListener('change', function () {
+    const selectedOption = this.options[this.selectedIndex];
+    const departmentId = selectedOption.dataset.departmentId;
+    if (departmentId) {
+        document.getElementById('appointmentDepartment').value = departmentId;
+    }
+
+    const selectedDate = document.getElementById('formAppointmentDate').value;
+    if (selectedDate && this.value) {
+        selectBookingDate(selectedDate, 0);
+    }
+});
 </script>

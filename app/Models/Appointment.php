@@ -113,12 +113,12 @@ class Appointment extends Model {
      * Generate unique booking reference and queue code
      */
     public function createSmartAppointment($data) {
-        $this->db->query('SELECT COUNT(*) as count FROM appointments WHERE appointment_date = :date AND time_slot = :time_slot AND department_id = :department_id AND status != "cancelled" AND deleted_at IS NULL');
+        $this->db->query('SELECT COUNT(*) as count FROM appointments WHERE appointment_date = :date AND time_slot = :time_slot AND clinic_id = :clinic_id AND status != "cancelled" AND deleted_at IS NULL');
         $this->db->bind(':date', $data['appointment_date']);
         $this->db->bind(':time_slot', $data['time_slot']);
-        $this->db->bind(':department_id', $data['department_id']);
+        $this->db->bind(':clinic_id', $data['clinic_id']);
         $capacity = $this->db->single();
-        if ((int)($capacity->count ?? 0) >= 25) {
+        if ((int)($capacity->count ?? 0) >= (int)($data['slot_quota'] ?? 25)) {
             return false;
         }
 

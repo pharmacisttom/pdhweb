@@ -45,7 +45,9 @@ class ClinicController extends Controller {
                 'location' => trim($_POST['location']),
                 'phone' => trim($_POST['phone']),
                 'note' => trim($_POST['note']),
-                'status' => trim($_POST['status'])
+                'status' => trim($_POST['status']),
+                'appointment_enabled' => isset($_POST['appointment_enabled']) ? 1 : 0,
+                'appointment_slot_quota' => max(1, min(100, (int)($_POST['appointment_slot_quota'] ?? 25)))
             ];
 
             if ($this->clinicModel->create($data)) {
@@ -81,7 +83,9 @@ class ClinicController extends Controller {
                 'location' => trim($_POST['location']),
                 'phone' => trim($_POST['phone']),
                 'note' => trim($_POST['note']),
-                'status' => trim($_POST['status'])
+                'status' => trim($_POST['status']),
+                'appointment_enabled' => isset($_POST['appointment_enabled']) ? 1 : 0,
+                'appointment_slot_quota' => max(1, min(100, (int)($_POST['appointment_slot_quota'] ?? 25)))
             ];
 
             if ($this->clinicModel->update($data)) {

@@ -55,6 +55,13 @@
             </div>
 
             <div class="col-12">
+                <div class="p-3 rounded-4 border bg-light d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+                    <div><div class="fw-bold text-dark">เปิดรับนัดออนไลน์สำหรับคลินิกนี้</div><small class="text-muted">เปิดเฉพาะคลินิกที่พร้อมให้ประชาชนจอง เช่น SMC</small></div>
+                    <div class="d-flex align-items-center gap-3"><div><label class="form-label small text-muted mb-1">โควตาต่อช่วงเวลา</label><input type="number" min="1" max="100" class="form-control form-control-sm" name="appointment_slot_quota" value="25"></div><div class="form-check form-switch mt-3"><input class="form-check-input" type="checkbox" name="appointment_enabled" id="appointment_enabled"><label class="form-check-label fw-bold" for="appointment_enabled">เปิดรับนัด</label></div></div>
+                </div>
+            </div>
+
+            <div class="col-12">
                 <label class="form-label fw-bold small text-dark">หมายเหตุ / คำแนะนำเพิ่มเติม</label>
                 <input type="text" class="form-control rounded-3 py-2" name="note" placeholder="เช่น ต้องนัดหมายล่วงหน้า หรือ ต้องมีใบส่งตัว">
             </div>
