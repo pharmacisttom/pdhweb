@@ -16,6 +16,7 @@
     $fbMessenger = $siteSettings['facebook_messenger_url'] ?? 'https://m.me/pluakdaenghospital';
     $lineOaId = $siteSettings['line_oa_id'] ?? '@pluakdaenghos';
     $lineUrl = $siteSettings['line_add_friend_url'] ?? 'https://page.line.me/pluakdaenghos';
+    $queueEnabled = ($siteSettings['queue_enabled'] ?? '0') === '1';
 ?>
 <!DOCTYPE html>
 <html lang="th">
@@ -122,11 +123,13 @@
                                 ข่าวสาร
                             </a>
                         </li>
+                        <?php if ($queueEnabled): ?>
                         <li class="nav-item">
                             <a class="nav-link <?= (isset($_GET['url']) && str_starts_with($_GET['url'], 'queue')) ? 'active' : '' ?>" href="<?= URLROOT ?>/queue">
                                 <span class="badge bg-danger text-white rounded-pill px-2 py-1 me-1"><i class="bi bi-broadcast"></i></span> ระบบคิว
                             </a>
                         </li>
+                        <?php endif; ?>
                         <li class="nav-item">
                             <a class="nav-link <?= (isset($_GET['url']) && str_starts_with($_GET['url'], 'donation')) ? 'active' : '' ?>" href="<?= URLROOT ?>/donations">
                                 <i class="bi bi-heart-fill text-danger me-1"></i> ร่วมบริจาค
@@ -215,7 +218,7 @@
                     <ul class="list-unstyled">
                         <li><a href="<?= URLROOT ?>/doctors" class="footer-link">ค้นหาแพทย์</a></li>
                         <li><a href="<?= URLROOT ?>/clinics" class="footer-link">ตารางออกตรวจ</a></li>
-                        <li><a href="<?= URLROOT ?>/queue" class="footer-link">ระบบคิวตรวจ</a></li>
+                        <?php if ($queueEnabled): ?><li><a href="<?= URLROOT ?>/queue" class="footer-link">ระบบคิวตรวจ</a></li><?php endif; ?>
                         <li><a href="<?= URLROOT ?>/donations" class="footer-link">ร่วมบริจาค</a></li>
                         <li><a href="<?= URLROOT ?>/complaint" class="footer-link">รับเรื่องร้องเรียน</a></li>
                     </ul>

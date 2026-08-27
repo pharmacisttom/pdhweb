@@ -9,14 +9,31 @@ class QueueController extends Controller {
     private $queueModel;
     private $departmentModel;
     private $doctorModel;
+    private $queueEnabled = false;
 
     public function __construct() {
         $this->queueModel = $this->model('Queue');
         $this->departmentModel = $this->model('Department');
         $this->doctorModel = $this->model('Doctor');
+
+        $db = new \App\Core\Database();
+        $db->query("SELECT setting_value FROM settings WHERE setting_key = 'queue_enabled'");
+        $setting = $db->single();
+        $this->queueEnabled = $setting && $setting->setting_value === '1';
+    }
+
+    private function ensureEnabled() {
+        if ($this->queueEnabled) {
+            return true;
+        }
+
+        http_response_code(404);
+        $this->view('pages/404', ['page_title' => 'ไม่พบหน้าที่ต้องการ (404 Not Found)']);
+        return false;
     }
 
     public function index() {
+        if (!$this->ensureEnabled()) return;
         $departments = $this->departmentModel->getAll();
         
         $data = [
@@ -29,6 +46,7 @@ class QueueController extends Controller {
 
     // Smart Kiosk: กดรับบัตรคิวออนไลน์
     public function kiosk() {
+        if (!$this->ensureEnabled()) return;
         $departments = $this->departmentModel->getAll();
         
         $data = [
@@ -41,6 +59,7 @@ class QueueController extends Controller {
 
     // Store Ticket from Kiosk
     public function getTicket() {
+        if (!$this->ensureEnabled()) return;
         if ($this->isPost()) {
             \App\Helpers\Security::validateCsrf();
             $_POST = \App\Helpers\Security::xssClean($_POST);
@@ -78,6 +97,7 @@ class QueueController extends Controller {
 
     // View Smart Ticket Card
     public function ticket($id) {
+        if (!$this->ensureEnabled()) return;
         $queue = $this->queueModel->getById($id);
         if (!$queue) {
             $this->redirect('queue');
@@ -117,6 +137,7 @@ class QueueController extends Controller {
 
     // JSON API for Mobile Ticket Live Polling
     public function liveTicketStatus($id) {
+        if (!$this->ensureEnabled()) return;
         $queue = $this->queueModel->getById($id);
         if (!$queue) {
             return $this->json(['error' => 'Not found'], 404);
@@ -145,6 +166,7 @@ class QueueController extends Controller {
 
     // Examination Room Calling Station (หน้าจอแพทย์/พยาบาลกดเรียกคิวประจำห้องตรวจ)
     public function room($room_number = '1') {
+        if (!$this->ensureEnabled()) return;
         AuthMiddleware::checkPermission('queues.manage');
         $departments = $this->departmentModel->getAll();
         $department_id = (int)($_GET['department_id'] ?? 1);
@@ -168,6 +190,7 @@ class QueueController extends Controller {
 
     // Single Room Door Display (จอทีวี/แท็บเล็ตแสดงผลหน้าห้องตรวจพร้อมเสียงเรียก)
     public function door($room_number = '1') {
+        if (!$this->ensureEnabled()) return;
         $department_id = (int)($_GET['department_id'] ?? 1);
         $department = $this->departmentModel->getById($department_id);
         $currentQueue = $this->queueModel->getCallingQueueForRoom($room_number);
@@ -187,6 +210,7 @@ class QueueController extends Controller {
 
     // JSON API for Door Screen Live Polling
     public function liveRoomStatus($room_number = '1') {
+        if (!$this->ensureEnabled()) return;
         $department_id = (int)($_GET['department_id'] ?? 1);
         $currentQueue = $this->queueModel->getCallingQueueForRoom($room_number);
         $nextQueues = $this->queueModel->getNextWaitingQueues($department_id, 3);
@@ -209,6 +233,7 @@ class QueueController extends Controller {
 
     // Action execution (Call, Recall, Complete, Skip)
     public function callAction() {
+        if (!$this->ensureEnabled()) return;
         AuthMiddleware::checkPermission('queues.manage');
         if ($this->isPost()) {
             \App\Helpers\Security::validateCsrf();
@@ -236,6 +261,7 @@ class QueueController extends Controller {
 
     // Smart Display Screen for Hospital TVs with Thai Voice Announcer
     public function display($department_id = null) {
+        if (!$this->ensureEnabled()) return;
         $departments = $this->departmentModel->getAll();
         
         if (!$department_id && !empty($departments)) {

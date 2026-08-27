@@ -95,6 +95,13 @@ class ApiController extends Controller {
 
     // GET /api/queue
     public function queue() {
+        $db = new \App\Core\Database();
+        $db->query("SELECT setting_value FROM settings WHERE setting_key = 'queue_enabled'");
+        $setting = $db->single();
+        if (!$setting || $setting->setting_value !== '1') {
+            return $this->json(['error' => 'Not found'], 404);
+        }
+
         $queueModel = $this->model('Queue');
         $departmentModel = $this->model('Department');
         

@@ -171,4 +171,18 @@ class SettingsController extends Controller {
             $this->redirect('admin/settings');
         }
     }
+
+    public function updateFeatures() {
+        if (!$this->isPost()) {
+            return;
+        }
+
+        \App\Helpers\Security::validateCsrf();
+        $enabled = isset($_POST['queue_enabled']) ? '1' : '0';
+        $this->db->query("INSERT INTO settings (setting_key, setting_value) VALUES ('queue_enabled', :value) ON DUPLICATE KEY UPDATE setting_value = :value");
+        $this->db->bind(':value', $enabled);
+        $this->db->execute();
+        $this->setFlash('settings_success', 'บันทึกการเปิดใช้งานระบบคิวแล้ว');
+        $this->redirect('admin/settings');
+    }
 }

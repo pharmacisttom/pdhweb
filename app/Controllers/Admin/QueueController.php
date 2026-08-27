@@ -11,6 +11,15 @@ class QueueController extends Controller {
 
     public function __construct() {
         AuthMiddleware::check();
+
+        $db = new \App\Core\Database();
+        $db->query("SELECT setting_value FROM settings WHERE setting_key = 'queue_enabled'");
+        $setting = $db->single();
+        if (!$setting || $setting->setting_value !== '1') {
+            $this->setFlash('settings_warning', 'ระบบคิวยังไม่เปิดใช้งาน กรุณาเปิดจากการตั้งค่าระบบก่อน', 'warning');
+            $this->redirect('admin/settings');
+        }
+
         $this->queueModel = $this->model('Queue');
         $this->departmentModel = $this->model('Department');
     }

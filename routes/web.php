@@ -226,6 +226,7 @@ $router->post('/admin/settings/updateHospital', 'Admin\SettingsController@update
 $router->post('/admin/settings/updateSocial', 'Admin\SettingsController@updateSocial');
 $router->post('/admin/settings/testLineNotify', 'Admin\SettingsController@testLineNotify');
 $router->post('/admin/settings/updateCategories', 'Admin\SettingsController@updateCategories');
+$router->post('/admin/settings/updateFeatures', 'Admin\SettingsController@updateFeatures');
 
 // User and role administration
 $router->get('/admin/users', 'Admin\UserController@index');

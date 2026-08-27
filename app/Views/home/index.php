@@ -85,6 +85,7 @@
             </a>
         </div>
 
+        <?php if ($queueEnabled): ?>
         <!-- 3. Smart Queue -->
         <div class="col-6 col-lg-3">
             <a href="<?= URLROOT ?>/queue" class="fast-track-card">
@@ -96,6 +97,7 @@
             </a>
         </div>
 
+        <?php endif; ?>
         <!-- 4. E-Donation -->
         <div class="col-6 col-lg-3">
             <a href="<?= URLROOT ?>/donations" class="fast-track-card">
@@ -178,6 +180,7 @@
     </div>
 </section>
 
+<?php if ($queueEnabled): ?>
 <!-- Smart Hospital Queue & Kiosk Banner -->
 <section class="py-3 mb-5">
     <div class="container">
@@ -214,6 +217,7 @@
     </div>
 </section>
 
+<?php endif; ?>
 <!-- Latest News Section with Dynamic Tabs -->
 <section class="py-4 mb-5">
     <div class="container">

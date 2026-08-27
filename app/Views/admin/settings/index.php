@@ -191,6 +191,24 @@
 
     <!-- TAB 2: HOSPITAL PROFILE -->
     <div class="tab-pane fade" id="hospital" role="tabpanel">
+        <div class="card-modern p-4 mb-4">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                <div>
+                    <h5 class="fw-bold text-dark mb-1"><i class="bi bi-toggles2 me-2 text-primary"></i>การเปิดใช้ระบบ</h5>
+                    <p class="text-muted small mb-0">เปิดระบบคิวเมื่อต้องการใช้งานเท่านั้น ขณะปิด ระบบจะไม่แสดงบนเว็บไซต์และ URL สาธารณะจะไม่สามารถเข้าถึงได้</p>
+                </div>
+                <form action="<?= URLROOT ?>/admin/settings/updateFeatures" method="POST" class="d-flex align-items-center gap-3">
+                    <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+                    <div class="form-check form-switch mb-0">
+                        <input class="form-check-input" type="checkbox" role="switch" id="queue_enabled" name="queue_enabled" value="1" <?= ($settings['queue_enabled'] ?? '0') === '1' ? 'checked' : '' ?>>
+                        <label class="form-check-label fw-bold" for="queue_enabled">เปิดระบบคิว</label>
+                    </div>
+                    <button type="submit" class="btn btn-admin-primary rounded-pill px-4">
+                        <i class="bi bi-save me-1"></i>บันทึก
+                    </button>
+                </form>
+            </div>
+        </div>
         <div class="card-modern p-4">
             <h5 class="fw-bold text-dark mb-4"><i class="bi bi-building-gear me-2 text-primary"></i> ข้อมูลโรงพยาบาลและจุดติดต่อ</h5>
             <form action="<?= URLROOT ?>/admin/settings/updateHospital" method="POST">

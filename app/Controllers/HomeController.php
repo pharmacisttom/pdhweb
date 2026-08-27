@@ -29,7 +29,7 @@ class HomeController extends Controller {
         }
         
         // Fetch slider settings
-        $db->query("SELECT setting_key, setting_value FROM settings WHERE setting_key IN ('banner_slider_interval', 'banner_transition_effect')");
+        $db->query("SELECT setting_key, setting_value FROM settings WHERE setting_key IN ('banner_slider_interval', 'banner_transition_effect', 'queue_enabled')");
         $sliderRows = $db->resultSet();
         $sliderSettings = [];
         foreach ($sliderRows as $sr) {
@@ -44,7 +44,8 @@ class HomeController extends Controller {
             'newsByCategory' => $newsByCategory,
             'banners' => $banners,
             'slider_interval' => $sliderSettings['banner_slider_interval'] ?? '5000',
-            'slider_transition' => $sliderSettings['banner_transition_effect'] ?? 'fade'
+            'slider_transition' => $sliderSettings['banner_transition_effect'] ?? 'fade',
+            'queueEnabled' => ($sliderSettings['queue_enabled'] ?? '0') === '1'
         ];
         
         $this->view('home/index', $data);

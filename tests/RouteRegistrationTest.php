@@ -28,6 +28,7 @@ $expected = [
     'GET /api/social',
     'GET /admin/users',
     'POST /admin/users/create',
+    'POST /admin/settings/updateFeatures',
 ];
 
 $failed = 0;

@@ -30,6 +30,10 @@
     
     <?php
         $themeColors = \App\Helpers\ThemeHelper::getDailyThemeColors();
+        $settingsDb = new \App\Core\Database();
+        $settingsDb->query("SELECT setting_value FROM settings WHERE setting_key = 'queue_enabled'");
+        $queueSetting = $settingsDb->single();
+        $queueEnabled = $queueSetting && $queueSetting->setting_value === '1';
     ?>
     <style>
         :root {
@@ -82,10 +86,14 @@
                         <i class="bi bi-clock-history"></i> <span>ระบบคิว & นัดหมาย</span>
                     </a>
                     <ul class="collapse list-unstyled" id="queueSubmenu">
+                        <?php if ($queueEnabled): ?>
                         <li><a href="<?= URLROOT ?>/admin/queue"><i class="bi bi-display"></i> จัดการเรียกคิว</a></li>
+                        <?php endif; ?>
                         <li><a href="<?= URLROOT ?>/admin/appointments"><i class="bi bi-calendar-check"></i> คิวนัดหมาย & ปฏิทิน</a></li>
+                        <?php if ($queueEnabled): ?>
                         <li><a href="<?= URLROOT ?>/queue/room/1" target="_blank"><i class="bi bi-megaphone"></i> สถานีเรียกคิวห้องตรวจ</a></li>
                         <li><a href="<?= URLROOT ?>/queue/door/1" target="_blank"><i class="bi bi-tv"></i> จอติดหน้าห้องตรวจ</a></li>
+                        <?php endif; ?>
                     </ul>
                 </li>
                 <li>
