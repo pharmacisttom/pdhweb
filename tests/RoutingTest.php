@@ -76,6 +76,13 @@ class RoutingTest
         unset($_GET['url']);
         $path = App\Core\Router::getRequestPath();
         $this->assert("Trailing slash /services/ normalizes to '/services'", $path === '/services');
+
+        // Test 7: Thai public slugs must survive URL normalization.
+        $_SERVER['REQUEST_URI'] = '/news/ประกาศผู้ชนะการเสนอราคา';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        unset($_GET['url']);
+        $path = App\Core\Router::getRequestPath();
+        $this->assert("Thai news slug is preserved", $path === '/news/ประกาศผู้ชนะการเสนอราคา');
     }
 
     public function testRouteDispatching()

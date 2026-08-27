@@ -185,7 +185,10 @@ class Router
     public static function normalizePath($path)
     {
         $path = urldecode((string)$path);
-        $path = filter_var($path, FILTER_SANITIZE_URL);
+
+        // Public slugs may contain Thai text. URL sanitization removes Unicode
+        // characters and makes otherwise valid public routes return a 404.
+        $path = preg_replace('/[\x00-\x1F\x7F]/u', '', $path);
         $path = '/' . trim($path, '/');
         return ($path === '//' || $path === '') ? '/' : $path;
     }
