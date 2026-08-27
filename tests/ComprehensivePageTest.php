@@ -19,6 +19,7 @@ $routesToTest = [
     '/departments' => 'Departments Index 2',
     '/procurement' => 'Procurements Index',
     '/procurements' => 'Procurements Index 2',
+    '/procurement/show/1' => 'Procurement Detail',
     '/complaint' => 'Complaints Index',
     '/complaints' => 'Complaints Index 2',
     '/appointment' => 'Appointment Index',

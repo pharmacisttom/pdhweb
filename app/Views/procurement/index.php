@@ -47,6 +47,15 @@
     <!-- Main Container -->
     <div class="container py-5">
 
+        <form method="GET" action="<?= URLROOT ?>/procurement" class="card border-0 shadow-sm rounded-4 p-3 p-md-4 mb-4 bg-white">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-5"><label class="form-label small fw-bold">ค้นหาประกาศ</label><input type="search" name="q" class="form-control" value="<?= htmlspecialchars($search_query ?? '') ?>" placeholder="ชื่อประกาศ โครงการ หรือวิธีจัดหา"></div>
+                <div class="col-md-3"><label class="form-label small fw-bold">หมวดหมู่</label><select name="category" class="form-select"><option value="">ทุกหมวดหมู่</option><?php foreach ($categories as $category): ?><option value="<?= htmlspecialchars($category->category) ?>" <?= ($selected_category ?? '') === $category->category ? 'selected' : '' ?>><?= htmlspecialchars($category->category) ?> (<?= $category->total ?>)</option><?php endforeach; ?></select></div>
+                <div class="col-md-2"><label class="form-label small fw-bold">ปีงบประมาณ</label><select name="budget_year" class="form-select"><option value="">ทุกปี</option><?php foreach ($budgetYears as $year): ?><option value="<?= $year->budget_year ?>" <?= (string)($selected_budget_year ?? '') === (string)$year->budget_year ? 'selected' : '' ?>><?= $year->budget_year ?></option><?php endforeach; ?></select></div>
+                <div class="col-md-2 d-grid"><button class="btn btn-primary"><i class="bi bi-search me-1"></i>ค้นหา</button></div>
+            </div>
+        </form>
+
         <!-- Search & Filter Controls -->
         <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
             <div class="row g-3 align-items-center justify-content-between">
@@ -113,9 +122,9 @@
                                     <?php endif; ?>
                                 </td>
                                 <td>
-                                    <div class="fw-bold text-dark mb-1 lh-base" style="font-size: 0.95rem;">
+                                    <a href="<?= URLROOT ?>/procurement/show/<?= $proc->id ?>" class="fw-bold text-dark mb-1 lh-base d-block text-decoration-none" style="font-size: 0.95rem;">
                                         <?= htmlspecialchars($proc->title) ?>
-                                    </div>
+                                    </a>
                                     <div class="d-flex flex-wrap align-items-center gap-3 small text-muted">
                                         <?php if($proc->project_budget && $proc->project_budget > 0): ?>
                                             <span>
@@ -146,15 +155,9 @@
                                     </span>
                                 </td>
                                 <td class="text-center">
-                                    <?php if(!empty($proc->document_url)): ?>
-                                        <a href="<?= URLROOT ?>/assets/uploads/procurements/<?= htmlspecialchars($proc->document_url) ?>" target="_blank" class="btn btn-outline-danger btn-sm rounded-pill px-3 shadow-sm">
-                                            <i class="bi bi-file-earmark-pdf-fill me-1"></i> PDF
-                                        </a>
-                                    <?php else: ?>
-                                        <span class="badge bg-light text-muted border rounded-pill px-3 py-1">
-                                            <i class="bi bi-file-earmark-text me-1"></i> ตามประกาศ
-                                        </span>
-                                    <?php endif; ?>
+                                    <a href="<?= URLROOT ?>/procurement/show/<?= $proc->id ?>" class="btn btn-outline-primary btn-sm rounded-pill px-3 shadow-sm">
+                                        <i class="bi bi-eye me-1"></i> ดูประกาศ
+                                    </a>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

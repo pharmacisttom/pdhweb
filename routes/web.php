@@ -43,6 +43,7 @@ $router->get('/departments', 'DepartmentController@index');
 // Public Procurements
 $router->get('/procurement', 'ProcurementController@index');
 $router->get('/procurements', 'ProcurementController@index');
+$router->get('/procurement/show/{id}', 'ProcurementController@show');
 
 // Public Complaints
 $router->get('/complaint', 'ComplaintController@index');

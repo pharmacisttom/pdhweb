@@ -35,7 +35,6 @@ class ProcurementController extends Controller {
     public function store() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             Security::validateCsrf();
-            $_POST = Security::xssClean($_POST);
             
             $document_url = null;
             if (isset($_FILES['document']) && $_FILES['document']['error'] === UPLOAD_ERR_OK) {
@@ -58,7 +57,9 @@ class ProcurementController extends Controller {
 
             $data = [
                 'title' => trim($_POST['title']),
+                'budget_year' => $this->budgetYear($_POST['budget_year'] ?? null),
                 'project_budget' => !empty($_POST['project_budget']) ? str_replace(',', '', trim($_POST['project_budget'])) : null,
+                'method' => trim($_POST['method'] ?? ''),
                 'category' => trim($_POST['category']),
                 'status' => trim($_POST['status'] ?? 'active'),
                 'published_at' => trim($_POST['published_at'] ?? date('Y-m-d')),
@@ -91,8 +92,6 @@ class ProcurementController extends Controller {
     public function update($id) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             Security::validateCsrf();
-            $_POST = Security::xssClean($_POST);
-
             $procurement = $this->procurementModel->getById($id);
             $document_url = $procurement->document_url ?? null;
 
@@ -121,7 +120,9 @@ class ProcurementController extends Controller {
             $data = [
                 'id' => $id,
                 'title' => trim($_POST['title']),
+                'budget_year' => $this->budgetYear($_POST['budget_year'] ?? null),
                 'project_budget' => !empty($_POST['project_budget']) ? str_replace(',', '', trim($_POST['project_budget'])) : null,
+                'method' => trim($_POST['method'] ?? ''),
                 'category' => trim($_POST['category']),
                 'status' => trim($_POST['status'] ?? 'active'),
                 'published_at' => trim($_POST['published_at'] ?? date('Y-m-d')),
@@ -145,5 +146,9 @@ class ProcurementController extends Controller {
                 die('Something went wrong');
             }
         }
+    }
+
+    private function budgetYear($value) {
+        return preg_match('/^25\d{2}$/', (string)$value) ? (int)$value : (int)date('Y') + 543;
     }
 }

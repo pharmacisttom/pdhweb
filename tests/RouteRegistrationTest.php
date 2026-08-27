@@ -32,6 +32,7 @@ $expected = [
     'GET /csr',
     'GET /admin/csr',
     'POST /admin/csr/create',
+    'GET /procurement/show/{id}',
 ];
 
 $failed = 0;

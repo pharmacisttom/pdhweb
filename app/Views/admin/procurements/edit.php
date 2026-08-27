@@ -30,6 +30,16 @@
                 </select>
             </div>
 
+            <div class="col-md-6">
+                <label class="form-label fw-bold small text-dark">ปีงบประมาณ <span class="text-danger">*</span></label>
+                <input type="number" min="2500" max="2600" class="form-control rounded-3 py-2" name="budget_year" value="<?= (int)$procurement->budget_year ?>" required>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-bold small text-dark">วิธีจัดหา</label>
+                <input type="text" class="form-control rounded-3 py-2" name="method" value="<?= htmlspecialchars($procurement->method ?? '') ?>" placeholder="เช่น e-bidding, คัดเลือก, เฉพาะเจาะจง">
+            </div>
+
             <!-- Budget -->
             <div class="col-md-6">
                 <label class="form-label fw-bold small text-dark">วงเงินงบประมาณ (บาท)</label>
