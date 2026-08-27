@@ -50,8 +50,8 @@
     
     <style>
         :root {
-            --primary-color: <?= $themeColors['primary'] ?>;
-            --secondary-color: <?= $themeColors['secondary'] ?>;
+            --primary-color: #0b5e96;
+            --secondary-color: #2f9ed8;
         }
     </style>
 </head>

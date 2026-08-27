@@ -608,3 +608,63 @@ p {
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     padding-top: 24px;
 }
+
+/* Calm care theme: clear, service-first, and easy to scan. */
+:root {
+    --primary-color: #0b5e96;
+    --primary-dark: #074976;
+    --secondary-color: #2f9ed8;
+    --primary-light: #eaf5fb;
+    --primary-border: #c9e3f1;
+    --text-muted: #607080;
+    --radius-lg: 20px;
+    --shadow-md: 0 12px 32px rgba(25, 72, 108, 0.08);
+    --shadow-lg: 0 20px 48px rgba(25, 72, 108, 0.14);
+}
+
+body { background: #f6f9fb; color: #183047; letter-spacing: 0.005em; }
+.top-notice-bar { background: #073b63; min-height: 36px; font-size: 0.78rem; }
+.device-indicator-pill, .floating-device-indicator { display: none !important; }
+
+.main-navbar {
+    background: rgba(255, 255, 255, 0.96);
+    border-bottom: 1px solid #e2edf3;
+    box-shadow: 0 5px 18px rgba(27, 74, 110, 0.05);
+    backdrop-filter: blur(14px);
+}
+.hospital-logo { border-radius: 14px; box-shadow: 0 4px 12px rgba(11, 94, 150, 0.15); }
+.brand-title { color: #123a59; font-size: 1.05rem; font-weight: 700; }
+.brand-subtitle { color: #6990aa; font-size: 0.62rem; letter-spacing: 0.12em; }
+.navbar-nav .nav-link { color: #38556b; font-size: 0.9rem; font-weight: 500; padding: 0.7rem 0.72rem !important; }
+.navbar-nav .nav-link:hover, .navbar-nav .nav-link.active { color: var(--primary-color); background: #edf7fc; }
+.btn-emergency-hotline { background: #df5347; box-shadow: none; }
+
+.hero-wrapper { padding: 30px 0 0; background: radial-gradient(circle at 86% 8%, #d7effb 0, transparent 24%), linear-gradient(180deg, #edf8fc 0%, #f6f9fb 100%); }
+.hero-carousel-container { border-radius: 24px; overflow: hidden; box-shadow: 0 20px 45px rgba(18, 73, 109, 0.16); }
+.banner-carousel-img { min-height: 400px; }
+.banner-carousel-overlay { background: linear-gradient(90deg, rgba(4, 43, 73, 0.84) 0%, rgba(8, 73, 116, 0.57) 48%, rgba(8, 73, 116, 0.10) 100%); padding: clamp(2rem, 6vw, 5rem); }
+
+.fast-track-wrapper { margin-top: -38px; margin-bottom: 64px; }
+.fast-track-card { padding: 24px 18px; border-radius: 16px; border-color: #e1ebf1; box-shadow: 0 10px 24px rgba(26, 78, 115, 0.08); }
+.fast-track-card:hover { transform: translateY(-4px); border-color: #93c8e2; box-shadow: 0 16px 30px rgba(26, 78, 115, 0.13); }
+.fast-track-icon { width: 56px; height: 56px; border-radius: 16px; font-size: 1.45rem; margin-bottom: 13px; }
+.fast-track-card:hover .fast-track-icon { transform: none; }
+.fast-track-title, .section-title { color: #173a56; }
+.section-title { font-size: clamp(1.65rem, 3vw, 2.2rem); letter-spacing: -0.02em; }
+
+.glass-card { background: #fff; border-color: #e1ebf1; box-shadow: 0 9px 24px rgba(31, 76, 105, 0.07); }
+.glass-card:hover { transform: translateY(-2px); border-color: #c7e2ef; box-shadow: 0 14px 32px rgba(31, 76, 105, 0.11); }
+.btn-modern-primary { background: #0b5e96; box-shadow: none; }
+.btn-modern-primary:hover { background: #074976; box-shadow: 0 8px 18px rgba(11, 94, 150, 0.2); }
+.btn-modern-outline { border-color: #81bddb; color: #0b5e96 !important; }
+.footer-section { background: #09304e; }
+
+@media (max-width: 1199px) { .main-navbar .navbar-collapse { padding: 12px 0 18px; } }
+@media (max-width: 767px) {
+    .hero-wrapper { padding-top: 12px; }
+    .hero-carousel-container { border-radius: 0 0 20px 20px; margin: 0 -12px; }
+    .banner-carousel-img { min-height: 330px; }
+    .banner-carousel-overlay { padding: 2rem 1.5rem; align-items: flex-end; background: linear-gradient(0deg, rgba(4, 43, 73, 0.88), rgba(4, 43, 73, 0.16)); }
+    .fast-track-wrapper { margin-top: 20px; margin-bottom: 44px; }
+    .floating-social-widget { bottom: 18px; right: 18px; }
+}
