@@ -288,6 +288,19 @@
         </div>
     </footer>
 
+    <!-- Session-based cookie notice; acknowledgement resets when the browser session ends. -->
+    <section id="cookieConsent" class="cookie-consent" role="region" aria-label="การแจ้งการใช้คุกกี้" hidden>
+        <div class="cookie-consent__icon" aria-hidden="true"><i class="bi bi-cookie"></i></div>
+        <div class="cookie-consent__content">
+            <h2>เว็บไซต์นี้ใช้คุกกี้</h2>
+            <p>เราใช้คุกกี้ที่จำเป็นเพื่อให้เว็บไซต์ทำงานได้อย่างปลอดภัยและมอบประสบการณ์การใช้งานที่เหมาะสม</p>
+        </div>
+        <div class="cookie-consent__actions">
+            <a href="<?= URLROOT ?>/privacy" class="cookie-consent__privacy">นโยบายความเป็นส่วนตัว</a>
+            <button type="button" id="acceptCookieConsent" class="cookie-consent__accept">ยอมรับ</button>
+        </div>
+    </section>
+
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
@@ -330,6 +343,29 @@
 
     window.addEventListener('resize', updateDeviceDetection);
     document.addEventListener('DOMContentLoaded', updateDeviceDetection);
+    </script>
+
+    <script>
+    (function () {
+        const notice = document.getElementById('cookieConsent');
+        const acceptButton = document.getElementById('acceptCookieConsent');
+        const cookieName = 'pdh_cookie_notice';
+
+        if (!notice || !acceptButton) return;
+
+        const hasAccepted = document.cookie.split('; ').some((cookie) => cookie.indexOf(cookieName + '=accepted') === 0);
+        if (!hasAccepted) {
+            notice.hidden = false;
+            requestAnimationFrame(() => notice.classList.add('is-visible'));
+        }
+
+        acceptButton.addEventListener('click', () => {
+            // No expiration creates a session cookie, so the notice returns on the next browser session.
+            document.cookie = cookieName + '=accepted; path=/; SameSite=Lax';
+            notice.classList.remove('is-visible');
+            window.setTimeout(() => { notice.hidden = true; }, 220);
+        });
+    }());
     </script>
 </body>
 </html>
