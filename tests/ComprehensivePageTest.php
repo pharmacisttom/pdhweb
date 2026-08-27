@@ -22,6 +22,8 @@ $routesToTest = [
     '/procurement' => 'Procurements Index',
     '/procurements' => 'Procurements Index 2',
     '/procurement/show/1' => 'Procurement Detail',
+    '/downloads' => 'Download Documents',
+    '/official-documents' => 'Official Documents',
     '/complaint' => 'Complaints Index',
     '/complaints' => 'Complaints Index 2',
     '/appointment' => 'Appointment Index',
@@ -51,6 +53,8 @@ $routesToTest = [
     '/admin/appointment' => 'Admin Appointment',
     '/admin/queue' => 'Admin Queue',
     '/admin/page' => 'Admin Page',
+    '/admin/documents' => 'Admin Documents',
+    '/admin/documents/create' => 'Admin Document Upload',
     '/admin/settings' => 'Admin Settings',
     '/admin/logs' => 'Admin Logs',
 ];

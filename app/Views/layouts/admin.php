@@ -118,6 +118,9 @@
                     <a href="<?= URLROOT ?>/admin/page"><i class="bi bi-file-earmark-richtext"></i> <span>หน้าเพจองค์กร</span></a>
                 </li>
                 <li>
+                    <a href="<?= URLROOT ?>/admin/documents"><i class="bi bi-file-earmark-pdf"></i> <span>เอกสาร PDF</span></a>
+                </li>
+                <li>
                     <a href="https://pdh.thai-nrls.org/" target="_blank" class="text-warning"><i class="bi bi-shield-exclamation text-warning"></i> <span>ระบบความเสี่ยง (HRMS)</span></a>
                 </li>
                 <li>

@@ -47,6 +47,10 @@ $router->get('/procurement', 'ProcurementController@index');
 $router->get('/procurements', 'ProcurementController@index');
 $router->get('/procurement/show/{id}', 'ProcurementController@show');
 
+// Public document library
+$router->get('/downloads', 'DocumentController@downloads');
+$router->get('/official-documents', 'DocumentController@officialOrders');
+
 // Public Complaints
 $router->get('/complaint', 'ComplaintController@index');
 $router->get('/complaints', 'ComplaintController@index');
@@ -233,6 +237,14 @@ $router->post('/admin/page/create', 'Admin\PageController@store');
 $router->get('/admin/page/edit/{id}', 'Admin\PageController@edit');
 $router->post('/admin/page/update/{id}', 'Admin\PageController@update');
 $router->post('/admin/page/delete/{id}', 'Admin\PageController@delete');
+
+// 12.1 Document library
+$router->get('/admin/documents', 'Admin\DocumentController@index');
+$router->get('/admin/documents/create', 'Admin\DocumentController@create');
+$router->post('/admin/documents/create', 'Admin\DocumentController@store');
+$router->get('/admin/documents/edit/{id}', 'Admin\DocumentController@edit');
+$router->post('/admin/documents/update/{id}', 'Admin\DocumentController@update');
+$router->post('/admin/documents/delete/{id}', 'Admin\DocumentController@delete');
 
 // 13. System Settings (ตั้งค่าระบบ)
 $router->get('/admin/settings', 'Admin\SettingsController@index');

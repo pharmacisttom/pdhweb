@@ -123,6 +123,10 @@
                                 ข่าวสาร
                             </a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><i class="bi bi-folder2-open me-1"></i>เอกสาร</a>
+                            <ul class="dropdown-menu border-0 shadow rounded-4 p-2"><li><a class="dropdown-item rounded-3 py-2" href="<?= URLROOT ?>/downloads"><i class="bi bi-download me-2 text-primary"></i>ดาวน์โหลดเอกสาร</a></li><li><a class="dropdown-item rounded-3 py-2" href="<?= URLROOT ?>/official-documents"><i class="bi bi-journal-text me-2 text-primary"></i>หนังสือราชการ/คำสั่ง</a></li></ul>
+                        </li>
                         <?php if ($queueEnabled): ?>
                         <li class="nav-item">
                             <a class="nav-link <?= (isset($_GET['url']) && str_starts_with($_GET['url'], 'queue')) ? 'active' : '' ?>" href="<?= URLROOT ?>/queue">
@@ -236,6 +240,8 @@
                         <li><a href="<?= URLROOT ?>/page/executives" class="footer-link">คณะผู้บริหาร</a></li>
                         <li><a href="<?= URLROOT ?>/department" class="footer-link">โครงสร้างกลุ่มงาน</a></li>
                         <li><a href="<?= URLROOT ?>/procurement" class="footer-link">จัดซื้อจัดจ้าง</a></li>
+                        <li><a href="<?= URLROOT ?>/downloads" class="footer-link">ดาวน์โหลดเอกสาร</a></li>
+                        <li><a href="<?= URLROOT ?>/official-documents" class="footer-link">หนังสือราชการ/คำสั่ง</a></li>
                         <li><a href="<?= URLROOT ?>/ita" class="footer-link">การประเมิน ITA/MOIT</a></li>
                         <li><a href="<?= URLROOT ?>/risk" class="footer-link"><i class="bi bi-shield-exclamation text-warning me-1"></i> ระบบความเสี่ยง (HRMS)</a></li>
                         <li><a href="<?= URLROOT ?>/contact" class="footer-link">ติดต่อเรา & เบอร์ภายใน</a></li>
