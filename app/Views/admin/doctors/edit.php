@@ -9,7 +9,7 @@
 </div>
 
 <div class="card shadow-sm border-0 rounded-4 p-4 p-md-5 bg-white">
-    <form action="<?= URLROOT ?>/admin/doctor/edit/<?= $doctor->id ?>" method="POST" enctype="multipart/form-data">
+    <form action="<?= URLROOT ?>/admin/doctor/update/<?= $doctor->id ?>" method="POST" enctype="multipart/form-data">
         <?= \App\Helpers\Security::csrfField() ?>
 
         <div class="row g-4">

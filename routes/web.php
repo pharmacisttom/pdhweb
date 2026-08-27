@@ -130,6 +130,7 @@ $router->post('/admin/banner/update/{id}', 'Admin\BannerController@update');
 $router->post('/admin/banner/delete/{id}', 'Admin\BannerController@delete');
 $router->post('/admin/banner/toggle/{id}', 'Admin\BannerController@toggle');
 $router->post('/admin/banner/move/{id}', 'Admin\BannerController@move');
+$router->post('/admin/banner/move/{id}/{direction}', 'Admin\BannerController@move');
 $router->post('/admin/banner/updateSliderSettings', 'Admin\BannerController@updateSliderSettings');
 
 // 3. Departments (กลุ่มงาน/ฝ่าย)

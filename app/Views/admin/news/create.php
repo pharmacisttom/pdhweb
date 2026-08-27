@@ -5,7 +5,7 @@
 
 <div class="card shadow-sm border-0">
     <div class="card-body p-4">
-        <form action="<?= URLROOT ?>/admin/news/store" method="POST" enctype="multipart/form-data">
+        <form action="<?= URLROOT ?>/admin/news/create" method="POST" enctype="multipart/form-data">
             <?php $csrf_token = \App\Helpers\Security::csrfToken(); ?>
             <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
 

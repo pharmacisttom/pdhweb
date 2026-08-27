@@ -5,7 +5,7 @@
     </div>
     <div class="card-body p-4">
         
-        <?php $actionUrl = $post ? url('/admin/news/edit/' . $post['id']) : url('/admin/news/create'); ?>
+        <?php $actionUrl = $post ? url('/admin/news/update/' . $post['id']) : url('/admin/news/create'); ?>
 
         <form action="<?= $actionUrl ?>" method="POST" enctype="multipart/form-data">
             <?= csrf_field() ?>

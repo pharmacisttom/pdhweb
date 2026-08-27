@@ -155,7 +155,7 @@
                                     <?php endif; ?>
 
                                     <!-- Update Status Form -->
-                                    <form action="<?= URLROOT ?>/admin/appointments/updateStatus/<?= $appt->id ?>" method="POST" class="d-inline">
+                                    <form action="<?= URLROOT ?>/admin/appointment/updateStatus/<?= $appt->id ?>" method="POST" class="d-inline">
                                         <?php $csrf_token = \App\Helpers\Security::csrfToken(); ?>
                                         <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
 
@@ -168,7 +168,7 @@
                                     </form>
 
                                     <!-- Delete Form -->
-                                    <form action="<?= URLROOT ?>/admin/appointments/delete/<?= $appt->id ?>" method="POST" class="d-inline" onsubmit="return confirm('คุณต้องการลบข้อมูลนัดหมายนี้ใช่หรือไม่?');">
+                                    <form action="<?= URLROOT ?>/admin/appointment/delete/<?= $appt->id ?>" method="POST" class="d-inline" onsubmit="return confirm('คุณต้องการลบข้อมูลนัดหมายนี้ใช่หรือไม่?');">
                                         <?php $csrf_token = \App\Helpers\Security::csrfToken(); ?>
                                         <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
                                         <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle" style="width: 32px; height: 32px; padding: 0;" title="ลบ"><i class="bi bi-trash"></i></button>

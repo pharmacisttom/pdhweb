@@ -57,7 +57,7 @@
                         </button>
 
                         <!-- Complete -->
-                        <form action="<?= URLROOT ?>/queue/callAction" method="POST" class="d-inline">
+                        <form action="<?= URLROOT ?>/queue/action" method="POST" class="d-inline">
                             <?php $csrf_token = \App\Helpers\Security::csrfToken(); ?>
                             <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
                             <input type="hidden" name="act" value="complete">
@@ -70,7 +70,7 @@
                         </form>
 
                         <!-- Skip / Hold -->
-                        <form action="<?= URLROOT ?>/queue/callAction" method="POST" class="d-inline">
+                        <form action="<?= URLROOT ?>/queue/action" method="POST" class="d-inline">
                             <?php $csrf_token = \App\Helpers\Security::csrfToken(); ?>
                             <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
                             <input type="hidden" name="act" value="skip">
@@ -94,7 +94,7 @@
             </div>
 
             <!-- Big Call Next Button -->
-            <form action="<?= URLROOT ?>/queue/callAction" method="POST">
+            <form action="<?= URLROOT ?>/queue/action" method="POST">
                 <?php $csrf_token = \App\Helpers\Security::csrfToken(); ?>
                 <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
                 <input type="hidden" name="act" value="call_next">
@@ -150,7 +150,7 @@
                                         </td>
                                         <td class="small text-muted"><?= date('H:i น.', strtotime($wq->created_at)) ?></td>
                                         <td class="text-end">
-                                            <form action="<?= URLROOT ?>/queue/callAction" method="POST" class="d-inline">
+                                            <form action="<?= URLROOT ?>/queue/action" method="POST" class="d-inline">
                                                 <?php $csrf_token = \App\Helpers\Security::csrfToken(); ?>
                                                 <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
                                                 <input type="hidden" name="act" value="call_specific">
