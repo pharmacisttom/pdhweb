@@ -102,6 +102,21 @@ class Controller {
 
     // Redirect
     public function redirect($url) {
+        $route = $_SERVER['PDH_ROUTE_PATH'] ?? '';
+        if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST'
+            && strpos($route, '/admin/') === 0
+            && isset($_SESSION['user_id'])) {
+            // Store only the action metadata, never submitted form values or secrets.
+            (new \App\Services\AuditLogService())->logAudit(
+                $_SESSION['user_id'],
+                'request',
+                'admin',
+                null,
+                null,
+                ['route' => $route]
+            );
+        }
+
         $target = (strpos($url, 'http://') === 0 || strpos($url, 'https://') === 0) 
             ? $url 
             : URLROOT . '/' . ltrim($url, '/');

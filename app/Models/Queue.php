@@ -5,32 +5,6 @@ use App\Core\Model;
 
 class Queue extends Model {
 
-    public function __construct() {
-        parent::__construct();
-        $this->ensureSchema();
-    }
-
-    /**
-     * Ensure modern schema columns exist
-     */
-    private function ensureSchema() {
-        try {
-            $this->db->query("SHOW COLUMNS FROM `queues` LIKE 'counter_number'");
-            if (!$this->db->single()) {
-                $this->db->query("ALTER TABLE `queues` 
-                    ADD COLUMN `counter_number` VARCHAR(50) DEFAULT '1',
-                    ADD COLUMN `service_type` VARCHAR(50) DEFAULT 'general',
-                    ADD COLUMN `phone` VARCHAR(50) NULL,
-                    ADD COLUMN `estimated_wait_minutes` INT DEFAULT 10,
-                    ADD COLUMN `called_at` TIMESTAMP NULL,
-                    ADD COLUMN `completed_at` TIMESTAMP NULL;");
-                $this->db->execute();
-            }
-        } catch (\Exception $e) {
-            error_log("Queue schema update: " . $e->getMessage());
-        }
-    }
-    
     public function getTodayQueues($department_id = null) {
         $sql = '
             SELECT q.*, d.name as department_name 

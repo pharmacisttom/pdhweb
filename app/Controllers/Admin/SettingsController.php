@@ -56,6 +56,9 @@ class SettingsController extends Controller {
             foreach ($fields as $field) {
                 if (isset($_POST[$field])) {
                     $val = trim($_POST[$field]);
+                    if (in_array($field, ['line_channel_access_token', 'line_channel_secret', 'line_notify_token'], true) && $val === '') {
+                        continue;
+                    }
                     $this->db->query("INSERT INTO settings (setting_key, setting_value) VALUES (:k, :v) ON DUPLICATE KEY UPDATE setting_value = :v2");
                     $this->db->bind(':k', $field);
                     $this->db->bind(':v', $val);
@@ -117,8 +120,8 @@ class SettingsController extends Controller {
             
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, 'https://notify-api.line.me/api/notify');
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, 'message=' . urlencode($message));
             $headers = [

@@ -67,6 +67,7 @@ class Router
 
         $uri = self::normalizePath($uri);
         $method = strtoupper($method);
+        $_SERVER['PDH_ROUTE_PATH'] = $uri;
 
         $methodNotAllowed = false;
 
@@ -107,6 +108,11 @@ class Router
                 }
 
                 if (class_exists($controllerClass)) {
+                    if (strpos($controllerClass, 'App\\Controllers\\Admin\\') === 0
+                        && $controllerClass !== 'App\\Controllers\\Admin\\AuthController') {
+                        \App\Middleware\AuthMiddleware::authorizeController($controllerClass, $methodName);
+                    }
+
                     $controller = new $controllerClass();
                     if (method_exists($controller, $methodName)) {
                         return call_user_func_array([$controller, $methodName], $params);

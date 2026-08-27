@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
+use App\Middleware\AuthMiddleware;
 
 class QueueController extends Controller {
     
@@ -48,6 +49,13 @@ class QueueController extends Controller {
             $service_type = $_POST['service_type'] ?? 'general';
             $patient_name = trim($_POST['patient_name'] ?? '');
             $phone = trim($_POST['phone'] ?? '');
+
+            if ($department_id < 1 || !in_array($service_type, ['general', 'pediatric', 'dental', 'lab', 'pharmacy', 'emergency'], true)
+                || ($phone !== '' && !\App\Helpers\Security::isValidThaiPhone($phone))) {
+                $this->setFlash('queue_error', 'กรุณาเลือกข้อมูลบริการและกรอกหมายเลขโทรศัพท์ให้ถูกต้อง', 'warning');
+                $this->redirect('queue/kiosk');
+                return;
+            }
 
             if (empty($patient_name)) {
                 $patient_name = 'ผู้รับบริการทั่วไป';
@@ -137,6 +145,7 @@ class QueueController extends Controller {
 
     // Examination Room Calling Station (หน้าจอแพทย์/พยาบาลกดเรียกคิวประจำห้องตรวจ)
     public function room($room_number = '1') {
+        AuthMiddleware::checkPermission('queues.manage');
         $departments = $this->departmentModel->getAll();
         $department_id = (int)($_GET['department_id'] ?? 1);
         
@@ -200,6 +209,7 @@ class QueueController extends Controller {
 
     // Action execution (Call, Recall, Complete, Skip)
     public function callAction() {
+        AuthMiddleware::checkPermission('queues.manage');
         if ($this->isPost()) {
             \App\Helpers\Security::validateCsrf();
             $act = $_POST['act'] ?? 'call_next';

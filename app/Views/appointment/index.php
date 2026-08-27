@@ -337,7 +337,11 @@ function selectBookingDate(dateStr, availableCount) {
                 }
             }
         })
-        .catch(e => console.log(e));
+        .catch(() => {
+            document.getElementById('modalSelectedDateText').insertAdjacentHTML('beforeend', '<div class="text-danger small mt-2">ไม่สามารถตรวจสอบจำนวนคิวแบบเรียลไทม์ได้ กรุณาลองใหม่อีกครั้งก่อนยืนยัน</div>');
+            document.getElementById('slotMorningRadio').disabled = true;
+            document.getElementById('slotAfternoonRadio').disabled = true;
+        });
 
     const modal = new bootstrap.Modal(document.getElementById('bookingModal'));
     modal.show();

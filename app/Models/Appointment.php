@@ -5,26 +5,6 @@ use App\Core\Model;
 
 class Appointment extends Model {
 
-    public function __construct() {
-        parent::__construct();
-        $this->ensureSchema();
-    }
-
-    private function ensureSchema() {
-        try {
-            $this->db->query("SHOW COLUMNS FROM `appointments` LIKE 'booking_ref'");
-            if (!$this->db->single()) {
-                $this->db->query("ALTER TABLE `appointments` 
-                    ADD COLUMN `booking_ref` VARCHAR(50) NULL,
-                    ADD COLUMN `time_slot` ENUM('morning','afternoon') DEFAULT 'morning',
-                    ADD COLUMN `queue_code` VARCHAR(20) NULL;");
-                $this->db->execute();
-            }
-        } catch (\Exception $e) {
-            error_log("Appointment schema update: " . $e->getMessage());
-        }
-    }
-    
     public function getAll($filters = []) {
         $sql = '
             SELECT a.*, d.name as department_name, c.name as clinic_name, 
@@ -133,6 +113,15 @@ class Appointment extends Model {
      * Generate unique booking reference and queue code
      */
     public function createSmartAppointment($data) {
+        $this->db->query('SELECT COUNT(*) as count FROM appointments WHERE appointment_date = :date AND time_slot = :time_slot AND department_id = :department_id AND status != "cancelled" AND deleted_at IS NULL');
+        $this->db->bind(':date', $data['appointment_date']);
+        $this->db->bind(':time_slot', $data['time_slot']);
+        $this->db->bind(':department_id', $data['department_id']);
+        $capacity = $this->db->single();
+        if ((int)($capacity->count ?? 0) >= 25) {
+            return false;
+        }
+
         $dateStr = str_replace('-', '', $data['appointment_date']);
         
         // Count bookings today for sequential code

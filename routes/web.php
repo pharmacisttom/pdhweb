@@ -45,13 +45,34 @@ $router->get('/procurements', 'ProcurementController@index');
 $router->get('/complaint', 'ComplaintController@index');
 $router->get('/complaints', 'ComplaintController@index');
 $router->post('/complaint/store', 'ComplaintController@store');
+$router->get('/complaint/success/{tracking_code}', 'ComplaintController@success');
+$router->get('/complaint/track', 'ComplaintController@track');
 
 // Public Appointments & Queue
 $router->get('/appointment', 'AppointmentController@index');
 $router->get('/appointments', 'AppointmentController@index');
 $router->post('/appointment/store', 'AppointmentController@store');
+$router->get('/appointment/getSlots', 'AppointmentController@getSlots');
+$router->get('/appointment/ticket/{ref}', 'AppointmentController@ticket');
 $router->get('/queue', 'QueueController@index');
 $router->get('/queue/kiosk', 'QueueController@kiosk');
+$router->post('/queue/getTicket', 'QueueController@getTicket');
+$router->get('/queue/ticket/{id}', 'QueueController@ticket');
+$router->get('/queue/liveTicketStatus/{id}', 'QueueController@liveTicketStatus');
+$router->get('/queue/room/{room_number}', 'QueueController@room');
+$router->get('/queue/door/{room_number}', 'QueueController@door');
+$router->get('/queue/liveRoomStatus/{room_number}', 'QueueController@liveRoomStatus');
+$router->post('/queue/action', 'QueueController@callAction');
+$router->get('/queue/display/{department_id}', 'QueueController@display');
+
+// Public read-only API endpoints
+$router->get('/api', 'ApiController@index');
+$router->get('/api/social', 'ApiController@social');
+$router->get('/api/doctors', 'ApiController@doctors');
+$router->get('/api/clinics', 'ApiController@clinics');
+$router->get('/api/queue', 'ApiController@queue');
+$router->get('/api/news', 'ApiController@news');
+$router->get('/api/stats', 'ApiController@stats');
 // Public Static Organization Pages
 $router->get('/page/about', 'PageController@about');
 $router->get('/page/executives', 'PageController@executives');
@@ -185,6 +206,9 @@ $router->post('/admin/appointment/delete/{id}', 'Admin\AppointmentController@del
 // 11. Queues (ระบบเรียกคิว)
 $router->get('/admin/queue', 'Admin\QueueController@index');
 $router->get('/admin/queues', 'Admin\QueueController@index');
+$router->post('/admin/queue/callNext', 'Admin\QueueController@callNext');
+$router->post('/admin/queue/action/{id}', 'Admin\QueueController@action');
+$router->post('/admin/queue/fastTicket', 'Admin\QueueController@fastTicket');
 
 // 12. Static Pages (หน้าเพจองค์กร)
 $router->get('/admin/page', 'Admin\PageController@index');
@@ -202,6 +226,14 @@ $router->post('/admin/settings/updateHospital', 'Admin\SettingsController@update
 $router->post('/admin/settings/updateSocial', 'Admin\SettingsController@updateSocial');
 $router->post('/admin/settings/testLineNotify', 'Admin\SettingsController@testLineNotify');
 $router->post('/admin/settings/updateCategories', 'Admin\SettingsController@updateCategories');
+
+// User and role administration
+$router->get('/admin/users', 'Admin\UserController@index');
+$router->get('/admin/users/create', 'Admin\UserController@create');
+$router->post('/admin/users/create', 'Admin\UserController@store');
+$router->get('/admin/users/edit/{id}', 'Admin\UserController@edit');
+$router->post('/admin/users/update/{id}', 'Admin\UserController@update');
+$router->post('/admin/users/status/{id}', 'Admin\UserController@updateStatus');
 
 // 14. Audit Logs (ประวัติการใช้งาน)
 $router->get('/admin/logs', 'Admin\AuditLogController@index');

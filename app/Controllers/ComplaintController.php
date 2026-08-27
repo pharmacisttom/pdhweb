@@ -23,6 +23,17 @@ class ComplaintController extends Controller {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             \App\Helpers\Security::validateCsrf();
             $_POST = \App\Helpers\Security::xssClean($_POST);
+
+            if (mb_strlen(trim($_POST['fullname'] ?? '')) > 150
+                || mb_strlen(trim($_POST['contact_info'] ?? '')) > 255
+                || mb_strlen(trim($_POST['topic'] ?? '')) > 255
+                || mb_strlen(trim($_POST['message'] ?? '')) > 5000
+                || trim($_POST['topic'] ?? '') === ''
+                || trim($_POST['message'] ?? '') === '') {
+                $this->setFlash('complaint_error', 'กรุณากรอกข้อมูลให้ครบและมีความยาวไม่เกินที่กำหนด', 'warning');
+                $this->redirect('complaint');
+                return;
+            }
             
             // Generate a unique tracking code (e.g., PDH-20231015-ABCD)
             $tracking_code = 'PDH-' . date('Ymd') . '-' . strtoupper(substr(md5(uniqid()), 0, 4));

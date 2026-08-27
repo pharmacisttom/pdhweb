@@ -42,7 +42,7 @@ APP_ENV=production
 APP_URL=https://test.pluakdaenghospital.cloud
 
 DB_HOST=localhost
-DB_DATABASE=pdhweb_test
+DB_DATABASE=pdhweb
 DB_USERNAME=pdh_user
 DB_PASSWORD=your_secure_password_here
 ```
@@ -81,11 +81,14 @@ sudo chmod -R 775 /var/www/test/source/public/assets/uploads
 sudo chmod -R 775 /var/www/test/source/public/assets/images
 ```
 
-### 3.3 นำเข้าโครงสร้างฐานข้อมูล (Database Import)
-*(ทำเฉพาะเมื่อเริ่มติดตั้งใหม่ หรือมีการเปลี่ยนแปลง Schema)*
+### 3.3 Database Migration
+ห้าม import full database dump ทับฐานข้อมูล TEST หรือ Production ให้สำรองฐานข้อมูลก่อน แล้ว apply เฉพาะ migration ที่ยังไม่เคยรัน:
 ```bash
-mysql -u pdh_user -p pdhweb_test < /var/www/test/source/database/pdhweb_full_latest.sql
+cd /var/www/test/source
+php migrate.php
 ```
+
+ตรวจสอบผลลัพธ์ให้ทุกไฟล์เป็น `APPLIED` หรือ `SKIP` เท่านั้น หากพบ `Migration failed` ให้หยุด deploy และตรวจสอบ schema ก่อนดำเนินการต่อ
 
 ### 3.4 ตั้งค่า Nginx VirtualHost
 สร้างหรือแก้ไขไฟล์ `/etc/nginx/sites-available/test.pluakdaenghospital.cloud`:

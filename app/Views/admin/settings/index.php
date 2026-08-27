@@ -84,7 +84,7 @@
 
                         <div class="mb-3">
                             <label class="form-label fw-bold small text-muted">LINE Messaging API (Channel Access Token)</label>
-                            <textarea name="line_channel_access_token" rows="2" class="form-control form-control-modern font-monospace" placeholder="eyJhbGciOi... (สำหรับระบบส่งข้อความอัตโนมัติ)"><?= htmlspecialchars($settings['line_channel_access_token'] ?? '') ?></textarea>
+                            <input type="password" name="line_channel_access_token" class="form-control form-control-modern font-monospace" autocomplete="new-password" placeholder="ระบุ token เพื่อเปลี่ยนค่าเท่านั้น">
                         </div>
 
                         <div class="text-end mt-4">
@@ -167,7 +167,7 @@
                             
                             <form action="<?= URLROOT ?>/admin/settings/updateSocial" method="POST" class="d-flex gap-2">
                                 <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
-                                <input type="text" name="line_notify_token" class="form-control form-control-modern" value="<?= htmlspecialchars($settings['line_notify_token'] ?? '') ?>" placeholder="ระบุ LINE Notify Token สำหรับกลุ่มเจ้าหน้าที่">
+                                <input type="password" name="line_notify_token" class="form-control form-control-modern" autocomplete="new-password" placeholder="ระบุ token เพื่อเปลี่ยนค่าเท่านั้น">
                                 <button type="submit" class="btn btn-success text-white rounded-pill px-4 flex-shrink-0">
                                     <i class="bi bi-save me-1"></i> บันทึก Token
                                 </button>
@@ -177,8 +177,8 @@
                         <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
                             <form action="<?= URLROOT ?>/admin/settings/testLineNotify" method="POST">
                                 <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
-                                <input type="hidden" name="token" value="<?= htmlspecialchars($settings['line_notify_token'] ?? '') ?>">
-                                <button type="submit" class="btn btn-outline-success rounded-pill px-4 py-2" <?= empty($settings['line_notify_token']) ? 'disabled' : '' ?>>
+                                <input type="password" name="token" class="form-control" placeholder="วาง token เพื่อทดสอบ" required>
+                                <button type="submit" class="btn btn-outline-success rounded-pill px-4 py-2">
                                     <i class="bi bi-send-fill me-1"></i> ทดสอบส่งข้อความแจ้งเตือน
                                 </button>
                             </form>

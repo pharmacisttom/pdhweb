@@ -91,16 +91,27 @@ class AppointmentController extends Controller {
         if ($this->isPost()) {
             \App\Helpers\Security::validateCsrf();
             $_POST = \App\Helpers\Security::xssClean($_POST);
+
+            $appointmentDate = trim($_POST['appointment_date'] ?? '');
+            $phone = trim($_POST['phone'] ?? '');
+            if (!\App\Helpers\Security::isValidDate($appointmentDate)
+                || $appointmentDate < date('Y-m-d')
+                || !\App\Helpers\Security::isValidThaiPhone($phone)
+                || !in_array($_POST['time_slot'] ?? '', ['morning', 'afternoon'], true)) {
+                $this->setFlash('app_error', 'กรุณาตรวจสอบวันที่นัด ช่วงเวลา และหมายเลขโทรศัพท์ให้ถูกต้อง', 'warning');
+                $this->redirect('appointment');
+                return;
+            }
             
             $data = [
                 'user_id' => $_SESSION['user_id'] ?? null,
                 'hn_number' => trim($_POST['hn_number'] ?? ''),
                 'patient_name' => trim($_POST['patient_name'] ?? ''),
-                'phone' => trim($_POST['phone'] ?? ''),
+                'phone' => $phone,
                 'department_id' => (int)$_POST['department_id'],
                 'clinic_id' => !empty($_POST['clinic_id']) ? (int)$_POST['clinic_id'] : null,
                 'doctor_id' => !empty($_POST['doctor_id']) ? (int)$_POST['doctor_id'] : null,
-                'appointment_date' => trim($_POST['appointment_date']),
+                'appointment_date' => $appointmentDate,
                 'time_slot' => $_POST['time_slot'] ?? 'morning',
                 'appointment_time' => ($_POST['time_slot'] === 'morning') ? '09:00:00' : '13:30:00',
                 'symptoms' => trim($_POST['symptoms'] ?? '')

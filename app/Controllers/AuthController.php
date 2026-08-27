@@ -30,6 +30,10 @@ class AuthController extends Controller {
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Security::loginAllowed()) {
+                $this->view('auth/login', ['username' => '', 'password' => '', 'username_err' => '', 'password_err' => 'มีการลองเข้าสู่ระบบมากเกินไป กรุณารอ 15 นาที'], null);
+                return;
+            }
             Security::validateCsrf();
             $_POST = Security::xssClean($_POST);
             
@@ -52,6 +56,7 @@ class AuthController extends Controller {
                 $loggedInUser = $this->userModel->login($data['username'], $data['password']);
 
                 if ($loggedInUser) {
+                    Security::clearLoginFailures();
                     session_regenerate_id(true);
                     if ($this->auditLog) {
                         $this->auditLog->logLogin($loggedInUser->id, $data['username'], 'success');
@@ -60,6 +65,7 @@ class AuthController extends Controller {
                     $this->createUserSession($loggedInUser);
                     return;
                 } else {
+                    Security::recordLoginFailure();
                     if ($this->auditLog) {
                         $this->auditLog->logLogin(null, $data['username'], 'failed');
                     }

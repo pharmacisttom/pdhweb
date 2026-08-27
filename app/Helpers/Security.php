@@ -43,4 +43,31 @@ class Security {
         
         return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8');
     }
+
+    public static function isValidThaiPhone($phone) {
+        $digits = preg_replace('/\D/', '', (string)$phone);
+        return (bool)preg_match('/^0\d{8,9}$/', $digits);
+    }
+
+    public static function isValidDate($date) {
+        $parsed = \DateTime::createFromFormat('Y-m-d', (string)$date);
+        return $parsed && $parsed->format('Y-m-d') === $date;
+    }
+
+    public static function loginAllowed() {
+        $attempts = $_SESSION['login_attempts'] ?? [];
+        $cutoff = time() - 900;
+        $attempts = array_values(array_filter($attempts, fn($time) => $time >= $cutoff));
+        $_SESSION['login_attempts'] = $attempts;
+        return count($attempts) < 5;
+    }
+
+    public static function recordLoginFailure() {
+        $_SESSION['login_attempts'] = $_SESSION['login_attempts'] ?? [];
+        $_SESSION['login_attempts'][] = time();
+    }
+
+    public static function clearLoginFailures() {
+        unset($_SESSION['login_attempts']);
+    }
 }

@@ -112,6 +112,11 @@
                 <li>
                     <a href="<?= URLROOT ?>/admin/settings"><i class="bi bi-gear"></i> <span>ตั้งค่าระบบ</span></a>
                 </li>
+                <?php if ((int)($_SESSION['user_role'] ?? 0) === 1): ?>
+                <li>
+                    <a href="<?= URLROOT ?>/admin/users"><i class="bi bi-people"></i> <span>จัดการผู้ใช้งาน</span></a>
+                </li>
+                <?php endif; ?>
                 <li class="mt-4 pt-3 border-top border-secondary border-opacity-25">
                     <a href="<?= URLROOT ?>" target="_blank" class="text-info"><i class="bi bi-box-arrow-up-right"></i> <span>ดูหน้าเว็บไซต์</span></a>
                 </li>
