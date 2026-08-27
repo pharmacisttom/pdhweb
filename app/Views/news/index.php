@@ -58,6 +58,13 @@
             <?php endforeach; ?>
         <?php endif; ?>
     </ul>
+
+    <?php if (($current_category ?? '') === 'procurement'): ?>
+        <div class="alert alert-primary border-0 rounded-4 mt-4 mb-0 d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+            <div><i class="bi bi-file-earmark-text-fill me-2"></i><strong>ศูนย์ประกาศจัดซื้อจัดจ้าง</strong><span class="ms-1">ค้นหาและดูเอกสารประกาศตามปีงบประมาณได้ที่นี่</span></div>
+            <a href="<?= URLROOT ?>/procurement" class="btn btn-primary rounded-pill px-4 flex-shrink-0"><i class="bi bi-box-arrow-up-right me-1"></i>เปิดศูนย์จัดซื้อจัดจ้าง</a>
+        </div>
+    <?php endif; ?>
 </div>
 
 <div class="container mb-5 pb-5 mt-5">
@@ -113,6 +120,11 @@
                             <p class="card-text text-muted mb-0" style="line-height: 1.6;">
                                 <?= mb_strimwidth(strip_tags($news->summary), 0, 110, '...') ?>
                             </p>
+                            <div class="mt-4">
+                                <a href="<?= URLROOT ?>/news/<?= $news->slug ?: $news->id ?>" class="btn btn-outline-primary rounded-pill w-100 fw-semibold">
+                                    <i class="bi bi-file-earmark-text me-1"></i>ดูรายละเอียดประกาศ <i class="bi bi-arrow-right ms-1"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

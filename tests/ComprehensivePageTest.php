@@ -5,6 +5,7 @@ require_once __DIR__ . '/../config/config.php';
 $routesToTest = [
     '/' => 'Home Page',
     '/news' => 'News Index',
+    '/news?category=procurement' => 'Procurement News Index',
     '/ita' => 'ITA Index',
     '/contact' => 'Contact Index',
     '/risk' => 'Risk Index',
