@@ -36,6 +36,48 @@ if (!function_exists('asset')) {
     }
 }
 
+if (!function_exists('normalize_banner_link')) {
+    function normalize_banner_link($link)
+    {
+        $link = trim(html_entity_decode((string)$link, ENT_QUOTES, 'UTF-8'));
+        if ($link === '') {
+            return '';
+        }
+
+        if (strpos($link, '/') === 0) {
+            return url($link);
+        }
+
+        $parts = parse_url($link);
+        if ($parts === false || empty($parts['scheme'])) {
+            return '';
+        }
+
+        $scheme = strtolower($parts['scheme']);
+        if (!in_array($scheme, ['http', 'https'], true)) {
+            return '';
+        }
+
+        $host = strtolower($parts['host'] ?? '');
+        if (!in_array($host, ['localhost', '127.0.0.1', '::1'], true)) {
+            return $link;
+        }
+
+        // Convert legacy local development links into the current environment URL.
+        $path = $parts['path'] ?? '/';
+        $path = preg_replace('#^/pdhweb(?:/public)?(?=/|$)#i', '', $path);
+        $resolved = url($path === '' ? '/' : $path);
+        if (!empty($parts['query'])) {
+            $resolved .= '?' . $parts['query'];
+        }
+        if (!empty($parts['fragment'])) {
+            $resolved .= '#' . $parts['fragment'];
+        }
+
+        return $resolved;
+    }
+}
+
 if (!function_exists('redirect')) {
     function redirect($path)
     {

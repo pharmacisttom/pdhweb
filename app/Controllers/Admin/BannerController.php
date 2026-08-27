@@ -17,6 +17,9 @@ class BannerController extends Controller {
 
     public function index() {
         $banners = $this->bannerModel->getAll();
+        foreach ($banners as $banner) {
+            $banner->link = normalize_banner_link($banner->link);
+        }
         
         $this->db->query("SELECT setting_key, setting_value FROM settings WHERE setting_key IN ('banner_slider_interval', 'banner_transition_effect')");
         $sliderSettingsRaw = $this->db->resultSet();
@@ -112,7 +115,7 @@ class BannerController extends Controller {
 
             $data = [
                 'title' => trim($_POST['title']),
-                'link' => trim($_POST['link'] ?? ''),
+                'link' => normalize_banner_link($_POST['link'] ?? ''),
                 'sort_order' => (int)($_POST['sort_order'] ?? 0),
                 'status' => trim($_POST['status'] ?? 'active'),
                 'image_file' => $image_file
@@ -133,6 +136,7 @@ class BannerController extends Controller {
         if (!$banner) {
             $this->redirect('admin/banner');
         }
+        $banner->link = normalize_banner_link($banner->link);
 
         $data = [
             'page_title' => 'แก้ไขแบนเนอร์',
@@ -173,7 +177,7 @@ class BannerController extends Controller {
             $data = [
                 'id' => $id,
                 'title' => trim($_POST['title']),
-                'link' => trim($_POST['link'] ?? ''),
+                'link' => normalize_banner_link($_POST['link'] ?? ''),
                 'sort_order' => (int)($_POST['sort_order'] ?? 0),
                 'status' => trim($_POST['status'] ?? 'active'),
                 'image_file' => $image_file

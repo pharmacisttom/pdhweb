@@ -14,9 +14,10 @@
                     <!-- Slides -->
                     <div class="carousel-inner">
                         <?php foreach($banners as $index => $banner): ?>
+                            <?php $bannerLink = normalize_banner_link($banner->link ?? ''); ?>
                             <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
-                                <?php if(!empty($banner->link)): ?>
-                                    <a href="<?= htmlspecialchars($banner->link) ?>" class="d-block text-decoration-none">
+                                <?php if($bannerLink !== ''): ?>
+                                    <a href="<?= htmlspecialchars($bannerLink) ?>" class="d-block text-decoration-none">
                                 <?php endif; ?>
                                 
                                 <div class="banner-carousel-img" style="background-image: url('<?= URLROOT ?>/assets/images/banners/<?= $banner->image_file ?>');">
@@ -29,7 +30,7 @@
                                     </div>
                                 </div>
                                 
-                                <?php if(!empty($banner->link)): ?>
+                                <?php if($bannerLink !== ''): ?>
                                     </a>
                                 <?php endif; ?>
                             </div>
