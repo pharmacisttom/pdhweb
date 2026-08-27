@@ -32,6 +32,8 @@ $expected = [
     'GET /csr',
     'GET /admin/csr',
     'POST /admin/csr/create',
+    'GET /admin/department/edit/{id}',
+    'POST /admin/department/update/{id}',
     'GET /procurement/show/{id}',
     'GET /news/show/{slug}',
     'GET /clinic/show/{id}',

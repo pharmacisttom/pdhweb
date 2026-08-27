@@ -9,7 +9,7 @@
 </div>
 
 <div class="card shadow-sm border-0 rounded-4 p-4 p-md-5 bg-white">
-    <form action="<?= URLROOT ?>/admin/department/edit/<?= $department->id ?>" method="POST">
+    <form action="<?= URLROOT ?>/admin/department/update/<?= $department->id ?>" method="POST">
         <?= \App\Helpers\Security::csrfField() ?>
 
         <div class="row g-4">
