@@ -51,6 +51,10 @@ class HomeController extends Controller {
             }
         }
 
+        // Fetch published CSR projects
+        $csrProjectModel = $this->model('CsrProject');
+        $csrProjects = $csrProjectModel->getPublished();
+
         $data = [
             'page_title' => 'หน้าแรก',
             'newsByCategory' => $newsByCategory,
@@ -58,6 +62,7 @@ class HomeController extends Controller {
             'donationItems' => array_slice($donationItems, 0, 4),
             'totalDonationRaised' => $totalDonationRaised,
             'totalDonationTarget' => $totalDonationTarget,
+            'csrProjects' => $csrProjects,
             'slider_interval' => $sliderSettings['banner_slider_interval'] ?? '5000',
             'slider_transition' => $sliderSettings['banner_transition_effect'] ?? 'fade',
             'queueEnabled' => ($sliderSettings['queue_enabled'] ?? '0') === '1'

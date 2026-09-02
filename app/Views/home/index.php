@@ -540,3 +540,101 @@ function copyHomeBankAcc(accNo) {
     </div>
 </section>
 
+<!-- ========================================================================= -->
+<!-- CSR & COMMUNITY PARTNERSHIP SLIDER SECTION (ภาพสไลด์กิจกรรม CSR ท้ายหน้าแรก) -->
+<!-- ========================================================================= -->
+<?php if (!empty($csrProjects)): ?>
+<section class="py-5 mb-5 bg-white border-top border-bottom" id="homeCsrSection">
+    <div class="container">
+        
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
+            <div>
+                <span class="badge bg-teal-subtle text-teal px-3 py-1 rounded-pill fw-bold small mb-2">
+                    <i class="bi bi-people-fill me-1"></i> ความร่วมมือเพื่อสังคม (CSR)
+                </span>
+                <h2 class="section-title mb-1">พลังความร่วมมือ CSR & ภาคีเครือข่าย</h2>
+                <p class="text-muted small mb-0">ร่วมสร้างการเปลี่ยนแปลงและยกระดับคุณภาพชีวิตของผู้ป่วย โรงพยาบาลปลวกแดง</p>
+            </div>
+            <div class="d-flex align-items-center gap-2 mt-3 mt-md-0">
+                <a href="<?= URLROOT ?>/csr" class="btn btn-outline-teal rounded-pill px-4 py-2 fw-semibold">
+                    ดูเรื่องราวทั้งหมด (<?= count($csrProjects) ?> กิจกรรม) <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+                <div class="btn-group ms-2 d-none d-md-inline-flex" role="group">
+                    <button type="button" class="btn btn-outline-secondary btn-sm rounded-circle p-2 me-1" style="width: 38px; height: 38px;" data-bs-target="#csrHomeCarousel" data-bs-slide="prev">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm rounded-circle p-2" style="width: 38px; height: 38px;" data-bs-target="#csrHomeCarousel" data-bs-slide="next">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carousel Container -->
+        <div id="csrHomeCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+            <div class="carousel-inner">
+                <?php 
+                    $chunks = array_chunk($csrProjects, 3);
+                    foreach ($chunks as $chunkIdx => $group):
+                ?>
+                <div class="carousel-item <?= $chunkIdx === 0 ? 'active' : '' ?>">
+                    <div class="row g-4">
+                        <?php foreach ($group as $proj): ?>
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-light hover-card d-flex flex-column justify-content-between">
+                                <a href="<?= URLROOT ?>/csr" class="position-relative d-block overflow-hidden" style="height: 230px; background: #0f172a;">
+                                    <?php if (!empty($proj->image)): ?>
+                                        <img src="<?= URLROOT ?>/assets/images/csr/<?= rawurlencode($proj->image) ?>" alt="<?= htmlspecialchars($proj->project_title) ?>" class="w-100 h-100 object-fit-cover transition-scale">
+                                    <?php else: ?>
+                                        <div class="w-100 h-100 d-flex align-items-center justify-content-center text-white-50">
+                                            <i class="bi bi-building-heart fs-1"></i>
+                                        </div>
+                                    <?php endif; ?>
+                                    <div class="position-absolute top-0 end-0 m-2">
+                                        <span class="badge bg-dark bg-opacity-75 text-white rounded-pill px-2 py-1 small">
+                                            <i class="bi bi-calendar3 me-1"></i> <?= $proj->project_date ? date('d/m/Y', strtotime($proj->project_date)) : 'CSR' ?>
+                                        </span>
+                                    </div>
+                                </a>
+                                <div class="p-4 d-flex flex-column justify-content-between flex-grow-1 bg-white">
+                                    <div>
+                                        <span class="badge bg-primary-subtle text-primary fw-semibold small mb-2 text-wrap text-start">
+                                            <i class="bi bi-buildings me-1"></i> <?= htmlspecialchars($proj->company_name) ?>
+                                        </span>
+                                        <h5 class="fw-bold text-dark mb-2" style="font-size: 1rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                            <?= htmlspecialchars($proj->project_title) ?>
+                                        </h5>
+                                        <p class="text-muted small mb-3" style="font-size: 0.8rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                            <?= strip_tags($proj->summary) ?>
+                                        </p>
+                                    </div>
+                                    <?php if (!empty($proj->contribution)): ?>
+                                    <div class="pt-2 border-top">
+                                        <div class="small text-teal fw-semibold text-truncate">
+                                            <i class="bi bi-heart-fill text-danger me-1"></i> <?= htmlspecialchars($proj->contribution) ?>
+                                        </div>
+                                    </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+
+            <!-- Carousel Indicators -->
+            <?php if (count($chunks) > 1): ?>
+            <div class="carousel-indicators position-relative mt-4 mb-0">
+                <?php foreach ($chunks as $cIdx => $cGroup): ?>
+                    <button type="button" data-bs-target="#csrHomeCarousel" data-bs-slide-to="<?= $cIdx ?>" class="<?= $cIdx === 0 ? 'active' : '' ?> bg-teal" style="width: 25px; height: 6px; border-radius: 4px;" aria-current="<?= $cIdx === 0 ? 'true' : 'false' ?>" aria-label="Slide <?= $cIdx + 1 ?>"></button>
+                <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
+        </div>
+
+    </div>
+</section>
+<?php endif; ?>
+
