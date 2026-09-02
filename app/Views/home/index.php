@@ -582,15 +582,18 @@ function copyHomeBankAcc(accNo) {
                         <?php foreach ($group as $proj): ?>
                         <div class="col-md-4">
                             <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-light hover-card d-flex flex-column justify-content-between">
-                                <a href="<?= URLROOT ?>/csr" class="position-relative d-block overflow-hidden" style="height: 230px; background: #0f172a;">
+                                <a href="<?= URLROOT ?>/csr" class="position-relative d-block overflow-hidden" style="height: 300px; background: #0b1329;">
                                     <?php if (!empty($proj->image)): ?>
-                                        <img src="<?= URLROOT ?>/assets/images/csr/<?= rawurlencode($proj->image) ?>" alt="<?= htmlspecialchars($proj->project_title) ?>" class="w-100 h-100 object-fit-cover transition-scale">
+                                        <!-- Ambient blurred background -->
+                                        <img src="<?= URLROOT ?>/assets/images/csr/<?= rawurlencode($proj->image) ?>" alt="" class="position-absolute w-100 h-100 object-fit-cover" style="filter: blur(16px); opacity: 0.35; transform: scale(1.15);">
+                                        <!-- Sharp full poster without any cropping -->
+                                        <img src="<?= URLROOT ?>/assets/images/csr/<?= rawurlencode($proj->image) ?>" alt="<?= htmlspecialchars($proj->project_title) ?>" class="position-relative w-100 h-100 object-fit-contain p-2 transition-scale">
                                     <?php else: ?>
                                         <div class="w-100 h-100 d-flex align-items-center justify-content-center text-white-50">
                                             <i class="bi bi-building-heart fs-1"></i>
                                         </div>
                                     <?php endif; ?>
-                                    <div class="position-absolute top-0 end-0 m-2">
+                                    <div class="position-absolute top-0 end-0 m-2" style="z-index: 2;">
                                         <span class="badge bg-dark bg-opacity-75 text-white rounded-pill px-2 py-1 small">
                                             <i class="bi bi-calendar3 me-1"></i> <?= $proj->project_date ? date('d/m/Y', strtotime($proj->project_date)) : 'CSR' ?>
                                         </span>

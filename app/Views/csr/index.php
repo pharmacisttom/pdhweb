@@ -105,9 +105,12 @@ function formatThaiDate($dateStr) {
                     <article class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white hover-card d-flex flex-column justify-content-between">
                         
                         <!-- Poster Preview Image (Clickable for full lightbox view) -->
-                        <div class="position-relative csr-img-wrap" style="height: 320px; background: #0f172a; cursor: pointer;" onclick="openPosterModal('<?= URLROOT ?>/assets/images/csr/<?= rawurlencode($project->image) ?>', '<?= htmlspecialchars(addslashes($project->project_title)) ?>', '<?= htmlspecialchars(addslashes($project->company_name)) ?>')">
+                        <div class="position-relative csr-img-wrap overflow-hidden" style="height: 380px; background: #0b1329; cursor: pointer;" onclick="openPosterModal('<?= URLROOT ?>/assets/images/csr/<?= rawurlencode($project->image) ?>', '<?= htmlspecialchars(addslashes($project->project_title)) ?>', '<?= htmlspecialchars(addslashes($project->company_name)) ?>')">
                             <?php if (!empty($project->image)): ?>
-                                <img src="<?= URLROOT ?>/assets/images/csr/<?= rawurlencode($project->image) ?>" alt="<?= htmlspecialchars($project->project_title) ?>" class="w-100 h-100 object-fit-cover transition-scale">
+                                <!-- Ambient blurred background -->
+                                <img src="<?= URLROOT ?>/assets/images/csr/<?= rawurlencode($project->image) ?>" alt="" class="position-absolute w-100 h-100 object-fit-cover" style="filter: blur(16px); opacity: 0.35; transform: scale(1.15);">
+                                <!-- Sharp full poster without any cropping -->
+                                <img src="<?= URLROOT ?>/assets/images/csr/<?= rawurlencode($project->image) ?>" alt="<?= htmlspecialchars($project->project_title) ?>" class="position-relative w-100 h-100 object-fit-contain p-2 transition-scale">
                             <?php else: ?>
                                 <div class="w-100 h-100 d-flex align-items-center justify-content-center text-white-50">
                                     <i class="bi bi-building-heart display-2"></i>
@@ -115,13 +118,13 @@ function formatThaiDate($dateStr) {
                             <?php endif; ?>
                             
                             <!-- Overlay Hover Pill -->
-                            <div class="position-absolute top-0 end-0 m-3">
+                            <div class="position-absolute top-0 end-0 m-3" style="z-index: 2;">
                                 <span class="badge bg-dark bg-opacity-75 text-white rounded-pill px-3 py-1 small backdrop-blur">
                                     <i class="bi bi-zoom-in me-1"></i> คลิกดูภาพเต็ม
                                 </span>
                             </div>
 
-                            <div class="position-absolute bottom-0 start-0 end-0 p-3 bg-gradient-dark text-white">
+                            <div class="position-absolute bottom-0 start-0 end-0 p-3 bg-gradient-dark text-white" style="z-index: 2;">
                                 <small class="fw-semibold text-warning d-block font-monospace">
                                     <i class="bi bi-calendar3 me-1"></i> <?= formatThaiDate($project->project_date) ?>
                                 </small>
