@@ -133,10 +133,10 @@
                     <div class="col-lg-7 text-start">
                         
                         <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
-                            <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold fs-7 shadow-sm">
+                            <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold shadow-sm">
                                 <i class="bi bi-infinity me-1"></i> แคมเปญการให้ไม่มีสิ้นสุด (The Endless Giving)
                             </span>
-                            <span class="badge bg-white text-teal px-3 py-2 rounded-pill fw-bold fs-7 shadow-sm">
+                            <span class="badge bg-white px-3 py-2 rounded-pill fw-bold shadow-sm" style="color: #0d9488 !important; border: 1px solid rgba(13,148,136,0.2);">
                                 <i class="bi bi-patch-check-fill text-success me-1"></i> e-Donation ลดหย่อนภาษี 2 เท่า
                             </span>
                         </div>
@@ -144,26 +144,26 @@
                         <h2 class="display-6 fw-bold text-white mb-2" style="letter-spacing: -0.5px;">
                             พลังแห่งการให้... สร้างปาฏิหาริย์แห่งชีวิต
                         </h2>
-                        <p class="text-white-75 lead fs-6 mb-4 max-w-600">
+                        <p class="lead fs-6 mb-4 max-w-600" style="color: rgba(255, 255, 255, 0.95); line-height: 1.6;">
                             ร่วมสมทบทุนจัดซื้อเครื่องมือแพทย์และช่วยเหลือผู้ป่วยยากไร้ โรงพยาบาลปลวกแดง ทุกบาทของท่านส่งตรงถึงกรมสรรพากรเพื่อลดหย่อนภาษีได้ 2 เท่าโดยอัตโนมัติ
                         </p>
 
                         <!-- Bank Account Box on Homepage -->
-                        <div class="p-3 p-md-4 rounded-4 bg-white text-dark shadow-lg mb-4 max-w-600">
+                        <div class="p-3 p-md-4 rounded-4 bg-white text-dark shadow-lg mb-4 max-w-600 border border-white">
                             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mb-2 pb-2 border-bottom">
                                 <div>
-                                    <span class="small text-muted"><i class="bi bi-bank2 text-primary me-1"></i> ธนาคารกรุงไทย จำกัด (มหาชน)</span>
-                                    <span class="badge bg-primary-subtle text-primary ms-1">สาขาปลวกแดง</span>
+                                    <span class="small fw-semibold text-dark"><i class="bi bi-bank2 text-primary me-1"></i> ธนาคารกรุงไทย จำกัด (มหาชน)</span>
+                                    <span class="badge bg-primary text-white ms-1 px-2 py-1 rounded-pill">สาขาปลวกแดง</span>
                                 </div>
-                                <span class="badge bg-success-subtle text-success small font-monospace">e-Donation ID: 0994000164877</span>
+                                <span class="badge bg-success-subtle text-success small font-monospace border border-success-subtle px-2 py-1 rounded-pill">e-Donation ID: 0994000164877</span>
                             </div>
-                            <div class="small fw-bold text-dark mb-1">ชื่อบัญชี: <span class="text-primary">เงินบริจาคของโรงพยาบาลปลวกแดง</span></div>
-                            <div class="d-flex align-items-center justify-content-between">
+                            <div class="small text-dark mb-1">ชื่อบัญชี: <span class="text-primary fw-bold">บัญชีเงินบริจาคของโรงพยาบาลปลวกแดง</span></div>
+                            <div class="d-flex align-items-center justify-content-between pt-1">
                                 <div>
-                                    <small class="text-muted d-block" style="font-size: 0.72rem;">เลขที่บัญชี:</small>
+                                    <small class="text-muted d-block fw-semibold" style="font-size: 0.75rem;">เลขที่บัญชี:</small>
                                     <span class="fs-4 fw-bold font-monospace text-primary">671-9-87195-1</span>
                                 </div>
-                                <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 py-1" onclick="copyHomeBankAcc('6719871951')">
+                                <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 py-2 fw-semibold shadow-sm" onclick="copyHomeBankAcc('6719871951')">
                                     <i class="bi bi-clipboard me-1"></i> <span id="homeCopyBtnText">คัดลอกเลขบัญชี</span>
                                 </button>
                             </div>
@@ -175,7 +175,7 @@
                                 <i class="bi bi-heart-fill text-danger"></i>
                                 <span>ร่วมบริจาคออนไลน์ (สแกน QR)</span>
                             </a>
-                            <a href="<?= URLROOT ?>/donation/track" class="btn btn-outline-light btn-lg rounded-pill px-4 py-3 fw-semibold d-inline-flex align-items-center gap-2">
+                            <a href="<?= URLROOT ?>/donation/track" class="btn btn-outline-light btn-lg rounded-pill px-4 py-3 fw-semibold d-inline-flex align-items-center gap-2 shadow-sm">
                                 <i class="bi bi-search"></i>
                                 <span>ติดตามสถานะการบริจาค</span>
                             </a>
@@ -189,7 +189,7 @@
                             
                             <!-- Official e-Donation Header Badge -->
                             <div class="mb-2">
-                                <span class="badge bg-primary text-white rounded-pill px-3 py-1 fw-bold" style="font-size: 0.8rem;">
+                                <span class="badge text-white rounded-pill px-3 py-1 fw-bold" style="background-color: #0284c7; font-size: 0.8rem;">
                                     <i class="bi bi-qr-code me-1"></i> QR รับบริจาคทางการ (e-Donation)
                                 </span>
                             </div>
@@ -205,10 +205,10 @@
                             <div class="text-muted font-monospace small mb-3" style="font-size: 0.78rem;">ธนาคารกรุงไทย สาขาปลวกแดง • <strong>671-9-87195-1</strong></div>
 
                             <div class="d-flex gap-2">
-                                <a href="<?= URLROOT ?>/donations" class="btn btn-teal-gradient flex-grow-1 py-2 rounded-pill fw-bold text-white shadow-sm">
-                                    <i class="bi bi-heart-fill me-1"></i> เข้าสู่หน้าบริจาค
+                                <a href="<?= URLROOT ?>/donations" class="btn btn-teal-gradient flex-grow-1 py-2 px-3 rounded-pill fw-bold text-white shadow-sm d-inline-flex align-items-center justify-content-center gap-1">
+                                    <i class="bi bi-heart-fill text-danger"></i> <span>เข้าสู่หน้าบริจาค</span>
                                 </a>
-                                <a href="<?= URLROOT ?>/assets/images/donations/donation-poster.jpg" target="_blank" class="btn btn-outline-secondary rounded-pill px-3 py-2" title="ดูป้ายประกาศทางการ">
+                                <a href="<?= URLROOT ?>/assets/images/donations/donation-poster.jpg" target="_blank" class="btn btn-outline-secondary rounded-pill px-3 py-2 fw-semibold" title="ดูป้ายประกาศทางการ">
                                     <i class="bi bi-file-earmark-image"></i> ป้ายประกาศ
                                 </a>
                             </div>
@@ -277,6 +277,40 @@
 
     </div>
 </section>
+
+<!-- Custom Styling for Donation Section -->
+<style>
+.btn-teal-gradient {
+    background: linear-gradient(135deg, #0d9488 0%, #059669 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    transition: all 0.3s ease;
+}
+.btn-teal-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4) !important;
+    color: #ffffff !important;
+}
+.btn-outline-teal {
+    border: 1.5px solid #0d9488 !important;
+    color: #0d9488 !important;
+    background: transparent;
+}
+.btn-outline-teal:hover {
+    background: #0d9488 !important;
+    color: #ffffff !important;
+}
+.text-teal {
+    color: #0d9488 !important;
+}
+.bg-teal {
+    background-color: #0d9488 !important;
+}
+.bg-teal-subtle {
+    background-color: #ccfbf1 !important;
+    color: #0f766e !important;
+}
+</style>
 
 <script>
 function copyHomeBankAcc(accNo) {
