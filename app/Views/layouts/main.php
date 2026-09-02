@@ -228,7 +228,8 @@
                         <li><a href="<?= URLROOT ?>/doctors" class="footer-link">ค้นหาแพทย์</a></li>
                         <li><a href="<?= URLROOT ?>/clinics" class="footer-link">ตารางออกตรวจ</a></li>
                         <?php if ($queueEnabled): ?><li><a href="<?= URLROOT ?>/queue" class="footer-link">ระบบคิวตรวจ</a></li><?php endif; ?>
-                        <li><a href="<?= URLROOT ?>/donations" class="footer-link">ร่วมบริจาค</a></li>
+                        <li><a href="<?= URLROOT ?>/donations" class="footer-link">ร่วมบริจาค e-Donation</a></li>
+                        <li><a href="<?= URLROOT ?>/donation/track" class="footer-link">ติดตามสถานะการบริจาค</a></li>
                         <li><a href="<?= URLROOT ?>/complaint" class="footer-link">รับเรื่องร้องเรียน</a></li>
                     </ul>
                 </div>

@@ -29,6 +29,10 @@
             <div class="card-body p-4">
                 <table class="table table-borderless align-middle mb-4">
                     <tr>
+                        <th width="35%" class="text-muted small fw-bold">รหัสติดตาม (Tracking):</th>
+                        <td><span class="badge bg-light text-primary font-monospace fs-6 border px-3 py-1"><?= htmlspecialchars($donation->tracking_code ?? '-') ?></span></td>
+                    </tr>
+                    <tr>
                         <th width="35%" class="text-muted small fw-bold">ชื่อ-นามสกุล ผู้บริจาค:</th>
                         <td class="fs-6 fw-bold text-dark"><?= htmlspecialchars($donation->donor_name) ?></td>
                     </tr>

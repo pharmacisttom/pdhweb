@@ -46,10 +46,47 @@ class Donation extends Model {
         return $this->db->resultSet();
     }
 
+    public function getByTrackingCode($code) {
+        $this->db->query('
+            SELECT d.*, di.title as item_title, di.type as item_type, di.image as item_image,
+                   u.firstname as approver_firstname, u.lastname as approver_lastname
+            FROM donations d 
+            JOIN donation_items di ON d.donation_item_id = di.id 
+            LEFT JOIN users u ON d.approved_by = u.id 
+            WHERE d.tracking_code = :code
+        ');
+        $this->db->bind(':code', $code);
+        return $this->db->single();
+    }
+
+    public function searchByKeyword($keyword) {
+        $keyword = trim($keyword);
+        $cleanPhone = preg_replace('/[^0-9]/', '', $keyword);
+        
+        $this->db->query('
+            SELECT d.*, di.title as item_title, di.type as item_type, di.image as item_image,
+                   u.firstname as approver_firstname, u.lastname as approver_lastname
+            FROM donations d 
+            JOIN donation_items di ON d.donation_item_id = di.id 
+            LEFT JOIN users u ON d.approved_by = u.id 
+            WHERE d.tracking_code = :kw 
+               OR d.donor_phone LIKE :phoneKw
+               OR d.donor_email = :emailKw
+               OR d.id = :idKw
+            ORDER BY d.created_at DESC
+        ');
+        $this->db->bind(':kw', $keyword);
+        $this->db->bind(':phoneKw', '%' . $keyword . '%');
+        $this->db->bind(':emailKw', $keyword);
+        $this->db->bind(':idKw', is_numeric($keyword) ? intval($keyword) : -1);
+        return $this->db->resultSet();
+    }
+
     public function create($data) {
-        $this->db->query('INSERT INTO donations (donation_item_id, donor_name, donor_email, donor_phone, amount, quantity, payment_slip_image, status) VALUES (:donation_item_id, :donor_name, :donor_email, :donor_phone, :amount, :quantity, :payment_slip_image, :status)');
+        $this->db->query('INSERT INTO donations (donation_item_id, tracking_code, donor_name, donor_email, donor_phone, amount, quantity, payment_slip_image, status) VALUES (:donation_item_id, :tracking_code, :donor_name, :donor_email, :donor_phone, :amount, :quantity, :payment_slip_image, :status)');
         
         $this->db->bind(':donation_item_id', $data['donation_item_id']);
+        $this->db->bind(':tracking_code', $data['tracking_code'] ?? null);
         $this->db->bind(':donor_name', $data['donor_name']);
         $this->db->bind(':donor_email', $data['donor_email'] ?? null);
         $this->db->bind(':donor_phone', $data['donor_phone'] ?? null);
@@ -58,7 +95,10 @@ class Donation extends Model {
         $this->db->bind(':payment_slip_image', $data['payment_slip_image'] ?? null);
         $this->db->bind(':status', 'pending');
         
-        return $this->db->execute();
+        if ($this->db->execute()) {
+            return $this->db->lastInsertId() ?: true;
+        }
+        return false;
     }
 
     public function update($data) {

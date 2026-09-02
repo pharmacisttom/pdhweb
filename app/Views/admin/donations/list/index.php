@@ -36,10 +36,13 @@
                     <?php else: ?>
                         <?php foreach ($donations as $donation): ?>
                         <tr>
-                            <td class="ps-4 fw-bold font-monospace text-muted"><?= $donation->id ?></td>
+                            <td class="ps-4 fw-bold font-monospace text-muted">#<?= $donation->id ?></td>
                             <td>
                                 <div class="fw-bold text-dark mb-1"><?= htmlspecialchars($donation->donor_name) ?></div>
-                                <small class="text-muted"><i class="bi bi-telephone me-1"></i><?= htmlspecialchars($donation->donor_phone ?: '-') ?></small>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="badge bg-light text-secondary font-monospace border"><?= htmlspecialchars($donation->tracking_code ?? '-') ?></span>
+                                    <small class="text-muted"><i class="bi bi-telephone me-1"></i><?= htmlspecialchars($donation->donor_phone ?: '-') ?></small>
+                                </div>
                             </td>
                             <td>
                                 <div class="fw-medium text-dark small"><?= htmlspecialchars($donation->item_title) ?></div>

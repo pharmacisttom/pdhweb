@@ -22,9 +22,13 @@ $router->get('/contact', 'ContactController@index');
 $router->get('/risk', 'RiskController@index');
 $router->get('/hrms', 'RiskController@index');
 
-// Public Donations (แคมเปญการให้ไม่มีสิ้นสุด)
+// Public Donations (แคมเปญการให้ไม่มีสิ้นสุด & e-Donation)
 $router->get('/donation', 'DonationController@index');
 $router->get('/donations', 'DonationController@index');
+$router->get('/donation/track', 'DonationController@track');
+$router->get('/donations/track', 'DonationController@track');
+$router->get('/donation/success/{tracking_code}', 'DonationController@success');
+$router->get('/donation/qr', 'DonationController@qr');
 $router->get('/donation/show/{id}', 'DonationController@show');
 $router->post('/donation/store', 'DonationController@store');
 

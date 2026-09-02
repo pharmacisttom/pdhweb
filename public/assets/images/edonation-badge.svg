@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 90" width="320" height="90">
+  <defs>
+    <linearGradient id="edonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="50%" stop-color="#0d9488"/>
+      <stop offset="100%" stop-color="#16a34a"/>
+    </linearGradient>
+    <linearGradient id="heartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#ef4444"/>
+    </linearGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Background container rounded pill -->
+  <rect x="2" y="2" width="316" height="86" rx="20" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" filter="url(#dropShadow)"/>
+
+  <!-- Left Emblem / Icon Group -->
+  <g transform="translate(14, 13)">
+    <!-- Outer Shield / Circle Glow -->
+    <rect x="0" y="0" width="64" height="64" rx="16" fill="url(#edonGrad)"/>
+    <!-- Center Heart with 'e' shape -->
+    <path d="M32 18 C26 12, 16 16, 16 26 C16 36, 28 44, 32 48 C36 44, 48 36, 48 26 C48 16, 38 12, 32 18 Z" fill="url(#heartGrad)"/>
+    <!-- Small checkmark / spark -->
+    <circle cx="32" cy="28" r="4" fill="#ffffff"/>
+  </g>
+
+  <!-- Brand Typography -->
+  <!-- Main "e-Donation" Title -->
+  <text x="90" y="40" font-family="'Prompt', 'Plus Jakarta Sans', sans-serif" font-size="24" font-weight="800" fill="#0f172a" letter-spacing="-0.5">
+    <tspan fill="#0d9488">e-</tspan><tspan fill="#0284c7">Donation</tspan>
+  </text>
+
+  <!-- Subtitle "ระบบบริจาคอิเล็กทรอนิกส์" -->
+  <text x="90" y="58" font-family="'Prompt', sans-serif" font-size="12" font-weight="600" fill="#475569">
+    ระบบบริจาคอิเล็กทรอนิกส์
+  </text>
+
+  <!-- Subtitle 2 "กรมสรรพากร" -->
+  <text x="90" y="72" font-family="'Prompt', sans-serif" font-size="10.5" font-weight="500" fill="#94a3b8">
+    กรมสรรพากร • ลดหย่อนภาษี 2 เท่า
+  </text>
+</svg>

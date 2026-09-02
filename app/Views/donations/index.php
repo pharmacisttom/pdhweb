@@ -69,6 +69,10 @@
                             <i class="bi bi-qr-code-scan fs-5"></i>
                             <span>สแกน e-Donation</span>
                         </a>
+                        <a href="<?= URLROOT ?>/donation/track" class="btn btn-teal-outline-light btn-lg rounded-pill px-4 py-3 fw-semibold d-inline-flex align-items-center gap-2">
+                            <i class="bi bi-search fs-5"></i>
+                            <span>ติดตามสถานะสลิปบริจาค</span>
+                        </a>
                     </div>
                 </div>
 
@@ -107,9 +111,14 @@
                             </div>
                         </div>
 
-                        <button type="button" class="btn btn-teal-gradient w-100 py-3 rounded-pill fw-bold text-white shadow" data-bs-toggle="modal" data-bs-target="#quickDonateModal">
-                            <i class="bi bi-receipt me-1"></i> แจ้งหลักฐานการบริจาค (แนบสลิป)
-                        </button>
+                        <div class="d-flex flex-column gap-2">
+                            <button type="button" class="btn btn-teal-gradient w-100 py-3 rounded-pill fw-bold text-white shadow" data-bs-toggle="modal" data-bs-target="#quickDonateModal">
+                                <i class="bi bi-receipt me-1"></i> แจ้งหลักฐานการบริจาค (แนบสลิป)
+                            </button>
+                            <a href="<?= URLROOT ?>/donation/track" class="btn btn-outline-secondary w-100 py-2 rounded-pill small">
+                                <i class="bi bi-search me-1"></i> ตรวจสอบสถานะการบริจาค (Donor Tracker)
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -138,57 +147,62 @@
                     <!-- Preset Amount Selector Buttons -->
                     <div class="row g-2 g-md-3 justify-content-center mb-4">
                         <div class="col-6 col-md-2">
-                            <button type="button" class="btn btn-amount-preset w-100 py-3 rounded-4 fw-bold active" data-amount="100" data-impact="มอบชุดเวชภัณฑ์พื้นฐาน หน้ากากออกซิเจน และสายน้ำเกลือให้ผู้ป่วย 1 ท่าน">
-                                ฿100
+                            <button type="button" class="btn btn-outline-light w-100 py-3 rounded-4 btn-amount-preset active" data-amount="100" data-impact="สมทบทุนจัดซื้อเวชภัณฑ์จำเป็นและอุปกรณ์ทำแผลสำหรับผู้ป่วยนอก">
+                                <div class="fs-4 fw-bold font-monospace mb-0">100 ฿</div>
+                                <small class="d-block opacity-75">เริ่มต้นส่งต่อ</small>
                             </button>
                         </div>
                         <div class="col-6 col-md-2">
-                            <button type="button" class="btn btn-amount-preset w-100 py-3 rounded-4 fw-bold" data-amount="300" data-impact="สนับสนุนกองทุนค่ายาและเวชภัณฑ์จำเป็นสำหรับผู้ป่วยยากไร้">
-                                ฿300
+                            <button type="button" class="btn btn-outline-light w-100 py-3 rounded-4 btn-amount-preset" data-amount="300" data-impact="จัดหาชุดตรวจสุขภาพเบื้องต้นและยารักษาโรคเรื้อรังสำหรับผู้ป่วยยากไร้">
+                                <div class="fs-4 fw-bold font-monospace mb-0">300 ฿</div>
+                                <small class="d-block opacity-75">เติมเต็มโอกาส</small>
                             </button>
                         </div>
                         <div class="col-6 col-md-2">
-                            <button type="button" class="btn btn-amount-preset w-100 py-3 rounded-4 fw-bold" data-amount="500" data-impact="ช่วยเหลือค่ารักษาพยาบาล อุปกรณ์พยุง และค่าเดินทางผู้ป่วยด้อยโอกาส">
-                                ฿500
+                            <button type="button" class="btn btn-outline-light w-100 py-3 rounded-4 btn-amount-preset" data-amount="500" data-impact="สนับสนุนออกซิเจนและอุปกรณ์ดูแลผู้ป่วยติดเตียงระยะประคับประคองที่บ้าน">
+                                <div class="fs-4 fw-bold font-monospace mb-0">500 ฿</div>
+                                <small class="d-block opacity-75">พลังแห่งลมหายใจ</small>
                             </button>
                         </div>
                         <div class="col-6 col-md-2">
-                            <button type="button" class="btn btn-amount-preset w-100 py-3 rounded-4 fw-bold" data-amount="1000" data-impact="สมทบทุนจัดซื้อเครื่องตรวจวัดสัญญาณชีพผู้ป่วยวิกฤต (Vital Signs Monitor)">
-                                ฿1,000
+                            <button type="button" class="btn btn-outline-light w-100 py-3 rounded-4 btn-amount-preset" data-amount="1000" data-impact="สมทบทุนจัดซื้อเครื่องเฝ้าระวังสัญญาณชีพและอุปกรณ์ช่วยชีวิตฉุกเฉิน (ER)">
+                                <div class="fs-4 fw-bold font-monospace mb-0">1,000 ฿</div>
+                                <small class="d-block opacity-75">ช่วยชีวิตวิกฤต</small>
                             </button>
                         </div>
                         <div class="col-6 col-md-2">
-                            <button type="button" class="btn btn-amount-preset w-100 py-3 rounded-4 fw-bold" data-amount="2500" data-impact="ร่วมจัดซื้อเครื่องช่วยหายใจประสิทธิภาพสูง และอุปกรณ์ช่วยชีวิตฉุกเฉิน (ICU/ER)">
-                                ฿2,500
+                            <button type="button" class="btn btn-outline-light w-100 py-3 rounded-4 btn-amount-preset" data-amount="2500" data-impact="ร่วมสมทบทุนจัดซื้อเครื่องช่วยหายใจสำหรับหอผู้ป่วยวิกฤต (ICU)">
+                                <div class="fs-4 fw-bold font-monospace mb-0">2,500 ฿</div>
+                                <small class="d-block opacity-75">สร้างปาฏิหาริย์</small>
                             </button>
                         </div>
                         <div class="col-6 col-md-2">
-                            <button type="button" class="btn btn-amount-preset w-100 py-3 rounded-4 fw-bold" data-amount="5000" data-impact="สมทบทุนเตียงผู้ป่วยระบบไฟฟ้าและเครื่องเฝ้าระวังสัญญาณชีพขั้นสูง">
-                                ฿5,000
+                            <button type="button" class="btn btn-outline-light w-100 py-3 rounded-4 btn-amount-preset" data-amount="5000" data-impact="สนับสนุนการพัฒนาศูนย์การแพทย์และเตียงผู้ป่วยระบบไฟฟ้าครบวงจร">
+                                <div class="fs-4 fw-bold font-monospace mb-0">5,000 ฿</div>
+                                <small class="d-block opacity-75">ผู้เกื้อหนุนรพ.</small>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Dynamic Impact Result Box -->
-                    <div class="p-4 rounded-4 bg-white text-dark shadow-lg max-w-800 mx-auto">
-                        <div class="row align-items-center g-3">
-                            <div class="col-md-2 text-center text-md-start">
-                                <div class="impact-icon-circle bg-warning bg-opacity-20 text-warning-emphasis mx-auto mx-md-0">
-                                    <i class="bi bi-gift-fill fs-3 text-warning"></i>
-                                </div>
-                            </div>
-                            <div class="col-md-7 text-center text-md-start">
-                                <div class="small text-muted mb-1">ผลลัพธ์จากยอดเงินบริจาค <strong class="text-teal fs-6" id="selectedAmountDisplay">100 บาท</strong></div>
-                                <div class="fw-bold fs-6 text-dark" id="selectedImpactText">
-                                    มอบชุดเวชภัณฑ์พื้นฐาน หน้ากากออกซิเจน และสายน้ำเกลือให้ผู้ป่วย 1 ท่าน
-                                </div>
-                            </div>
-                            <div class="col-md-3 text-center text-md-end">
-                                <button type="button" class="btn btn-warning rounded-pill px-4 py-2 fw-bold text-dark shadow w-100" id="btnDonateThisPreset" data-bs-toggle="modal" data-bs-target="#quickDonateModal">
-                                    <i class="bi bi-heart-fill text-danger me-1"></i> บริจาคยอดนี้
-                                </button>
-                            </div>
+                    <!-- Dynamic Impact Card -->
+                    <div class="card bg-white bg-opacity-10 border border-white border-opacity-25 rounded-4 p-4 text-center max-w-700 mx-auto mb-4 backdrop-blur">
+                        <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
+                            <i class="bi bi-heart-pulse-fill text-warning fs-4"></i>
+                            <h4 class="h5 fw-bold mb-0 text-white">ผลลัพธ์ที่คุณสร้างได้</h4>
                         </div>
+                        <p class="fs-5 text-white fw-semibold mb-0" id="selectedImpactText">
+                            สมทบทุนจัดซื้อเวชภัณฑ์จำเป็นและอุปกรณ์ทำแผลสำหรับผู้ป่วยนอก
+                        </p>
+                    </div>
+
+                    <!-- CTA Buttons inside Impact Section -->
+                    <div class="text-center">
+                        <button type="button" class="btn btn-warning btn-lg rounded-pill px-5 py-3 fw-bold text-dark shadow-lg me-2 mb-2" id="btnDonateThisPreset" data-bs-toggle="modal" data-bs-target="#quickDonateModal">
+                            <i class="bi bi-check2-circle me-1"></i> ร่วมบริจาคตามยอดที่เลือก (<span id="btnPresetAmountLabel">100 บาท</span>)
+                        </button>
+                        <a href="#eDonationSection" class="btn btn-outline-light btn-lg rounded-pill px-4 py-3 fw-semibold mb-2" onclick="setQrAmount(currentSelectedAmount)">
+                            <i class="bi bi-qr-code me-1"></i> สแกน e-Donation ยอดนี้
+                        </a>
                     </div>
 
                 </div>
@@ -197,34 +211,84 @@
     </section>
 
     <!-- ========================================================================= -->
-    <!-- E-DONATION & TAX DEDUCTION 2X SECTION -->
+    <!-- E-DONATION & TAX DEDUCTION 2X SECTION (DYNAMIC QR GENERATOR) -->
     <!-- ========================================================================= -->
     <section class="py-4 mb-5" id="eDonationSection">
         <div class="container">
             <div class="row g-4 align-items-stretch">
                 
-                <!-- Left: PromptPay / e-Donation QR Card -->
+                <!-- Left: Dynamic PromptPay / e-Donation QR Card -->
                 <div class="col-lg-5">
-                    <div class="card h-100 border-0 shadow-sm rounded-4 p-4 p-md-5 text-center bg-white">
-                        <span class="badge bg-primary text-white rounded-pill px-3 py-1 fw-bold mb-3 mx-auto">
-                            <i class="bi bi-qr-code me-1"></i> Thai QR Payment / e-Donation
-                        </span>
-                        <h3 class="h4 fw-bold text-dark mb-2">สแกนบริจาคผ่าน e-Donation</h3>
-                        <p class="text-muted small mb-4">
-                            สแกนผ่านแอปธนาคารทุกแห่ง ข้อมูลการบริจาคจะถูกส่งตรงเข้าสู่ระบบกรมสรรพากรเพื่อลดหย่อนภาษี 2 เท่าโดยอัตโนมัติ
-                        </p>
+                    <div class="card h-100 border-0 shadow-sm rounded-4 p-4 p-md-5 text-center bg-white d-flex flex-column justify-content-between">
+                        <div>
+                            <!-- Official e-Donation Brand Logo & Badge -->
+                            <div class="mb-3 text-center">
+                                <a href="https://epayapp.rd.go.th/rd-edonation/portal/for-donation-unit" target="_blank" title="ระบบบริจาคอิเล็กทรอนิกส์ (e-Donation) กรมสรรพากร" class="d-inline-block text-decoration-none">
+                                    <img src="<?= URLROOT ?>/assets/images/edonation-badge.svg" alt="e-Donation Logo กรมสรรพากร" class="img-fluid rounded-4 shadow-sm hover-scale mb-1" style="max-height: 65px;">
+                                </a>
+                            </div>
 
-                        <!-- QR Code Container -->
-                        <div class="p-3 bg-light rounded-4 d-inline-block border mb-3 shadow-inner">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=00020101021130540016A00000067701011101150994000164877025102TH9104E999" alt="e-Donation QR Code" class="img-fluid rounded" width="200" height="200">
+                            <h3 class="h4 fw-bold text-dark mb-1">สแกนบริจาคผ่าน e-Donation</h3>
+                            <p class="text-muted small mb-3">
+                                เลือกระบุจำนวนเงิน ระบบจะสร้าง QR Code พร้อมยอดเงินให้อัตโนมัติ ข้อมูลจะถูกส่งตรงเข้าสู่ระบบกรมสรรพากรเพื่อลดหย่อนภาษี 2 เท่า
+                            </p>
+
+                            <!-- Amount Quick Selectors for QR -->
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold text-muted d-block text-start mb-2">เลือกยอดเงินที่ต้องการระบุใน QR:</label>
+                                <div class="d-flex flex-wrap gap-1 justify-content-center mb-2">
+                                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 qr-amount-chip active" onclick="setQrAmount(0)">อิสระ (ไม่กำหนดยอด)</button>
+                                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 qr-amount-chip" onclick="setQrAmount(100)">100 ฿</button>
+                                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 qr-amount-chip" onclick="setQrAmount(300)">300 ฿</button>
+                                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 qr-amount-chip" onclick="setQrAmount(500)">500 ฿</button>
+                                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 qr-amount-chip" onclick="setQrAmount(1000)">1,000 ฿</button>
+                                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 qr-amount-chip" onclick="setQrAmount(2500)">2,500 ฿</button>
+                                </div>
+                                
+                                <div class="input-group input-group-sm max-w-300 mx-auto">
+                                    <span class="input-group-text bg-light text-muted">กำหนดเอง</span>
+                                    <input type="number" id="customQrAmountInput" class="form-control text-center font-monospace fw-bold" placeholder="ระบุจำนวนเงิน (บาท)" min="1" step="any" oninput="onCustomQrAmountChange(this.value)">
+                                    <span class="input-group-text bg-light">บาท</span>
+                                </div>
+                            </div>
+
+                            <!-- QR Code Container & Dynamic Badge -->
+                            <div class="position-relative d-inline-block mb-3">
+                                <div class="p-3 bg-light rounded-4 d-inline-block border shadow-sm position-relative">
+                                    <img id="dynamicQrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=00020101021130390016A000000677010111011509940001648770053037645802TH6304E721" alt="e-Donation QR Code" class="img-fluid rounded" width="220" height="220">
+                                </div>
+                                
+                                <div class="mt-2">
+                                    <span class="badge bg-dark font-monospace px-3 py-2 rounded-pill fs-6" id="qrAmountBadge">
+                                        <i class="bi bi-tag-fill text-warning me-1"></i> ยอดใน QR: ระบุยอดเองในแอป
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="small fw-bold text-dark mb-1">โรงพยาบาลปลวกแดง</div>
+                            <div class="small text-muted font-monospace mb-2">รหัสหน่วยรับบริจาค e-Donation: <strong>0994000164877</strong></div>
+                            
+                            <!-- Portal verification link -->
+                            <div class="mb-3">
+                                <a href="https://epayapp.rd.go.th/rd-edonation/portal/for-donation-unit" target="_blank" rel="noopener noreferrer" class="text-teal small text-decoration-none fw-semibold d-inline-flex align-items-center gap-1">
+                                    <i class="bi bi-patch-check-fill text-success"></i> ตรวจสอบสถานะหน่วยรับบริจาคบนระบบกรมสรรพากร <i class="bi bi-box-arrow-up-right" style="font-size: 0.75rem;"></i>
+                                </a>
+                            </div>
+
+                            <!-- QR Action Buttons -->
+                            <div class="d-flex gap-2 justify-content-center mb-3">
+                                <a id="btnDownloadQr" href="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=00020101021130390016A000000677010111011509940001648770053037645802TH6304E721" download="PDH_eDonation_QR.png" target="_blank" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                    <i class="bi bi-download me-1"></i> ดาวน์โหลด QR
+                                </a>
+                                <button type="button" class="btn btn-sm btn-teal-gradient text-white rounded-pill px-3" onclick="openDonateWithQrAmount()">
+                                    <i class="bi bi-receipt me-1"></i> แจ้งสลิปยอดนี้
+                                </button>
+                            </div>
                         </div>
-
-                        <div class="small fw-bold text-dark mb-1">โรงพยาบาลปลวกแดง</div>
-                        <div class="small text-muted font-monospace mb-3">รหัสหน่วยรับบริจาค e-Donation: 0994000164877</div>
 
                         <div class="alert alert-success d-flex align-items-center gap-2 p-2 rounded-3 text-start mb-0 small">
                             <i class="bi bi-shield-check fs-4 text-success flex-shrink-0"></i>
-                            <div><strong>สิทธิประโยชน์ 2 เท่า:</strong> บุคคลธรรมดาและนิติบุคคล ลดหย่อนภาษีได้ 2 เท่าตามที่จ่ายจริง</div>
+                            <div><strong>สิทธิประโยชน์ 2 เท่า:</strong> บุคคลธรรมดาและนิติบุคคล ลดหย่อนภาษีได้ 2 เท่าตามที่จ่ายจริงผ่านระบบ e-Donation</div>
                         </div>
                     </div>
                 </div>
@@ -394,9 +458,14 @@
                                         <button type="button" class="btn btn-teal-gradient btn-sm rounded-pill fw-bold text-white shadow-sm" onclick="openDonateForProject(<?= $item->id ?>, '<?= htmlspecialchars(addslashes($item->title)) ?>')">
                                             <i class="bi bi-heart-fill me-1"></i> ร่วมบริจาคโครงการนี้
                                         </button>
-                                        <a href="<?= URLROOT ?>/donation/show/<?= $item->id ?>" class="btn btn-outline-secondary btn-sm rounded-pill">
-                                            รายละเอียด &rarr;
-                                        </a>
+                                        <div class="d-flex gap-2">
+                                            <a href="<?= URLROOT ?>/donation/show/<?= $item->id ?>" class="btn btn-outline-secondary btn-sm rounded-pill flex-grow-1">
+                                                รายละเอียด &rarr;
+                                            </a>
+                                            <button type="button" class="btn btn-outline-teal btn-sm rounded-pill px-3" onclick="openShareModal('<?= htmlspecialchars(addslashes($item->title)) ?>', '<?= URLROOT ?>/donation/show/<?= $item->id ?>')" title="แชร์โครงการนี้">
+                                                <i class="bi bi-share"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -569,6 +638,71 @@
 </div>
 
 <!-- ========================================================================= -->
+<!-- MODAL : Universal Social Share Modal (กล่องแชร์โครงการและแคมเปญ) -->
+<!-- ========================================================================= -->
+<div class="modal fade" id="shareCampaignModal" tabindex="-1" aria-labelledby="shareCampaignModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-2xl rounded-5 overflow-hidden">
+            <div class="modal-header text-white p-4" style="background: linear-gradient(135deg, #093f35 0%, #0d9488 100%);">
+                <div>
+                    <h5 class="modal-title fw-bold text-white mb-1" id="shareCampaignModalLabel">
+                        <i class="bi bi-share-fill me-2"></i>บอกต่อพลังแห่งการให้
+                    </h5>
+                    <small class="text-white-50">ร่วมเป็นสะพานบุญส่งต่อโอกาสและรอยยิ้มให้กับผู้ป่วย</small>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 text-center">
+                
+                <h6 class="fw-bold text-dark mb-3" id="shareModalItemTitle">แคมเปญการให้ไม่มีสิ้นสุด โรงพยาบาลปลวกแดง</h6>
+                
+                <!-- Social Share Buttons Grid -->
+                <div class="row g-2 mb-4 justify-content-center">
+                    <div class="col-4">
+                        <a id="shareFbBtn" href="#" target="_blank" class="btn btn-primary w-100 py-3 rounded-4 d-flex flex-column align-items-center gap-1 shadow-sm">
+                            <i class="bi bi-facebook fs-3"></i>
+                            <span class="small fw-semibold">Facebook</span>
+                        </a>
+                    </div>
+                    <div class="col-4">
+                        <a id="shareLineBtn" href="#" target="_blank" class="btn text-white w-100 py-3 rounded-4 d-flex flex-column align-items-center gap-1 shadow-sm" style="background-color: #06c755;">
+                            <i class="bi bi-line fs-3"></i>
+                            <span class="small fw-semibold">LINE</span>
+                        </a>
+                    </div>
+                    <div class="col-4">
+                        <a id="shareTwBtn" href="#" target="_blank" class="btn btn-dark w-100 py-3 rounded-4 d-flex flex-column align-items-center gap-1 shadow-sm">
+                            <i class="bi bi-twitter-x fs-3"></i>
+                            <span class="small fw-semibold">X (Twitter)</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- QR Code for Link -->
+                <div class="p-3 bg-light rounded-4 border mb-3 d-inline-block">
+                    <img id="shareLinkQrImg" src="" alt="Link QR" class="img-fluid rounded" width="150" height="150">
+                    <div class="text-muted small mt-1" style="font-size: 0.72rem;">สแกนเพื่อเปิดหน้านี้บนมือถือ</div>
+                </div>
+
+                <!-- Copy Link Input Box -->
+                <div class="input-group mb-2">
+                    <input type="text" id="shareLinkInput" class="form-control bg-light font-monospace small" readonly>
+                    <button class="btn btn-teal-gradient text-white px-3 fw-semibold" type="button" onclick="copyShareInputLink()">
+                        <i class="bi bi-clipboard me-1"></i> <span id="copyShareBtnText">คัดลอก</span>
+                    </button>
+                </div>
+
+                <!-- Native Mobile Share Button -->
+                <button type="button" class="btn btn-outline-secondary btn-sm w-100 rounded-pill py-2 mt-2" onclick="triggerNativeShare()">
+                    <i class="bi bi-share me-1"></i> แชร์ผ่านแอปพลิเคชันอื่นในเครื่อง
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================================================= -->
 <!-- CUSTOM STYLING & SCRIPT FOR ENDLESS GIVING -->
 <!-- ========================================================================= -->
 <style>
@@ -682,17 +816,136 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
+    .btn-teal-outline-light {
+        border: 2px solid rgba(255, 255, 255, 0.7);
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(4px);
+        transition: all 0.2s ease;
+    }
+    .btn-teal-outline-light:hover {
+        background: #fff;
+        color: #093f35;
+    }
+    .qr-amount-chip.active {
+        background-color: #0d9488 !important;
+        color: #fff !important;
+        border-color: #0d9488 !important;
+    }
+    .max-w-300 { max-width: 300px; }
     .max-w-700 { max-width: 700px; }
     .max-w-800 { max-width: 800px; }
 </style>
 
 <script>
+const BILLER_ID = '0994000164877';
+let currentQrAmount = 0;
+
+// TLV Formatter
+function tlv(tag, value) {
+    const len = value.length.toString().padStart(2, '0');
+    return tag + len + value;
+}
+
+// CRC16-CCITT for PromptPay QR
+function calcCRC16(str) {
+    let crc = 0xFFFF;
+    for (let i = 0; i < str.length; i++) {
+        crc ^= (str.charCodeAt(i) << 8);
+        for (let j = 0; j < 8; j++) {
+            if ((crc & 0x8000) !== 0) {
+                crc = ((crc << 1) ^ 0x1021) & 0xFFFF;
+            } else {
+                crc = (crc << 1) & 0xFFFF;
+            }
+        }
+    }
+    return crc.toString(16).toUpperCase().padStart(4, '0');
+}
+
+// Generate PromptPay e-Donation EMVCo QR String
+function generateEDonationQR(amount) {
+    const billerTag = tlv('00', 'A000000677010111') + tlv('01', BILLER_ID.padEnd(15, '0'));
+    const isDynamic = (amount && parseFloat(amount) > 0);
+    
+    let raw = tlv('00', '01')
+            + tlv('01', isDynamic ? '12' : '11')
+            + tlv('30', billerTag)
+            + tlv('53', '764'); // THB
+            
+    if (isDynamic) {
+        const formattedAmount = parseFloat(amount).toFixed(2);
+        raw += tlv('54', formattedAmount);
+    }
+    
+    raw += tlv('58', 'TH') + '6304';
+    return raw + calcCRC16(raw);
+}
+
+// Update QR Code visual in real time
+function updateQrVisual(amount) {
+    currentQrAmount = parseFloat(amount) || 0;
+    const qrPayload = generateEDonationQR(currentQrAmount);
+    const qrImg = document.getElementById('dynamicQrImage');
+    const qrBadge = document.getElementById('qrAmountBadge');
+    const downloadBtn = document.getElementById('btnDownloadQr');
+    
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(qrPayload)}`;
+    const downloadUrl = `https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=${encodeURIComponent(qrPayload)}`;
+    
+    if (qrImg) qrImg.src = qrUrl;
+    if (downloadBtn) downloadBtn.href = downloadUrl;
+    
+    if (qrBadge) {
+        if (currentQrAmount > 0) {
+            qrBadge.className = 'badge bg-success font-monospace px-3 py-2 rounded-pill fs-6';
+            qrBadge.innerHTML = `<i class="bi bi-check-circle-fill me-1"></i> ยอดที่ระบุใน QR: ${currentQrAmount.toLocaleString('th-TH', {minimumFractionDigits: 2})} บาท`;
+        } else {
+            qrBadge.className = 'badge bg-dark font-monospace px-3 py-2 rounded-pill fs-6';
+            qrBadge.innerHTML = `<i class="bi bi-tag-fill text-warning me-1"></i> ยอดใน QR: ระบุยอดเองในแอป`;
+        }
+    }
+}
+
+// Set Preset QR Amount
+function setQrAmount(amount) {
+    document.querySelectorAll('.qr-amount-chip').forEach(btn => btn.classList.remove('active'));
+    const customInput = document.getElementById('customQrAmountInput');
+    if (customInput) customInput.value = '';
+    
+    // Find matching button if any
+    const matchingBtn = Array.from(document.querySelectorAll('.qr-amount-chip')).find(btn => {
+        return btn.getAttribute('onclick') === `setQrAmount(${amount})`;
+    });
+    if (matchingBtn) matchingBtn.classList.add('active');
+    
+    updateQrVisual(amount);
+}
+
+// On custom amount input in QR card
+function onCustomQrAmountChange(val) {
+    document.querySelectorAll('.qr-amount-chip').forEach(btn => btn.classList.remove('active'));
+    const amount = parseFloat(val) || 0;
+    updateQrVisual(amount);
+}
+
+// Open modal with prefilled QR amount
+function openDonateWithQrAmount() {
+    const modalDonationAmount = document.getElementById('modalDonationAmount');
+    if (modalDonationAmount && currentQrAmount > 0) {
+        modalDonationAmount.value = currentQrAmount;
+    }
+    const modal = new bootstrap.Modal(document.getElementById('quickDonateModal'));
+    modal.show();
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Preset Amount Selector Logic
     const presetButtons = document.querySelectorAll('.btn-amount-preset');
     const selectedAmountDisplay = document.getElementById('selectedAmountDisplay');
     const selectedImpactText = document.getElementById('selectedImpactText');
     const modalDonationAmount = document.getElementById('modalDonationAmount');
+    const btnPresetAmountLabel = document.getElementById('btnPresetAmountLabel');
 
     let currentSelectedAmount = 100;
 
@@ -708,6 +961,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (selectedAmountDisplay) selectedAmountDisplay.innerText = `${parseInt(amount).toLocaleString()} บาท`;
             if (selectedImpactText) selectedImpactText.innerText = impact;
             if (modalDonationAmount) modalDonationAmount.value = amount;
+            if (btnPresetAmountLabel) btnPresetAmountLabel.innerText = `${parseInt(amount).toLocaleString()} บาท`;
         });
     });
 
@@ -718,6 +972,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (modalDonationAmount) modalDonationAmount.value = currentSelectedAmount;
         });
     }
+
+    // Initialize Default Static QR
+    updateQrVisual(0);
 });
 
 function openDonateForProject(itemId, itemTitle) {
@@ -727,5 +984,56 @@ function openDonateForProject(itemId, itemTitle) {
     }
     const modal = new bootstrap.Modal(document.getElementById('quickDonateModal'));
     modal.show();
+}
+
+let activeShareTitle = '';
+let activeShareUrl = '';
+
+function openShareModal(title, url) {
+    activeShareTitle = title || 'แคมเปญการให้ไม่มีสิ้นสุด โรงพยาบาลปลวกแดง';
+    activeShareUrl = url || window.location.href;
+
+    const titleEl = document.getElementById('shareModalItemTitle');
+    const inputEl = document.getElementById('shareLinkInput');
+    const qrEl = document.getElementById('shareLinkQrImg');
+    const fbBtn = document.getElementById('shareFbBtn');
+    const lineBtn = document.getElementById('shareLineBtn');
+    const twBtn = document.getElementById('shareTwBtn');
+
+    if (titleEl) titleEl.innerText = activeShareTitle;
+    if (inputEl) inputEl.value = activeShareUrl;
+    if (qrEl) qrEl.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(activeShareUrl)}`;
+
+    if (fbBtn) fbBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(activeShareUrl)}`;
+    if (lineBtn) lineBtn.href = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(activeShareUrl)}&text=${encodeURIComponent('ขอเชิญร่วมบริจาค ' + activeShareTitle)}`;
+    if (twBtn) twBtn.href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(activeShareUrl)}&text=${encodeURIComponent('ขอเชิญร่วมบริจาค ' + activeShareTitle + ' e-Donation ลดหย่อนภาษีได้ 2 เท่า')}`;
+
+    const shareModal = new bootstrap.Modal(document.getElementById('shareCampaignModal'));
+    shareModal.show();
+}
+
+function copyShareInputLink() {
+    const input = document.getElementById('shareLinkInput');
+    if (input && navigator.clipboard) {
+        navigator.clipboard.writeText(input.value).then(() => {
+            const btnText = document.getElementById('copyShareBtnText');
+            if (btnText) {
+                btnText.innerText = 'คัดลอกแล้ว!';
+                setTimeout(() => { btnText.innerText = 'คัดลอก'; }, 2000);
+            }
+        });
+    }
+}
+
+function triggerNativeShare() {
+    if (navigator.share) {
+        navigator.share({
+            title: activeShareTitle,
+            text: 'ขอเชิญร่วมบริจาค ' + activeShareTitle + ' โรงพยาบาลปลวกแดง ลดหย่อนภาษีได้ 2 เท่าผ่านระบบ e-Donation',
+            url: activeShareUrl
+        }).catch(() => {});
+    } else {
+        copyShareInputLink();
+    }
 }
 </script>

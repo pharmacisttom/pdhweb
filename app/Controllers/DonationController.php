@@ -86,23 +86,96 @@ class DonationController extends Controller {
                 }
             }
 
+            // Generate unique tracking code (Format: PDH-DON-YYYYMMDD-XXXX)
+            $tracking_code = 'PDH-DON-' . date('Ymd') . '-' . strtoupper(substr(bin2hex(random_bytes(2)), 0, 4));
+
             $data = [
                 'donation_item_id' => $itemId,
+                'tracking_code' => $tracking_code,
                 'donor_name' => trim($_POST['donor_name']),
-                'donor_email' => trim($_POST['donor_email']),
-                'donor_phone' => trim($_POST['donor_phone']),
-                'amount' => ($item->type == 'money' || $item->type == 'general') ? $_POST['amount'] : null,
+                'donor_email' => trim($_POST['donor_email'] ?? ''),
+                'donor_phone' => trim($_POST['donor_phone'] ?? ''),
+                'amount' => ($item->type == 'money' || $item->type == 'general') ? (!empty($_POST['amount']) ? str_replace(',', '', $_POST['amount']) : null) : null,
                 'quantity' => ($item->type == 'equipment') ? $_POST['quantity'] : null,
                 'payment_slip_image' => $payment_slip_image
             ];
 
             if ($this->donationModel->create($data)) {
-                // Flash message should ideally be used here
-                $_SESSION['flash_message'] = "ขอบคุณสำหรับการบริจาคของคุณ ทางเราได้รับข้อมูลเรียบร้อยแล้ว และจะทำการตรวจสอบต่อไป";
-                $this->redirect('donation/show/' . $itemId);
+                $_SESSION['flash_success'] = "ขอบคุณสำหรับการร่วมบริจาคของท่าน ข้อมูลและหลักฐานถูกบันทึกเรียบร้อยแล้ว";
+                $this->redirect('donation/success/' . $tracking_code);
             } else {
-                die('Something went wrong');
+                die('Something went wrong. Please try again.');
             }
         }
+    }
+
+    /**
+     * Donation Success Confirmation Page
+     */
+    public function success($tracking_code = '') {
+        if (empty($tracking_code)) {
+            $this->redirect('donation');
+            return;
+        }
+
+        $donation = $this->donationModel->getByTrackingCode($tracking_code);
+        if (!$donation) {
+            $this->redirect('donation');
+            return;
+        }
+
+        $data = [
+            'title' => 'ส่งหลักฐานการบริจาคสำเร็จ | โรงพยาบาลปลวกแดง',
+            'page_title' => 'ร่วมบริจาคสำเร็จ - ขอขอบพระคุณเป็นอย่างยิ่ง',
+            'tracking_code' => $tracking_code,
+            'donation' => $donation
+        ];
+
+        $this->view('donations/success', $data);
+    }
+
+    /**
+     * Donor Tracker (ตรวจสอบสถานะการบริจาค)
+     */
+    public function track() {
+        $keyword = trim($_GET['code'] ?? $_GET['search'] ?? '');
+        $results = [];
+        $searched = !empty($keyword);
+
+        if ($searched) {
+            $results = $this->donationModel->searchByKeyword($keyword);
+        }
+
+        $data = [
+            'title' => 'ติดตามสถานะการบริจาค (Donor Tracker) | โรงพยาบาลปลวกแดง',
+            'page_title' => 'ระบบตรวจสอบและติดตามสถานะการบริจาค',
+            'keyword' => $keyword,
+            'searched' => $searched,
+            'results' => $results
+        ];
+
+        $this->view('donations/track', $data);
+    }
+
+    /**
+     * Dynamic PromptPay e-Donation QR Helper JSON Endpoint
+     */
+    public function qr() {
+        header('Content-Type: application/json');
+        $amount = isset($_GET['amount']) ? floatval($_GET['amount']) : 0;
+        $ref1 = isset($_GET['ref']) ? trim($_GET['ref']) : '';
+
+        $payload = \App\Helpers\PromptPayHelper::generateEDonationPayload($amount, $ref1);
+        $qrImageUrl = \App\Helpers\PromptPayHelper::getQrImageUrl($amount, $ref1, 300);
+
+        echo json_encode([
+            'success' => true,
+            'amount' => $amount,
+            'formatted_amount' => number_format($amount, 2),
+            'payload' => $payload,
+            'qr_image_url' => $qrImageUrl,
+            'biller_id' => \App\Helpers\PromptPayHelper::BILLER_ID
+        ]);
+        exit;
     }
 }
