@@ -174,7 +174,7 @@ class DonationController extends Controller {
             'formatted_amount' => number_format($amount, 2),
             'payload' => $payload,
             'qr_image_url' => $qrImageUrl,
-            'biller_id' => \App\Helpers\PromptPayHelper::BILLER_ID
+            'promptpay_id' => \App\Helpers\PromptPayHelper::PROMPTPAY_ID
         ]);
         exit;
     }

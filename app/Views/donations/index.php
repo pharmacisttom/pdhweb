@@ -863,15 +863,25 @@ function calcCRC16(str) {
     return crc.toString(16).toUpperCase().padStart(4, '0');
 }
 
-// Generate PromptPay e-Donation EMVCo QR String
+// Generate Standard PromptPay EMVCo QR String (Tag 29 AnyID)
 function generateEDonationQR(amount) {
-    const billerTag = tlv('00', 'A000000677010111') + tlv('01', BILLER_ID.padEnd(15, '0'));
+    const cleanTarget = BILLER_ID.replace(/[^0-9]/g, '');
+    let subTag = '';
+    if (cleanTarget.length <= 10 && cleanTarget.startsWith('0')) {
+        const phone = '0066' + cleanTarget.substring(1);
+        subTag = tlv('01', phone);
+    } else {
+        subTag = tlv('02', cleanTarget);
+    }
+    
+    const tag29Content = tlv('00', 'A000000677010111') + subTag;
+    const tag29 = tlv('29', tag29Content);
     const isDynamic = (amount && parseFloat(amount) > 0);
     
     let raw = tlv('00', '01')
             + tlv('01', isDynamic ? '12' : '11')
-            + tlv('30', billerTag)
-            + tlv('53', '764'); // THB
+            + tag29
+            + tlv('53', '764'); // THB (Currency Code 764)
             
     if (isDynamic) {
         const formattedAmount = parseFloat(amount).toFixed(2);
