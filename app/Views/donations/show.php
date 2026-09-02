@@ -92,8 +92,8 @@
                     <div class="p-3 rounded-3 bg-primary-light border border-primary border-opacity-25 mb-4 small">
                         <strong class="text-primary d-block mb-1"><i class="bi bi-bank2 me-1"></i> บัญชีรับบริจาค:</strong>
                         <div>ธนาคารกรุงไทย สาขาปลวกแดง</div>
-                        <div>ชื่อบัญชี: <strong>เงินบริจาคโรงพยาบาลปลวกแดง</strong></div>
-                        <div>เลขที่บัญชี: <strong class="text-primary fs-6">228-0-XXXXX-X</strong></div>
+                        <div>ชื่อบัญชี: <strong>เงินบริจาคของโรงพยาบาลปลวกแดง</strong></div>
+                        <div>เลขที่บัญชี: <strong class="text-primary fs-6">671-9-87195-1</strong></div>
                     </div>
                     <?php endif; ?>
 

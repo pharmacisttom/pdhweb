@@ -98,10 +98,10 @@
                                 <span class="small text-muted"><i class="bi bi-bank2 text-primary me-1"></i> ธนาคารกรุงไทย</span>
                                 <span class="badge bg-primary-subtle text-primary">สาขาปลวกแดง</span>
                             </div>
-                            <div class="fw-bold text-dark small mb-1">ชื่อบัญชี: เงินบริจาคโรงพยาบาลปลวกแดง</div>
+                            <div class="fw-bold text-dark small mb-1">ชื่อบัญชี: เงินบริจาคของโรงพยาบาลปลวกแดง</div>
                             <div class="d-flex align-items-center justify-content-between">
-                                <span class="fs-5 fw-bold font-monospace text-primary" id="bankAccNo">228-0-38148-5</span>
-                                <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="copyToClipboard('2280381485', 'คัดลอกเลขบัญชีธนาคารเรียบร้อยแล้ว')">
+                                <span class="fs-5 fw-bold font-monospace text-primary" id="bankAccNo">671-9-87195-1</span>
+                                <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="copyToClipboard('6719871951', 'คัดลอกเลขบัญชี 671-9-87195-1 เรียบร้อยแล้ว')">
                                     <i class="bi bi-clipboard me-1"></i> คัดลอก
                                 </button>
                             </div>
@@ -256,13 +256,13 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <small class="text-muted d-block">ชื่อบัญชี:</small>
-                                        <div class="fw-bold text-primary fs-6">เงินบริจาคโรงพยาบาลปลวกแดง</div>
+                                        <div class="fw-bold text-primary fs-6">เงินบริจาคของโรงพยาบาลปลวกแดง</div>
                                     </div>
                                     <div class="col-sm-6">
                                         <small class="text-muted d-block">เลขที่บัญชี:</small>
                                         <div class="d-flex align-items-center gap-2">
-                                            <span class="fs-5 fw-bold font-monospace text-primary">228-0-38148-5</span>
-                                            <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-2 py-0" onclick="copyToClipboard('2280381485', 'คัดลอกเลขบัญชี 228-0-38148-5 เรียบร้อยแล้ว')">
+                                            <span class="fs-5 fw-bold font-monospace text-primary">671-9-87195-1</span>
+                                            <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-2 py-0" onclick="copyToClipboard('6719871951', 'คัดลอกเลขบัญชี 671-9-87195-1 เรียบร้อยแล้ว')">
                                                 <i class="bi bi-copy"></i>
                                             </button>
                                         </div>
@@ -497,10 +497,10 @@
                     <div class="p-3 rounded-4 bg-light border mb-4 d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2">
                         <div>
                             <small class="text-muted d-block">โอนเข้าบัญชี: <strong>ธนาคารกรุงไทย สาขาปลวกแดง</strong></small>
-                            <span class="fw-bold text-primary">ชื่อบัญชี: เงินบริจาคโรงพยาบาลปลวกแดง</span>
+                            <span class="fw-bold text-primary">ชื่อบัญชี: เงินบริจาคของโรงพยาบาลปลวกแดง</span>
                         </div>
                         <div class="text-sm-end">
-                            <span class="fs-5 fw-bold font-monospace text-primary">228-0-38148-5</span>
+                            <span class="fs-5 fw-bold font-monospace text-primary">671-9-87195-1</span>
                         </div>
                     </div>
 
