@@ -58,6 +58,11 @@ class AuthMiddleware {
     public static function authorizeController($controllerClass, $action) {
         self::check();
 
+        // Super Admin has full access to all controller actions
+        if ((int)($_SESSION['user_role'] ?? 0) === 1) {
+            return;
+        }
+
         $controller = substr(strrchr($controllerClass, '\\'), 1);
         $moduleMap = [
             'DashboardController' => 'dashboard',
@@ -69,7 +74,8 @@ class AuthMiddleware {
             'DoctorController' => 'doctors',
             'DonationController' => 'donations',
             'DonationItemController' => 'donations',
-            'CsrController' => 'pages',
+            'CsrController' => 'csr',
+            'DocumentController' => 'documents',
             'ProcurementController' => 'procurements',
             'ComplaintController' => 'complaints',
             'AppointmentController' => 'appointments',
