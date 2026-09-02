@@ -101,16 +101,191 @@
         <?php endif; ?>
         <!-- 4. E-Donation -->
         <div class="col-6 col-lg-3">
-            <a href="<?= URLROOT ?>/donations" class="fast-track-card">
+            <a href="<?= URLROOT ?>/donations" class="fast-track-card position-relative overflow-hidden border-2 border-danger-subtle">
+                <div class="position-absolute top-0 end-0 m-2">
+                    <span class="badge bg-danger text-white rounded-pill px-2 py-0" style="font-size: 0.65rem;">
+                        ลดหย่อน 2 เท่า
+                    </span>
+                </div>
                 <div class="fast-track-icon" style="background: #ffe4e6; color: #e11d48;">
-                    <i class="bi bi-heart-pulse"></i>
+                    <i class="bi bi-heart-pulse-fill"></i>
                 </div>
                 <h5 class="fast-track-title">ร่วมบริจาค</h5>
-                <p class="fast-track-desc">สมทบทุนจัดซื้อเครื่องมือแพทย์</p>
+                <p class="fast-track-desc">e-Donation โรงพยาบาลปลวกแดง</p>
             </a>
         </div>
     </div>
 </div>
+
+<!-- ========================================================================= -->
+<!-- PROMINENT DONATION SPOTLIGHT SECTION (แคมเปญการให้ไม่มีสิ้นสุด & e-Donation) -->
+<!-- ========================================================================= -->
+<section class="py-4 my-2">
+    <div class="container">
+        
+        <!-- Main Spotlight Card -->
+        <div class="card border-0 shadow-xl rounded-5 overflow-hidden text-white mb-4 position-relative" style="background: linear-gradient(135deg, #042f2e 0%, #0f766e 45%, #0284c7 100%);">
+            
+            <div class="card-body p-4 p-md-5 position-relative">
+                <div class="row align-items-center g-4">
+                    
+                    <!-- Left: Campaign Overview & Bank Details -->
+                    <div class="col-lg-7 text-start">
+                        
+                        <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                            <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold fs-7 shadow-sm">
+                                <i class="bi bi-infinity me-1"></i> แคมเปญการให้ไม่มีสิ้นสุด (The Endless Giving)
+                            </span>
+                            <span class="badge bg-white text-teal px-3 py-2 rounded-pill fw-bold fs-7 shadow-sm">
+                                <i class="bi bi-patch-check-fill text-success me-1"></i> e-Donation ลดหย่อนภาษี 2 เท่า
+                            </span>
+                        </div>
+
+                        <h2 class="display-6 fw-bold text-white mb-2" style="letter-spacing: -0.5px;">
+                            พลังแห่งการให้... สร้างปาฏิหาริย์แห่งชีวิต
+                        </h2>
+                        <p class="text-white-75 lead fs-6 mb-4 max-w-600">
+                            ร่วมสมทบทุนจัดซื้อเครื่องมือแพทย์และช่วยเหลือผู้ป่วยยากไร้ โรงพยาบาลปลวกแดง ทุกบาทของท่านส่งตรงถึงกรมสรรพากรเพื่อลดหย่อนภาษีได้ 2 เท่าโดยอัตโนมัติ
+                        </p>
+
+                        <!-- Bank Account Box on Homepage -->
+                        <div class="p-3 p-md-4 rounded-4 bg-white text-dark shadow-lg mb-4 max-w-600">
+                            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mb-2 pb-2 border-bottom">
+                                <div>
+                                    <span class="small text-muted"><i class="bi bi-bank2 text-primary me-1"></i> ธนาคารกรุงไทย จำกัด (มหาชน)</span>
+                                    <span class="badge bg-primary-subtle text-primary ms-1">สาขาปลวกแดง</span>
+                                </div>
+                                <span class="badge bg-success-subtle text-success small font-monospace">e-Donation ID: 0994000164877</span>
+                            </div>
+                            <div class="small fw-bold text-dark mb-1">ชื่อบัญชี: <span class="text-primary">เงินบริจาคของโรงพยาบาลปลวกแดง</span></div>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <small class="text-muted d-block" style="font-size: 0.72rem;">เลขที่บัญชี:</small>
+                                    <span class="fs-4 fw-bold font-monospace text-primary">671-9-87195-1</span>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 py-1" onclick="copyHomeBankAcc('6719871951')">
+                                    <i class="bi bi-clipboard me-1"></i> <span id="homeCopyBtnText">คัดลอกเลขบัญชี</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- CTA Action Buttons -->
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="<?= URLROOT ?>/donations" class="btn btn-warning btn-lg rounded-pill px-4 py-3 fw-bold text-dark shadow-lg d-inline-flex align-items-center gap-2">
+                                <i class="bi bi-heart-fill text-danger"></i>
+                                <span>ร่วมบริจาคออนไลน์ (สแกน QR)</span>
+                            </a>
+                            <a href="<?= URLROOT ?>/donation/track" class="btn btn-outline-light btn-lg rounded-pill px-4 py-3 fw-semibold d-inline-flex align-items-center gap-2">
+                                <i class="bi bi-search"></i>
+                                <span>ติดตามสถานะการบริจาค</span>
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <!-- Right: e-Donation QR Card & Official Emblem -->
+                    <div class="col-lg-5 text-center">
+                        <div class="p-4 rounded-5 bg-white text-dark shadow-2xl position-relative mx-auto" style="max-width: 380px;">
+                            
+                            <!-- Official e-Donation Brand Logo -->
+                            <div class="mb-3">
+                                <a href="https://epayapp.rd.go.th/rd-edonation/portal/for-donation-unit" target="_blank" title="ตรวจสอบในระบบ e-Donation กรมสรรพากร">
+                                    <img src="<?= URLROOT ?>/assets/images/edonation-badge.svg" alt="e-Donation Logo" class="img-fluid rounded-4 shadow-sm mb-1" style="max-height: 58px;">
+                                </a>
+                            </div>
+
+                            <div class="small fw-bold text-muted mb-2">สแกนบริจาคผ่าน Mobile Banking</div>
+
+                            <!-- QR Code Preview Image -->
+                            <div class="p-2 bg-light rounded-4 border d-inline-block shadow-inner mb-3">
+                                <img src="<?= \App\Helpers\PromptPayHelper::getQrImageUrl(null, '', 200) ?>" alt="e-Donation QR Code" class="img-fluid rounded" width="190" height="190">
+                            </div>
+
+                            <div class="small fw-bold text-dark mb-1">โรงพยาบาลปลวกแดง</div>
+                            <div class="text-muted font-monospace small mb-3" style="font-size: 0.78rem;">รหัสหน่วยรับบริจาค: <strong>0994000164877</strong></div>
+
+                            <a href="<?= URLROOT ?>/donations" class="btn btn-teal-gradient w-100 py-2 rounded-pill fw-bold text-white shadow-sm">
+                                <i class="bi bi-qr-code-scan me-1"></i> เข้าสู่หน้าแคมเปญ & เลือกระบุยอด
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Active Donation Campaigns Preview Cards (if available) -->
+        <?php if (!empty($donationItems)): ?>
+            <div class="d-flex justify-content-between align-items-end mb-3 mt-4">
+                <div>
+                    <span class="badge bg-teal-subtle text-teal px-3 py-1 rounded-pill fw-bold small mb-1">
+                        <i class="bi bi-box2-heart-fill me-1"></i> โครงการที่กำลังเปิดรับ
+                    </span>
+                    <h3 class="h4 fw-bold text-dark mb-0">โครงการเพื่อผู้ป่วย โรงพยาบาลปลวกแดง</h3>
+                </div>
+                <a href="<?= URLROOT ?>/donations" class="text-teal text-decoration-none fw-semibold small">
+                    ดูทั้งหมด <?= count($donationItems) ?> โครงการ &rarr;
+                </a>
+            </div>
+
+            <div class="row g-3">
+                <?php foreach ($donationItems as $dItem): ?>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white d-flex flex-column justify-content-between hover-shadow">
+                            <div class="position-relative" style="height: 140px; background: #0f172a;">
+                                <img src="<?= URLROOT ?>/assets/images/donations/<?= $dItem->image ?: 'default-donation.jpg' ?>" class="w-100 h-100 object-fit-cover" alt="<?= htmlspecialchars($dItem->title) ?>" onerror="this.src='https://placehold.co/400x250/0d9488/ffffff?text=PDH+Campaign'">
+                                <div class="position-absolute top-0 end-0 m-2">
+                                    <span class="badge bg-success text-white px-2 py-1 rounded-pill" style="font-size: 0.7rem;">
+                                        ลดหย่อน 2 เท่า
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="p-3 d-flex flex-column justify-content-between flex-grow-1">
+                                <div>
+                                    <h6 class="fw-bold text-dark line-clamp-2 mb-2" style="font-size: 0.9rem; line-height: 1.35;">
+                                        <?= htmlspecialchars($dItem->title) ?>
+                                    </h6>
+                                </div>
+                                <div class="pt-2 border-top">
+                                    <?php 
+                                        $tAmount = floatval($dItem->target_amount ?? 0);
+                                        $cAmount = floatval($dItem->current_amount ?? 0);
+                                        $pct = ($tAmount > 0) ? min(100, round(($cAmount / $tAmount) * 100, 1)) : 0;
+                                    ?>
+                                    <div class="d-flex justify-content-between small text-muted mb-1" style="font-size: 0.75rem;">
+                                        <span>ได้รับแล้ว: <strong class="text-teal">฿<?= number_format($cAmount) ?></strong></span>
+                                        <span class="fw-bold text-teal"><?= $pct ?>%</span>
+                                    </div>
+                                    <div class="progress mb-3" style="height: 6px; border-radius: 10px;">
+                                        <div class="progress-bar bg-teal" role="progressbar" style="width: <?= $pct ?>%;"></div>
+                                    </div>
+                                    <a href="<?= URLROOT ?>/donation/show/<?= $dItem->id ?>" class="btn btn-outline-teal btn-sm w-100 rounded-pill fw-semibold" style="font-size: 0.8rem;">
+                                        ร่วมบริจาคโครงการนี้ &rarr;
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
+    </div>
+</section>
+
+<script>
+function copyHomeBankAcc(accNo) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(accNo).then(() => {
+            const btn = document.getElementById('homeCopyBtnText');
+            if (btn) {
+                btn.innerText = 'คัดลอกสำเร็จ!';
+                setTimeout(() => { btn.innerText = 'คัดลอกเลขบัญชี'; }, 2000);
+            }
+        });
+    }
+}
+</script>
 
 <!-- Medical Services Overview Section -->
 <section class="py-4 mb-5">

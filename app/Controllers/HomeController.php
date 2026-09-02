@@ -39,10 +39,25 @@ class HomeController extends Controller {
         // Fetch active banners
         $banners = $this->bannerModel->getActive();
 
+        // Fetch active donation campaigns
+        $donationItemModel = $this->model('DonationItem');
+        $donationItems = $donationItemModel->getActive();
+        $totalDonationRaised = 0;
+        $totalDonationTarget = 0;
+        if (!empty($donationItems)) {
+            foreach ($donationItems as $it) {
+                $totalDonationRaised += floatval($it->current_amount ?? 0);
+                $totalDonationTarget += floatval($it->target_amount ?? 0);
+            }
+        }
+
         $data = [
             'page_title' => 'หน้าแรก',
             'newsByCategory' => $newsByCategory,
             'banners' => $banners,
+            'donationItems' => array_slice($donationItems, 0, 4),
+            'totalDonationRaised' => $totalDonationRaised,
+            'totalDonationTarget' => $totalDonationTarget,
             'slider_interval' => $sliderSettings['banner_slider_interval'] ?? '5000',
             'slider_transition' => $sliderSettings['banner_transition_effect'] ?? 'fade',
             'queueEnabled' => ($sliderSettings['queue_enabled'] ?? '0') === '1'
