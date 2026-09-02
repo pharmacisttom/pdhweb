@@ -185,28 +185,33 @@
 
                     <!-- Right: e-Donation QR Card & Official Emblem -->
                     <div class="col-lg-5 text-center">
-                        <div class="p-4 rounded-5 bg-white text-dark shadow-2xl position-relative mx-auto" style="max-width: 380px;">
+                        <div class="p-4 rounded-5 bg-white text-dark shadow-2xl position-relative mx-auto" style="max-width: 400px;">
                             
-                            <!-- Official e-Donation Brand Logo -->
-                            <div class="mb-3">
-                                <a href="https://epayapp.rd.go.th/rd-edonation/portal/for-donation-unit" target="_blank" title="ตรวจสอบในระบบ e-Donation กรมสรรพากร">
-                                    <img src="<?= URLROOT ?>/assets/images/edonation-badge.svg" alt="e-Donation Logo" class="img-fluid rounded-4 shadow-sm mb-1" style="max-height: 58px;">
+                            <!-- Official e-Donation Header Badge -->
+                            <div class="mb-2">
+                                <span class="badge bg-primary text-white rounded-pill px-3 py-1 fw-bold" style="font-size: 0.8rem;">
+                                    <i class="bi bi-qr-code me-1"></i> QR รับบริจาคทางการ (e-Donation)
+                                </span>
+                            </div>
+
+                            <div class="small fw-bold text-muted mb-2">สแกนผ่าน Mobile Banking ได้ทุกธนาคาร</div>
+
+                            <!-- Official Krungthai e-Donation QR Code from Bank Poster -->
+                            <div class="p-2 bg-light rounded-4 border d-inline-block shadow-sm mb-3 position-relative overflow-hidden">
+                                <img src="<?= URLROOT ?>/assets/images/donations/official-edonation-qr.png" alt="Official PromptPay e-Donation QR Code" class="img-fluid rounded" style="max-height: 230px; object-fit: contain;">
+                            </div>
+
+                            <div class="small fw-bold text-dark mb-1">บัญชีเงินบริจาคของโรงพยาบาลปลวกแดง</div>
+                            <div class="text-muted font-monospace small mb-3" style="font-size: 0.78rem;">ธนาคารกรุงไทย สาขาปลวกแดง • <strong>671-9-87195-1</strong></div>
+
+                            <div class="d-flex gap-2">
+                                <a href="<?= URLROOT ?>/donations" class="btn btn-teal-gradient flex-grow-1 py-2 rounded-pill fw-bold text-white shadow-sm">
+                                    <i class="bi bi-heart-fill me-1"></i> เข้าสู่หน้าบริจาค
+                                </a>
+                                <a href="<?= URLROOT ?>/assets/images/donations/donation-poster.jpg" target="_blank" class="btn btn-outline-secondary rounded-pill px-3 py-2" title="ดูป้ายประกาศทางการ">
+                                    <i class="bi bi-file-earmark-image"></i> ป้ายประกาศ
                                 </a>
                             </div>
-
-                            <div class="small fw-bold text-muted mb-2">สแกนบริจาคผ่าน Mobile Banking</div>
-
-                            <!-- QR Code Preview Image -->
-                            <div class="p-2 bg-light rounded-4 border d-inline-block shadow-inner mb-3">
-                                <img src="<?= \App\Helpers\PromptPayHelper::getQrImageUrl(null, '', 200) ?>" alt="e-Donation QR Code" class="img-fluid rounded" width="190" height="190">
-                            </div>
-
-                            <div class="small fw-bold text-dark mb-1">โรงพยาบาลปลวกแดง</div>
-                            <div class="text-muted font-monospace small mb-3" style="font-size: 0.78rem;">รหัสหน่วยรับบริจาค: <strong>0994000164877</strong></div>
-
-                            <a href="<?= URLROOT ?>/donations" class="btn btn-teal-gradient w-100 py-2 rounded-pill fw-bold text-white shadow-sm">
-                                <i class="bi bi-qr-code-scan me-1"></i> เข้าสู่หน้าแคมเปญ & เลือกระบุยอด
-                            </a>
                         </div>
                     </div>
 

@@ -144,11 +144,11 @@
                             </button>
                         </div>
                         
-                        <!-- Mini QR Preview -->
+                        <!-- Official QR Image -->
                         <div class="text-center p-2 bg-white rounded-3 border mb-2">
-                            <img id="projectQrImage" src="<?= \App\Helpers\PromptPayHelper::getQrImageUrl(null, '', 160) ?>" alt="PromptPay QR Code" class="img-fluid rounded mb-1" width="160" height="160">
+                            <img id="projectQrImage" src="<?= URLROOT ?>/assets/images/donations/official-edonation-qr.png" alt="Official PromptPay e-Donation QR Code" class="img-fluid rounded mb-1" style="max-height: 200px; object-fit: contain;">
                             <div class="small text-muted font-monospace" style="font-size: 0.75rem;" id="projectQrHint">
-                                สแกนบริจาคผ่าน Mobile Banking ทุกธนาคาร
+                                สแกนบริจาคผ่าน Mobile Banking ได้ทุกธนาคาร
                             </div>
                         </div>
 

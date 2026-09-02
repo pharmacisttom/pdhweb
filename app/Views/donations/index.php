@@ -217,56 +217,29 @@
         <div class="container">
             <div class="row g-4 align-items-stretch">
                 
-                <!-- Left: Dynamic PromptPay / e-Donation QR Card -->
+                <!-- Left: Official PromptPay / e-Donation QR Card -->
                 <div class="col-lg-5">
                     <div class="card h-100 border-0 shadow-sm rounded-4 p-4 p-md-5 text-center bg-white d-flex flex-column justify-content-between">
                         <div>
                             <!-- Official e-Donation Brand Logo & Badge -->
-                            <div class="mb-3 text-center">
+                            <div class="mb-2 text-center">
                                 <a href="https://epayapp.rd.go.th/rd-edonation/portal/for-donation-unit" target="_blank" title="ระบบบริจาคอิเล็กทรอนิกส์ (e-Donation) กรมสรรพากร" class="d-inline-block text-decoration-none">
-                                    <img src="<?= URLROOT ?>/assets/images/edonation-badge.svg" alt="e-Donation Logo กรมสรรพากร" class="img-fluid rounded-4 shadow-sm hover-scale mb-1" style="max-height: 65px;">
+                                    <img src="<?= URLROOT ?>/assets/images/edonation-badge.svg" alt="e-Donation Logo กรมสรรพากร" class="img-fluid rounded-4 shadow-sm hover-scale mb-1" style="max-height: 60px;">
                                 </a>
                             </div>
 
                             <h3 class="h4 fw-bold text-dark mb-1">สแกนบริจาคผ่าน e-Donation</h3>
                             <p class="text-muted small mb-3">
-                                เลือกระบุจำนวนเงิน ระบบจะสร้าง QR Code พร้อมยอดเงินให้อัตโนมัติ ข้อมูลจะถูกส่งตรงเข้าสู่ระบบกรมสรรพากรเพื่อลดหย่อนภาษี 2 เท่า
+                                สแกนผ่าน Mobile Banking ได้ทุกธนาคาร ข้อมูลส่งตรงถึงระบบกรมสรรพากรเพื่อลดหย่อนภาษี 2 เท่าโดยอัตโนมัติ
                             </p>
 
-                            <!-- Amount Quick Selectors for QR -->
-                            <div class="mb-3">
-                                <label class="form-label small fw-bold text-muted d-block text-start mb-2">เลือกยอดเงินที่ต้องการระบุใน QR:</label>
-                                <div class="d-flex flex-wrap gap-1 justify-content-center mb-2">
-                                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 qr-amount-chip active" onclick="setQrAmount(0)">อิสระ (ไม่กำหนดยอด)</button>
-                                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 qr-amount-chip" onclick="setQrAmount(100)">100 ฿</button>
-                                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 qr-amount-chip" onclick="setQrAmount(300)">300 ฿</button>
-                                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 qr-amount-chip" onclick="setQrAmount(500)">500 ฿</button>
-                                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 qr-amount-chip" onclick="setQrAmount(1000)">1,000 ฿</button>
-                                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3 qr-amount-chip" onclick="setQrAmount(2500)">2,500 ฿</button>
-                                </div>
-                                
-                                <div class="input-group input-group-sm max-w-300 mx-auto">
-                                    <span class="input-group-text bg-light text-muted">กำหนดเอง</span>
-                                    <input type="number" id="customQrAmountInput" class="form-control text-center font-monospace fw-bold" placeholder="ระบุจำนวนเงิน (บาท)" min="1" step="any" oninput="onCustomQrAmountChange(this.value)">
-                                    <span class="input-group-text bg-light">บาท</span>
-                                </div>
+                            <!-- Official Bank QR Image Container -->
+                            <div class="p-3 bg-light rounded-4 border shadow-sm position-relative d-inline-block mb-3">
+                                <img id="officialEdonationQrImg" src="<?= URLROOT ?>/assets/images/donations/official-edonation-qr.png" alt="Official PromptPay e-Donation QR Code" class="img-fluid rounded" style="max-height: 280px; object-fit: contain;">
                             </div>
 
-                            <!-- QR Code Container & Dynamic Badge -->
-                            <div class="position-relative d-inline-block mb-3">
-                                <div class="p-3 bg-light rounded-4 d-inline-block border shadow-sm position-relative">
-                                    <img id="dynamicQrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=00020101021130390016A000000677010111011509940001648770053037645802TH6304E721" alt="e-Donation QR Code" class="img-fluid rounded" width="220" height="220">
-                                </div>
-                                
-                                <div class="mt-2">
-                                    <span class="badge bg-dark font-monospace px-3 py-2 rounded-pill fs-6" id="qrAmountBadge">
-                                        <i class="bi bi-tag-fill text-warning me-1"></i> ยอดใน QR: ระบุยอดเองในแอป
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="small fw-bold text-dark mb-1">โรงพยาบาลปลวกแดง</div>
-                            <div class="small text-muted font-monospace mb-2">รหัสหน่วยรับบริจาค e-Donation: <strong>0994000164877</strong></div>
+                            <div class="small fw-bold text-dark mb-1">บัญชีเงินบริจาคของโรงพยาบาลปลวกแดง</div>
+                            <div class="small text-muted font-monospace mb-2">ธนาคารกรุงไทย สาขาปลวกแดง • <strong>671-9-87195-1</strong></div>
                             
                             <!-- Portal verification link -->
                             <div class="mb-3">
@@ -276,12 +249,15 @@
                             </div>
 
                             <!-- QR Action Buttons -->
-                            <div class="d-flex gap-2 justify-content-center mb-3">
-                                <a id="btnDownloadQr" href="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=00020101021130390016A000000677010111011509940001648770053037645802TH6304E721" download="PDH_eDonation_QR.png" target="_blank" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                            <div class="d-flex flex-wrap gap-2 justify-content-center mb-3">
+                                <a href="<?= URLROOT ?>/assets/images/donations/official-edonation-qr.png" download="PDH_eDonation_Official_QR.png" target="_blank" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
                                     <i class="bi bi-download me-1"></i> ดาวน์โหลด QR
                                 </a>
-                                <button type="button" class="btn btn-sm btn-teal-gradient text-white rounded-pill px-3" onclick="openDonateWithQrAmount()">
-                                    <i class="bi bi-receipt me-1"></i> แจ้งสลิปยอดนี้
+                                <a href="<?= URLROOT ?>/assets/images/donations/donation-poster.jpg" target="_blank" class="btn btn-sm btn-outline-teal rounded-pill px-3">
+                                    <i class="bi bi-file-earmark-image me-1"></i> ดูป้ายประกาศทางการ
+                                </a>
+                                <button type="button" class="btn btn-sm btn-teal-gradient text-white rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#quickDonateModal">
+                                    <i class="bi bi-receipt me-1"></i> แจ้งสลิปออนไลน์
                                 </button>
                             </div>
                         </div>
@@ -359,14 +335,32 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Official LINE Receipt Notification Banner -->
+                            <div class="p-3 rounded-4 bg-light border mb-3 d-flex flex-column flex-sm-row align-items-center gap-3">
+                                <div class="flex-shrink-0 text-center">
+                                    <img src="<?= URLROOT ?>/assets/images/donations/official-line-receipt-qr.png" alt="Official LINE Receipt QR" class="img-fluid rounded-3 border shadow-sm" style="max-width: 90px;">
+                                </div>
+                                <div class="flex-grow-1 text-center text-sm-start">
+                                    <div class="fw-bold text-dark small mb-1">
+                                        <i class="bi bi-line text-success fs-5 me-1"></i> โอนปุ๊บ สแกนปั๊บ เพื่อแจ้งออกใบเสร็จ (งานการเงินและบัญชี)
+                                    </div>
+                                    <p class="text-muted small mb-0" style="font-size: 0.76rem;">
+                                        สแกน QR LINE หรือติดต่อขอรับใบเสร็จได้ที่ งานการเงิน ห้องบริหารชั้น 2 อาคารผู้ป่วยนอก ในวันและเวลาราชการ โทร. <strong>033-650-413 ต่อ 101</strong>
+                                    </p>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="d-flex flex-wrap gap-2 pt-3 border-top">
-                            <button type="button" class="btn btn-primary rounded-pill px-4 fw-bold" data-bs-toggle="modal" data-bs-target="#quickDonateModal">
-                                <i class="bi bi-cloud-arrow-up-fill me-1"></i> แนบหลักฐานการโอนเงิน (สลิป)
+                            <button type="button" class="btn btn-teal-gradient text-white rounded-pill px-4 fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#quickDonateModal">
+                                <i class="bi bi-cloud-arrow-up-fill me-1"></i> แนบสลิปผ่านระบบออนไลน์
                             </button>
-                            <a href="<?= URLROOT ?>/contact" class="btn btn-outline-secondary rounded-pill px-3">
-                                <i class="bi bi-telephone me-1"></i> สอบถามข้อมูลการบริจาค (033-650-412)
+                            <a href="<?= URLROOT ?>/donation/track" class="btn btn-outline-teal rounded-pill px-3">
+                                <i class="bi bi-search me-1"></i> ติดตามสถานะสลิป
+                            </a>
+                            <a href="tel:033650413" class="btn btn-outline-secondary rounded-pill px-3">
+                                <i class="bi bi-telephone me-1"></i> 033-650-413 ต่อ 101
                             </a>
                         </div>
                     </div>
