@@ -108,13 +108,14 @@
                             </a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle <?= (isset($_GET['url']) && in_array($_GET['url'], ['doctors', 'clinics', 'services'])) ? 'active' : '' ?>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle <?= (isset($_GET['url']) && in_array($_GET['url'], ['doctors', 'doctors/schedule', 'clinics', 'services'])) ? 'active' : '' ?>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 บริการทางการแพทย์
                             </a>
                             <ul class="dropdown-menu dropdown-menu-modern shadow-lg border-0 rounded-4 p-2 mt-2">
+                                <li><a class="dropdown-item rounded-3 py-2" href="<?= URLROOT ?>/doctors/schedule"><i class="bi bi-calendar2-week-fill me-2 text-info"></i> ตารางออกตรวจแพทย์</a></li>
                                 <li><a class="dropdown-item rounded-3 py-2" href="<?= URLROOT ?>/appointment"><i class="bi bi-calendar-check-fill me-2 text-warning"></i> จองคิวนัดหมาย (ปฏิทิน)</a></li>
                                 <li><a class="dropdown-item rounded-3 py-2" href="<?= URLROOT ?>/doctors"><i class="bi bi-person-badge me-2 text-primary"></i> ทำเนียบแพทย์</a></li>
-                                <li><a class="dropdown-item rounded-3 py-2" href="<?= URLROOT ?>/clinics"><i class="bi bi-hospital me-2 text-primary"></i> คลินิกเฉพาะโรค & ตารางตรวจ</a></li>
+                                <li><a class="dropdown-item rounded-3 py-2" href="<?= URLROOT ?>/clinics"><i class="bi bi-hospital me-2 text-primary"></i> คลินิกเฉพาะโรค</a></li>
                                 <li><a class="dropdown-item rounded-3 py-2" href="<?= URLROOT ?>/services"><i class="bi bi-card-checklist me-2 text-primary"></i> บริการผู้ป่วยนอก/ใน</a></li>
                             </ul>
                         </li>
@@ -225,11 +226,13 @@
                 <div class="col-lg-2 col-md-6">
                     <h6 class="fw-bold text-white mb-3">บริการผู้ป่วย</h6>
                     <ul class="list-unstyled">
-                        <li><a href="<?= URLROOT ?>/doctors" class="footer-link">ค้นหาแพทย์</a></li>
-                        <li><a href="<?= URLROOT ?>/clinics" class="footer-link">ตารางออกตรวจ</a></li>
+                        <li><a href="<?= URLROOT ?>/doctors/schedule" class="footer-link"><i class="bi bi-calendar2-week me-1 text-info"></i> ตารางตรวจแพทย์</a></li>
+                        <li><a href="<?= URLROOT ?>/appointment" class="footer-link">จองคิวนัดหมาย</a></li>
+                        <li><a href="<?= URLROOT ?>/doctors" class="footer-link">ทำเนียบแพทย์</a></li>
+                        <li><a href="<?= URLROOT ?>/clinics" class="footer-link">คลินิกเฉพาะโรค</a></li>
+                        <li><a href="<?= URLROOT ?>/services" class="footer-link">บริการผู้ป่วย</a></li>
                         <?php if ($queueEnabled): ?><li><a href="<?= URLROOT ?>/queue" class="footer-link">ระบบคิวตรวจ</a></li><?php endif; ?>
                         <li><a href="<?= URLROOT ?>/donations" class="footer-link">ร่วมบริจาค e-Donation</a></li>
-                        <li><a href="<?= URLROOT ?>/donation/track" class="footer-link">ติดตามสถานะการบริจาค</a></li>
                         <li><a href="<?= URLROOT ?>/complaint" class="footer-link">รับเรื่องร้องเรียน</a></li>
                     </ul>
                 </div>

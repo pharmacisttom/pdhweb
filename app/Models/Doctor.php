@@ -48,4 +48,20 @@ class Doctor extends Model {
         $this->db->bind(':id', $id);
         return $this->db->execute();
     }
+
+    public function getAllSchedules() {
+        $this->db->query('
+            SELECT s.*, 
+                   d.prefix, d.firstname, d.lastname, d.position, d.specialty, d.profile_image,
+                   c.name as clinic_name, c.location as clinic_location, c.phone as clinic_phone,
+                   dept.name as department_name
+            FROM clinic_schedules s
+            JOIN doctors d ON s.doctor_id = d.id
+            JOIN clinics c ON s.clinic_id = c.id
+            LEFT JOIN departments dept ON c.department_id = dept.id
+            WHERE d.deleted_at IS NULL AND c.deleted_at IS NULL
+            ORDER BY s.day_of_week ASC, s.start_time ASC
+        ');
+        return $this->db->resultSet();
+    }
 }

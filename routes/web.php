@@ -38,6 +38,10 @@ $router->get('/csr', 'CsrController@index');
 // Public Medical Services & Doctors
 $router->get('/doctors', 'DoctorController@index');
 $router->get('/doctor', 'DoctorController@index');
+$router->get('/doctors/schedule', 'DoctorController@schedule');
+$router->get('/doctor/schedule', 'DoctorController@schedule');
+$router->get('/schedules', 'DoctorController@schedule');
+$router->get('/schedule', 'DoctorController@schedule');
 $router->get('/clinics', 'ClinicController@index');
 $router->get('/clinic', 'ClinicController@index');
 $router->get('/clinic/show/{id}', 'ClinicController@show');
